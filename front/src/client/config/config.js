@@ -4,12 +4,12 @@
 
 const config = {
   APISERVER: {
-    host: 'localhost:8080'
+    host: 'http://localhost:8080'
   }
 }
 
 const PROXY_PATH = process.env.PROXY_PATH
-if (undefined !== PROXY_PATH && null != PROXY_PATH) {
-  config.APISERVER.host = PROXY_PATH + config.APISERVER.host
+if (undefined !== PROXY_PATH && PROXY_PATH != null) {
+  config.APclsISERVER.host = PROXY_PATH + config.APISERVER.host
 }
 export default config

@@ -1,4 +1,4 @@
-package com.smallcode.springbootvuewsample;
+package com.code.questionnaireSystem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -24,7 +24,7 @@ const requestService = {
    * @param  {string} serverUrl  动态传入的获取数据的地址
    * @return {object}       结果
    */
-  get: function(serverUrl, optionsParams) {
+  get: function (serverUrl, optionsParams) {
     commonFunc.myConsole('get optionsParams ===> ')
     commonFunc.myConsole(serverUrl)
     commonFunc.myConsole(optionsParams)
@@ -83,7 +83,7 @@ const requestService = {
    * @param  {string} serverUrl  动态传入的获取数据的地址
    * @return {object}       结果
    */
-  post: function(serverUrl, optionsParams, formSubmission) {
+  post: function (serverUrl, optionsParams, formSubmission) {
     commonFunc.myConsole('post optionsParams ===> ')
     commonFunc.myConsole(serverUrl)
     commonFunc.myConsole(optionsParams)
@@ -141,11 +141,11 @@ const requestService = {
    * @param  {string} serverUrl  动态传入的获取数据的地址
    * @return {object}       结果
    */
-  patch: function(serverUrl, optionsParams, formSubmission) {
+  patch: function (serverUrl, optionsParams, formSubmission) {
     commonFunc.myConsole('patch optionsParams ===> ')
     commonFunc.myConsole(serverUrl)
     commonFunc.myConsole(optionsParams)
-    // commonFunc.showLoading()
+    commonFunc.showLoading()
     let isForm =
       commonFunc.isDefine(formSubmission) && formSubmission === 'form'
     let options = {
@@ -193,7 +193,7 @@ const requestService = {
         })
     })
   },
-  request: function(requestOptions) {
+  request: function (requestOptions) {
     const options = getOptions(requestOptions)
     return new Promise((resolve, reject) => {
       Vue.axios(options)

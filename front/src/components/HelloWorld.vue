@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import testApi from '../client/bll/apis/test.js'
 export default {
   name: 'HelloWorld',
   data () {
@@ -13,6 +14,16 @@ export default {
       msg: 'demo'
     }
   },
+  async mounted () {
+    await this.getData()
+  },
+  methods: {
+    async getData () {
+      let id = 1
+      let data = await testApi.getById(id)
+      this.msg = data.name
+    }
+  }
   // ready () {
   //   var that = this
   //   that.$http({

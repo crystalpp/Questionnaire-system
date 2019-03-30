@@ -1,4 +1,4 @@
-package com.smallcode.springbootvuewsample.controller;
+package com.code.questionnaireSystem.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
