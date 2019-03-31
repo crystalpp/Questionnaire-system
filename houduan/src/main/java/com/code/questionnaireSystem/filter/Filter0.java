@@ -41,13 +41,6 @@ public class Filter0 implements Filter
             res.setHeader("Access-Control-Allow-Credentials", "true");
             chain.doFilter(req, res);
         }
-        else if(requestUri.endsWith("js/source/upfile-tool.js")){
-            res.setHeader("Access-Control-Allow-Origin", originHeader);
-            res.setHeader("Access-Control-Allow-Methods", "POST, GET");
-            res.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
-            res.setHeader("Access-Control-Allow-Credentials", "true");
-            chain.doFilter(req, res);
-        }
         else{
             logger.info("@Filter0 " + originHeader + " not allowed!");
             return;
