@@ -6,7 +6,7 @@ const demoApi = {
     //   id: id
     // }
     // commonFunc.myConsole('nowModelIdCode'+nowModelIdCode)
-    let url = config.APISERVER.host + '/article/get/' + id
+    let url = config.APISERVER.host + '/user/queryAllUsers/'
     let res = await requestService.get(url, '')
     return res
   }

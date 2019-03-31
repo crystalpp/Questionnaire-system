@@ -21,7 +21,7 @@ export default {
     async getData () {
       let id = 1
       let data = await testApi.getById(id)
-      this.msg = data.name
+      this.msg = data[0].user_name
     }
   }
   // ready () {
