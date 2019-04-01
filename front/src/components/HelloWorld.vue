@@ -24,18 +24,6 @@ export default {
       this.msg = data[0].user_name
     }
   }
-  // ready () {
-  //   var that = this
-  //   that.$http({
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/article/get/1'
-  //   }).then(function (data) {
-  //     that.msg = data.desc
-  //     console.log(data)
-  //   }, function (error) {
-  //     console.log(error)
-  //   })
-  // }
 }
 </script>
 
