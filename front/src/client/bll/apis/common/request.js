@@ -1,7 +1,4 @@
-/**
- * requestService用于与 Server Api 服务进行数据交换,
- * 军哥后面重新封装, 用于本项目将 ‘withCredentials’改为false
- */
+
 import commonFunc from './common.js'
 import qs from 'qs'
 import getOptions from '../common/myinter.js'
