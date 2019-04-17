@@ -34,7 +34,7 @@ export default {
 .index-content{
     font-size: 0.18rem;
     color: #6D6F85;
-    background: url('../assets/index.png') center center no-repeat;
+    background: url('../assets/img/index.png') center center no-repeat;
     background-size: cover;
     width: 100%;
     height: 100%;

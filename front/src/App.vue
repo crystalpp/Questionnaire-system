@@ -1,7 +1,23 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
+    <div class="container">
+      <router-view/>
+      <!-- <div>
+        <div>123</div>
+        <div>123</div>
+        <div>123</div>
+        <div>123</div>
+        <div>123</div>
+        <div>123</div>
+      </div> -->
+      
+      <div class="footer">
+      <span>计算机学院学生问卷调查系统</span>
+      <span>&nbsp &nbsp &nbsp 让调查变得更简单</span>
+    </div>
+    </div>
+    
   </div>
 </template>
 
@@ -31,6 +47,24 @@ html, body{
   color: #2c3e50;
   width: 100%;
   height: 100%;
+  /* overflow: auto; */
   /* margin-top: 60px; */
+}
+.container{
+  width: 100%;
+  height: 100%;
+  /* margin-bottom: 0.1rem; */
+  /* overflow: auto; */
+}
+.footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.16rem;
+  background: #F7F8F9;
+  width: 100%;
+  height: 10%;
+  color: #888888;
+  /* padding-top: 0.2rem; */
 }
 </style>
