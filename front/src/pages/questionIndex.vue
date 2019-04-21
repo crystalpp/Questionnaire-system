@@ -90,5 +90,10 @@ export default {
 
     }
   }
+  .ques-content {
+    width: 100%;
+    height: 90%;
+    background: #F0F0F0;
+  }
 }
 </style>
