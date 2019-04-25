@@ -11,24 +11,28 @@
       <el-form-item label="必填">
           <el-switch v-model="selectForm.required"></el-switch>
       </el-form-item>
-     <el-form-item 
-        v-for="(question, index) in selectForm.questions"
-        :label="'问题' + (index+1)"
-        :key="question.key"
-        :prop="'questions.' + index + '.value'">
+      <!-- 问题 -->
+      <el-form-item
+          v-for="(question, index) in selectForm.questions"
+          :label="'问题' + (index+1)"
+          :key="question.key"
+          :prop="'questions.' + index + '.value'"
+        >
         <el-input v-model="question.value"></el-input><i @click.prevent="removeQuestion(question)" class="el-icon-close deleteicon"></i>
-      </el-form-item>
-      <el-form-item>
+       </el-form-item>
+       <el-form-item>
           <el-button type="primary" plain @click="addQuestion" v-if="selectForm.questions.length>0">新增问题</el-button>
       </el-form-item>
-      <el-form-item 
-        v-for="(option, index) in selectForm.options"
-        :label="'选项' + (index+1)"
-        :key="option.key"
-        :prop="'options.' + index + '.value'">
+      <!-- 选项 -->
+       <el-form-item
+          v-for="(option, index) in selectForm.options"
+          :label="'选项' + (index+1)"
+          :key="option.key"
+          :prop="'options.' + index + '.value'"
+        >
         <el-input v-model="option.value"></el-input><i @click.prevent="removeOption(option)" class="el-icon-close deleteicon"></i>
-      </el-form-item>
-      <el-form-item>
+       </el-form-item>
+       <el-form-item>
           <el-button type="primary" plain @click="addOption" v-if="selectForm.options.length>0">新增选项</el-button>
       </el-form-item>
       <el-form-item>
@@ -36,7 +40,7 @@
       </el-form-item>
       <el-form-item style="text-align:right">
         <el-button plain>取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button type="primary" @click="confirm">确定</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -45,10 +49,13 @@
 export default {
   props: ['selectForm'],
   data () {
-    return {
-    }
+    return {}
   },
   methods: {
+    confirm () {
+      this.selectForm.display = false
+      this.$emit('getSelectForm', this.selectForm)
+    },
     removeOption (item) {
       var index = this.selectForm.options.indexOf(item)
       if (index !== -1) {
@@ -58,10 +65,12 @@ export default {
     addOption () {
       this.selectForm.options.push({
         value: '',
-        key: Date.now()
+        key: Date.now(),
+        checked: false
       })
     },
     removeQuestion (item) {
+      debugger
       var index = this.selectForm.questions.indexOf(item)
       if (index !== -1) {
         this.selectForm.questions.splice(index, 1)

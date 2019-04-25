@@ -11,13 +11,11 @@
         <div>123</div>
         <div>123</div>
       </div> -->
-      
-      <div class="footer">
-      <span>计算机学院学生问卷调查系统</span>
-      <span>&nbsp &nbsp &nbsp 让调查变得更简单</span>
     </div>
+    <div class="footer">
+        <span>计算机学院学生问卷调查系统</span>
+        <span>&nbsp &nbsp &nbsp 让调查变得更简单</span>
     </div>
-    
   </div>
 </template>
 

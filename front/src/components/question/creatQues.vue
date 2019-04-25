@@ -15,14 +15,22 @@
             <el-button class="ques-button" @click="showQuestion('sort')"><i class="iconfont icon-paixu"></i>排序题</el-button>
             <el-button class="ques-button" @click="showQuestion('matrix-radio')"><i class="iconfont icon-square-inc"></i>矩阵单选题</el-button>
             <el-button class="ques-button" @click="showQuestion('matrix-multi')"><i class="iconfont icon-danxuan"></i>矩阵多选题</el-button>
-            <el-button class="ques-button" @click="showQuestion('radio')"><i class="iconfont icon-jindutiao"></i>滑动条类型题</el-button>
+            <!-- <el-button class="ques-button" @click="showQuestion('radio')"><i class="iconfont icon-jindutiao"></i>滑动条类型题</el-button> -->
             <el-button class="ques-button" @click="showQuestion('measure')"><i class="iconfont icon-star"></i>量表题</el-button>
             <el-button class="ques-button" @click="showQuestion('text')"><i class="iconfont icon-stars"></i>文本描述</el-button>
           </el-tab-pane>
           <el-tab-pane label="问卷大纲" class="tab2">
-            <p class="sigelQues"><i class="iconfont icon-danxuan"></i>1.单选题</p>
-            <p class="sigelQues"><i class="iconfont icon-danxuan"></i>2.单选题</p>
-            <p class="sigelQues"><i class="iconfont icon-danxuan"></i>3.矩阵单选题</p>
+            <p class="sigelQues" v-for="(item,index) in survey.questions" :key="item.keys">
+              <i class="iconfont icon-danxuan" v-if="item.type === 'radioselect'"></i>
+              <i class="iconfont icon-duoxuanyixuan" v-if="item.type === 'Multiselect'"></i>
+              <i class="iconfont icon-xialakuang" v-if="item.type === 'Drop-down'"></i>
+              <i class="iconfont icon-wenben" v-if="item.type === 'textselect'"></i>
+              <i class="iconfont icon-paixu" v-if="item.type === 'sort'"></i>
+              <i class="iconfont icon-square-inc" v-if="item.type === 'matrix-radio'"></i>
+              <i class="iconfont icon-danxuan" v-if="item.type === 'matrix-multi'"></i>
+              <i class="iconfont icon-square-star" v-if="item.type === 'measure'"></i>
+              <i class="iconfont icon-square-stars" v-if="item.type === 'text'"></i>
+            {{index+1}}.{{item.title}}</p>
           </el-tab-pane>
         </el-tabs>
       </el-aside>
@@ -34,19 +42,43 @@
             <p v-if="survey.surveyDescr.display"  @click="changeStatus(survey.surveyDescr)" class="survey-descr">{{survey.surveyDescr.value}}</p>
             <el-input type="textarea" :rows="2" v-if="!survey.surveyDescr.display" v-model="survey.surveyDescr.value" @blur="unfocused(survey.surveyDescr,$event)"></el-input>
           </div>
-          <div>123</div>
-          <div class="survey-container" v-if="quesType==='select'">
-            <select-type :selectForm='selectForm'></select-type>
+          <!-- 设计好的问卷显示的div -->
+           <div  class="survey-container" v-for="(item,index) in survey.questions" :key="item.key">
+            <div v-if="item.type === 'radioselect'">
+              <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></radio-choose-type>
+            </div>
+            <div v-if="item.type === 'Multiselect'">
+              <multiselect-choose-type :formData = 'item' :index = 'index'></multiselect-choose-type>
+            </div>
+            <div v-if="item.type === 'Drop-down'">
+              <dropdown-choose-type :formData = 'item' :index = 'index'></dropdown-choose-type>
+            </div>
+            <div v-if="item.type === 'textselect'"> 
+              <textselect-choose-type :formData = 'item' :index = 'index'></textselect-choose-type>
+            </div>
+            <div v-if="item.type === 'measure'">
+              <measure-choose-type :formData = 'item' :index = 'index'></measure-choose-type>
+            </div>
+            <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
+              <matrix-choose-type :formData = 'item' :index = 'index'></matrix-choose-type>
+            </div>
           </div>
-          <div class="survey-container" v-if="quesType==='matrix'">
-            <matrix-type :selectForm='selectForm'></matrix-type>
+          <!-- 问卷设计的div -->
+          <div v-if="selectForm.display"  class="survey-container">
+            <div  v-if="quesType==='select'">
+              <select-type :selectFormdata='selectForm' @getSelectForm = 'getSelectForm'></select-type>
+            </div>
+            <div  v-if="quesType==='matrix'">
+              <matrix-type :selectForm='selectForm' @getSelectForm = 'getSelectForm'></matrix-type>
+            </div>
+            <div  v-if="quesType==='measure'">
+              <measure-type @getmeasureSelectform = 'getSelectForm'></measure-type>
+            </div>
+            <div  v-if="quesType==='text'">
+              <text-type></text-type>
+            </div>
           </div>
-          <div class="survey-container" v-if="quesType==='measure'">
-            <measure-type></measure-type>
-          </div>
-           <div class="survey-container" v-if="quesType==='text'">
-            <text-type></text-type>
-          </div>
+         
           <!-- <measure-type></measure-type> -->
           <!-- <matrix-type></matrix-type> -->
         </div>
@@ -59,15 +91,27 @@
 <script>
 import E from 'wangeditor'
 import selectType from '../QuestionType/selectType'
-import measureType from '../QuestionType/measureTyep'
+import measureType from '../QuestionType/measureType'
 import matrixType from '../QuestionType/matrixType'
 import textType from '../QuestionType/textType'
+import radioType from '../QuestionType/radioChooseType'
+import multiselect from '../QuestionType/multiselectChooseType'
+import dropdownType from '../QuestionType/dropdownChooseType'
+import textselectType from '../QuestionType/textselectChooseType'
+import measureChooseType from '../QuestionType/measureChooseType'
+import matrixChooseType from '../QuestionType/matrixChooseType'
 export default {
   components: {
     'select-type': selectType,
     'measure-type': measureType,
     'matrix-type': matrixType,
-    'text-type': textType
+    'text-type': textType,
+    'radio-choose-type': radioType,
+    'multiselect-choose-type': multiselect,
+    'dropdown-choose-type': dropdownType,
+    'textselect-choose-type': textselectType,
+    'measure-choose-type': measureChooseType,
+    'matrix-choose-type': matrixChooseType
   },
   data () {
     return {
@@ -87,6 +131,8 @@ export default {
         questions: []
       },
       selectForm: {
+        option: '', // 操作方式，增加或者修改
+        display: true,
         title: '', // 题目
         subdesc: '', // 备注
         type: '', // 题目类型
@@ -98,7 +144,18 @@ export default {
           {
             value: ''
           }
-        ] // 选项
+        ], // 选项
+        questions: [
+          {
+            value: '',
+            checked: false
+          },
+          {
+            value: '',
+            checked: false
+          }
+        ],
+        dropdownValue: ''
       }
     }
   },
@@ -106,6 +163,13 @@ export default {
     // this.createWangeditor()
   },
   methods: {
+    editSelectForm (data) {
+      this.selectForm = data
+    },
+    getSelectForm (data) {
+      this.selectForm = data
+      this.survey.questions.push(JSON.parse(JSON.stringify(data)))
+    },
     createWangeditor () {
       var editor = new E('#editor')
       editor.customConfig.onchange = (html) => {
@@ -119,7 +183,10 @@ export default {
     },
     // 根据题型判断应该选择哪种类型的设计样式，并传入不同的值
     showQuestion (type) {
-      this.currentType = type
+      this.selectForm.display = true
+      this.selectForm.type = type
+      this.selectForm.title = ''
+      this.selectForm.subdesc = ''
       if (type === 'radioselect' || type === 'Multiselect' || type === 'Drop-down' || type === 'sort') {
         this.quesType = 'select'
         this.selectForm.options = [
@@ -145,10 +212,12 @@ export default {
         ]
         this.selectForm.options = [
           {
-            value: ''
+            value: '',
+            checked: false
           },
           {
-            value: ''
+            value: '',
+            checked: false
           }
         ]
         this.selectForm.measureValue = ''
@@ -232,7 +301,7 @@ export default {
     .survey-head{
       width: 80%;
       margin: 0 auto;
-      text-align: left;
+      text-align: center;
       margin-top: 0.2rem;
       margin-bottom: 0.2rem;
       .survey-title{
@@ -246,7 +315,7 @@ export default {
       }
     }
     .survey-container{
-      // width: 80%;
+      width: 100%;
       margin: 0 auto;
       border-top: 1px solid #E0E0E0;
     }

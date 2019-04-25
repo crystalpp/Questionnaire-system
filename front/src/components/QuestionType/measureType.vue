@@ -26,7 +26,7 @@
       </el-form-item>
       <el-form-item style="text-align:right">
         <el-button plain>取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button type="primary" @click="confirm">确定</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -38,31 +38,36 @@ export default {
       selectForm: {
         title: '', // 题目
         subdesc: '', // 备注
-        type: '', // 题目类型
+        type: 'measure', // 题目类型
         required: true, // 是否必填
         measureValue: '',
         options: [
           {
-            value: 'item1',
+            value: '满意',
             label: '满意度'
           },
           {
-            value: 'item2',
+            value: '认同',
             label: '认同度'
           },
           {
-            value: 'item3',
+            value: '重要',
             label: '重要度'
           },
           {
-            value: 'item4',
+            value: '符合',
             label: '符合度'
           }
         ] // 选项
       }
     }
   },
-  methods: {}
+  methods: {
+    confirm () {
+      this.selectForm.display = false
+      this.$emit('getmeasureSelectform', this.selectForm)
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

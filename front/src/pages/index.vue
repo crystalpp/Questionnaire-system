@@ -1,5 +1,6 @@
 <template>
   <div class="index-content">
+    <!-- <img src="../assets/img/index.png" alt="" style="width:100%"> -->
       <div class="header">
           <div>关于我们</div>
           <div>联系我们</div>
@@ -34,13 +35,16 @@ export default {
 .index-content{
     font-size: 0.18rem;
     color: #6D6F85;
-    background: url('../assets/img/index.png') center center no-repeat;
+    background: url('../assets/img/index.png') no-repeat;
     background-size: cover;
     width: 100%;
     height: 100%;
     .header{
-        padding-top: 0.55rem;
+        padding-top: 1.15rem;
         padding-left: 2.6rem;
+        // position: absolute;
+        // top: 1.2rem;
+        // left: 2.3rem;
         display: flex;
         div{
             width:1rem;
@@ -48,7 +52,10 @@ export default {
     }
     .main-container{
         text-align: left;
-        padding-top: 1.8rem;
+        // position: absolute;
+        // top: 3rem;
+        // left: 1rem;
+        padding-top: 1.3rem;
         padding-left: 1rem;
         .title{
             text-align: left;
