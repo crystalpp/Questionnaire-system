@@ -7,6 +7,11 @@ import register from '@/pages/register'
 import questionIndex from '@/pages/questionIndex'
 import creatQues from '@/components/question/creatQues'
 import myQues from '@/components/question/myQues'
+import release from '@/components/question/releaseQues'
+import statistics from '@/components/question/statisticsQues'
+import source from '@/components/statistics/source'
+import chart from '@/components/statistics/chart'
+import answerDetail from '@/components/statistics/answerDetail'
 Vue.use(Router)
 // Vue.use(VueResource)
 
@@ -56,6 +61,48 @@ export default new Router({
           meta: {
             title: '我的问卷'
           }
+        },
+        {
+          path: '/release',
+          name: 'release',
+          component: release,
+          meta: {
+            title: '问卷发布'
+          }
+        },
+        {
+          path: '/statistics',
+          name: 'statistics',
+          component: statistics,
+          meta: {
+            title: '数据统计'
+          },
+          children: [
+            {
+              path: '/source',
+              name: 'source',
+              component: source,
+              meta: {
+                title: '来源概览'
+              }
+            },
+            {
+              path: '/chart',
+              name: 'chart',
+              component: chart,
+              meta: {
+                title: '基本图表'
+              }
+            },
+            {
+              path: '/answerDetail',
+              name: 'answerDetail',
+              component: answerDetail,
+              meta: {
+                title: '答卷详情'
+              }
+            }
+          ]
         }
       ]
     }

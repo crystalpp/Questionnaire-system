@@ -4,6 +4,7 @@
      <!-- <button class="btn btn-royal" @click="postfillContent()">保存</button>
     <span v-if="display" @click="changeNo(display)">{{data}} </span>
     <el-input v-if="!display" v-model="data" @blur="unfocused(data,$event)"></el-input> -->
+    
     <el-container>
       <el-aside width="2.2rem">
         <el-tabs type="border-card">
@@ -40,7 +41,7 @@
             <p v-if="survey.surveyTitle.display"  @click="changeStatus(survey.surveyTitle)" class="survey-title">{{survey.surveyTitle.value}}</p>
             <el-input v-if="!survey.surveyTitle.display" v-model="survey.surveyTitle.value" @blur="unfocused(survey.surveyTitle,$event)"></el-input>
             <p v-if="survey.surveyDescr.display"  @click="changeStatus(survey.surveyDescr)" class="survey-descr">{{survey.surveyDescr.value}}</p>
-            <el-input type="textarea" :rows="2" v-if="!survey.surveyDescr.display" v-model="survey.surveyDescr.value" @blur="unfocused(survey.surveyDescr,$event)"></el-input>
+            <el-input type="textarea" autosize :rows="2" v-if="!survey.surveyDescr.display" v-model="survey.surveyDescr.value" @blur="unfocused(survey.surveyDescr,$event)"></el-input>
           </div>
           <!-- 设计好的问卷显示的div -->
            <div  class="survey-container" v-for="(item,index) in survey.questions" :key="item.key">
@@ -115,6 +116,7 @@ export default {
   },
   data () {
     return {
+      step: 2, // 当前的状态
       quesType: '', // 按照四个大类分的问题的题型
       currentType: '', // 当前选择的题型
       text: '', // 纯文本的文字
@@ -163,6 +165,9 @@ export default {
     // this.createWangeditor()
   },
   methods: {
+    handleSelect (key) {
+      this.$router.push({name: key})
+    },
     editSelectForm (data) {
       this.selectForm = data
     },
@@ -251,6 +256,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.el-steps--simple{
+  background-color: #ffffff;
+}
 .ques-button {
   width: 1.5rem;
   height: 0.4rem;
@@ -263,6 +271,7 @@ export default {
   width:100%;
   height: 100%;
   font-size: 0.14rem;
+  
 }
 .el-main {
     background-color: #E9EEF3;
@@ -281,7 +290,7 @@ export default {
   .el-container {
     width: 100%;
     height: 100%;
-    padding-top: 0.2rem;
+    // padding-top: 0.63rem;
   }
   .tab2{
     color: #999999;
@@ -312,6 +321,8 @@ export default {
         font-size: 0.16rem;
         // text-align: center;
         margin-top: 0.2rem;
+        word-break: break-word;
+        text-align: left;
       }
     }
     .survey-container{
