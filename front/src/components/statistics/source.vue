@@ -22,7 +22,7 @@
     <!-- 每日回答情况（散点图）和回答者地域（中国地图）分布 -->
     <div class="part1">
       <el-row :gutter="20">
-        <el-col :span="16">
+        <el-col :span="12">
           <div class="grid-content bg-purple answerSituation">
             <div class="title">
               <p class="text">回答情况</p>
@@ -45,20 +45,55 @@
               </div>
               
             </div>
+            <div class="chart">
+              <div id="answerLineChart" style="width:100%;height:4.5rem;"></div>
+            </div>
           </div>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <div class="grid-content bg-purple">
-            
+            <div class="chart">
+              <div id="areaMapChart" style="width:100%;height:4.5rem;"></div>
+            </div>
           </div>
         </el-col>
       </el-row>
     </div>
     <!-- 回到者所使用的操作系统，设备类型（使用柱状图） -->
-    <div class="part2">2222</div>
+    <div class="part2">
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content-part2 bg-purple">
+            <!-- 浏览器类型 -->
+            <div class="chart">
+              <div id="browerSourceChart" style="width:100%;height:3.5rem;"></div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content-part2 bg-purple">
+            <!-- 操作系统类型 -->
+            <div class="chart">
+              <div id="operatingTypeChart" style="width:100%;height:3.5rem;"></div>
+            </div>
+          </div>
+        </el-col>
+         <el-col :span="8">
+          <div class="grid-content-part2 bg-purple">
+            <!-- 设备类型 -->
+            <div class="chart">
+              <div id="deviceTypeChart" style="width:100%;height:3.5rem;"></div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 <script>
+// 引入china的json文件
+import china from '../../../node_modules/echarts/map/json/china.json'
+import chinaDataJSON from '../../assets/chinaData.json'
 export default {
   data () {
     return {
@@ -77,7 +112,163 @@ export default {
           value: 'year',
           label: '按月'
         }
-      ]
+      ],
+      browerLegendData: ['chrome', 'firefox', 'oprea', 'IE', '其他'],
+      operateLegendData: ['IOS', 'Windows', 'MacOS', 'Android', '其他'],
+      deviceLegendData: ['计算机', '移动设备', '其他'],
+      browerData: [
+        {value: 1, name: 'chrome'},
+        {value: 2, name: 'firefox'},
+        {value: 3, name: 'oprea'},
+        {value: 4, name: 'IE'},
+        {value: 5, name: '其他'}
+      ],
+      operateData: [
+        {value: 1, name: 'IOS'},
+        {value: 2, name: 'Windows'},
+        {value: 3, name: 'MacOS'},
+        {value: 4, name: 'Android'},
+        {value: 5, name: '其他'}
+      ],
+      deviceData: [
+        {value: 1, name: '计算机'},
+        {value: 2, name: '移动设备'},
+        {value: 5, name: '其他'}
+      ],
+      areaData: [
+        {'name': '北京', 'value': 225},
+        {'name': '上海', 'value': 142},
+        {'name': '黑龙江', 'value': 50},
+        {'name': '深圳', 'value': 92},
+        {'name': '湖北', 'value': 410},
+        {'name': '四川', 'value': 453}
+      ],
+      chinaData: chinaDataJSON.data
+    }
+  },
+  mounted () {
+    this.raderAreaData()
+    this.drawChart()
+  },
+  methods: {
+    raderAreaData () {
+      for (let i of this.chinaData) {
+        for (let j of this.areaData) {
+          if (i.name === j.name) {
+            i.value = j.value
+          }
+        }
+      }
+      console.log(this.chinaData)
+    },
+    drawChart () {
+      this.drawLineChart()
+      this.drawMapChart(this.chinaData)
+      this.drawPieChart('浏览器类型', 'browerSourceChart', this.browerLegendData, this.browerData)
+      this.drawPieChart('操作系统类型', 'operatingTypeChart', this.operateLegendData, this.operateData)
+      this.drawPieChart('设备类型', 'deviceTypeChart', this.deviceLegendData, this.deviceData)
+    },
+    drawLineChart () {
+      var answerLineChart = this.$echarts.init(document.getElementById('answerLineChart'))
+      var option = {
+        color: ['#0078C8'],
+        xAxis: {
+          type: 'category',
+          data: ['2-11', '2-12', '2-13', '2-15', '2-16', '2-17', '2-18']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line'
+        }]
+      }
+      answerLineChart.setOption(option)
+    },
+    drawMapChart (data) {
+      this.$echarts.registerMap('china', china)
+      var areaMapChart = this.$echarts.init(document.getElementById('areaMapChart'))
+      var option = {
+        title: {
+          subtext: '地域位置'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}<br/>{c} (人)'
+        },
+        visualMap: {
+          min: 0,
+          max: 500,
+          text: ['高', '低'],
+          realtime: false,
+          calculable: true,
+          inRange: {
+            color: ['#B5D5FF', 'yellow', 'orangered']
+          }
+        },
+        series: [
+          {
+            name: '',
+            type: 'map',
+            mapType: 'china', // 自定义扩展图表类型
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                label: {
+                  show: true
+                }
+              }
+            },
+            data: data
+          }
+        ]
+      }
+      areaMapChart.setOption(option)
+    },
+    drawPieChart (title, id, legendData, data) {
+      var browerSourceChart = this.$echarts.init(document.getElementById(id))
+      var option = {
+        title: {
+          subtext: title,
+          x: 'left'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          x: 'center',
+          y: 'bottom',
+          data: legendData
+        },
+        series: [
+          {
+            name: title,
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            label: {
+              normal: {
+                position: 'inner'
+              }
+            },
+            data: data,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      browerSourceChart.setOption(option)
     }
   }
 }
@@ -99,6 +290,11 @@ export default {
     border-radius: 0.04rem;
     min-height: 0.36rem;
     height: 5.2rem;
+  }
+  .grid-content-part2 {
+    border-radius: 0.04rem;
+    min-height: 0.36rem;
+    height: 4rem;
   }
   .row-bg {
     padding: 0.1rem 0;
@@ -143,15 +339,23 @@ export default {
           text-align: right;
         }
       }
+      
     }
     // border-left: 1px solid #DBDBDB;
     // border-right: 1px solid #DBDBDB;
     // border-top: 1px solid #DBDBDB;
   }
+  .chart {
+    // padding: 0.2rem;
+    height: 100%;
+    // margin: 0 auto;
+    width: 100%;
+  }
   .part2{
     background: #E9EEF3;
     width: 90%;
     margin: 0 auto;
+    margin-top: 0.2rem;
     // border-left: 1px solid #DBDBDB;
     // border-right: 1px solid #DBDBDB;
     // border-bottom: 1px solid #DBDBDB;
