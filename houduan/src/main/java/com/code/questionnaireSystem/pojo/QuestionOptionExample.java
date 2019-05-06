@@ -3,14 +3,14 @@ package com.code.questionnaireSystem.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectExample {
+public class QuestionOptionExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SelectExample() {
+    public QuestionOptionExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -104,203 +104,213 @@ public class SelectExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andSelectIdIsNull() {
-            addCriterion("select_id is null");
+        public Criteria andOptionIdIsNull() {
+            addCriterion("option_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdIsNotNull() {
-            addCriterion("select_id is not null");
+        public Criteria andOptionIdIsNotNull() {
+            addCriterion("option_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdEqualTo(Integer value) {
-            addCriterion("select_id =", value, "selectId");
+        public Criteria andOptionIdEqualTo(String value) {
+            addCriterion("option_id =", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdNotEqualTo(Integer value) {
-            addCriterion("select_id <>", value, "selectId");
+        public Criteria andOptionIdNotEqualTo(String value) {
+            addCriterion("option_id <>", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdGreaterThan(Integer value) {
-            addCriterion("select_id >", value, "selectId");
+        public Criteria andOptionIdGreaterThan(String value) {
+            addCriterion("option_id >", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("select_id >=", value, "selectId");
+        public Criteria andOptionIdGreaterThanOrEqualTo(String value) {
+            addCriterion("option_id >=", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdLessThan(Integer value) {
-            addCriterion("select_id <", value, "selectId");
+        public Criteria andOptionIdLessThan(String value) {
+            addCriterion("option_id <", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("select_id <=", value, "selectId");
+        public Criteria andOptionIdLessThanOrEqualTo(String value) {
+            addCriterion("option_id <=", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdIn(List<Integer> values) {
-            addCriterion("select_id in", values, "selectId");
+        public Criteria andOptionIdLike(String value) {
+            addCriterion("option_id like", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdNotIn(List<Integer> values) {
-            addCriterion("select_id not in", values, "selectId");
+        public Criteria andOptionIdNotLike(String value) {
+            addCriterion("option_id not like", value, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdBetween(Integer value1, Integer value2) {
-            addCriterion("select_id between", value1, value2, "selectId");
+        public Criteria andOptionIdIn(List<String> values) {
+            addCriterion("option_id in", values, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("select_id not between", value1, value2, "selectId");
+        public Criteria andOptionIdNotIn(List<String> values) {
+            addCriterion("option_id not in", values, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentIsNull() {
-            addCriterion("select_content is null");
+        public Criteria andOptionIdBetween(String value1, String value2) {
+            addCriterion("option_id between", value1, value2, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentIsNotNull() {
-            addCriterion("select_content is not null");
+        public Criteria andOptionIdNotBetween(String value1, String value2) {
+            addCriterion("option_id not between", value1, value2, "optionId");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentEqualTo(String value) {
-            addCriterion("select_content =", value, "selectContent");
+        public Criteria andOptionContentIsNull() {
+            addCriterion("option_content is null");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentNotEqualTo(String value) {
-            addCriterion("select_content <>", value, "selectContent");
+        public Criteria andOptionContentIsNotNull() {
+            addCriterion("option_content is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentGreaterThan(String value) {
-            addCriterion("select_content >", value, "selectContent");
+        public Criteria andOptionContentEqualTo(String value) {
+            addCriterion("option_content =", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentGreaterThanOrEqualTo(String value) {
-            addCriterion("select_content >=", value, "selectContent");
+        public Criteria andOptionContentNotEqualTo(String value) {
+            addCriterion("option_content <>", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentLessThan(String value) {
-            addCriterion("select_content <", value, "selectContent");
+        public Criteria andOptionContentGreaterThan(String value) {
+            addCriterion("option_content >", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentLessThanOrEqualTo(String value) {
-            addCriterion("select_content <=", value, "selectContent");
+        public Criteria andOptionContentGreaterThanOrEqualTo(String value) {
+            addCriterion("option_content >=", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentLike(String value) {
-            addCriterion("select_content like", value, "selectContent");
+        public Criteria andOptionContentLessThan(String value) {
+            addCriterion("option_content <", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentNotLike(String value) {
-            addCriterion("select_content not like", value, "selectContent");
+        public Criteria andOptionContentLessThanOrEqualTo(String value) {
+            addCriterion("option_content <=", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentIn(List<String> values) {
-            addCriterion("select_content in", values, "selectContent");
+        public Criteria andOptionContentLike(String value) {
+            addCriterion("option_content like", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentNotIn(List<String> values) {
-            addCriterion("select_content not in", values, "selectContent");
+        public Criteria andOptionContentNotLike(String value) {
+            addCriterion("option_content not like", value, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentBetween(String value1, String value2) {
-            addCriterion("select_content between", value1, value2, "selectContent");
+        public Criteria andOptionContentIn(List<String> values) {
+            addCriterion("option_content in", values, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectContentNotBetween(String value1, String value2) {
-            addCriterion("select_content not between", value1, value2, "selectContent");
+        public Criteria andOptionContentNotIn(List<String> values) {
+            addCriterion("option_content not in", values, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreIsNull() {
-            addCriterion("select_score is null");
+        public Criteria andOptionContentBetween(String value1, String value2) {
+            addCriterion("option_content between", value1, value2, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreIsNotNull() {
-            addCriterion("select_score is not null");
+        public Criteria andOptionContentNotBetween(String value1, String value2) {
+            addCriterion("option_content not between", value1, value2, "optionContent");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreEqualTo(String value) {
-            addCriterion("select_score =", value, "selectScore");
+        public Criteria andOptionScoreIsNull() {
+            addCriterion("option_score is null");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreNotEqualTo(String value) {
-            addCriterion("select_score <>", value, "selectScore");
+        public Criteria andOptionScoreIsNotNull() {
+            addCriterion("option_score is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreGreaterThan(String value) {
-            addCriterion("select_score >", value, "selectScore");
+        public Criteria andOptionScoreEqualTo(String value) {
+            addCriterion("option_score =", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreGreaterThanOrEqualTo(String value) {
-            addCriterion("select_score >=", value, "selectScore");
+        public Criteria andOptionScoreNotEqualTo(String value) {
+            addCriterion("option_score <>", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreLessThan(String value) {
-            addCriterion("select_score <", value, "selectScore");
+        public Criteria andOptionScoreGreaterThan(String value) {
+            addCriterion("option_score >", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreLessThanOrEqualTo(String value) {
-            addCriterion("select_score <=", value, "selectScore");
+        public Criteria andOptionScoreGreaterThanOrEqualTo(String value) {
+            addCriterion("option_score >=", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreLike(String value) {
-            addCriterion("select_score like", value, "selectScore");
+        public Criteria andOptionScoreLessThan(String value) {
+            addCriterion("option_score <", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreNotLike(String value) {
-            addCriterion("select_score not like", value, "selectScore");
+        public Criteria andOptionScoreLessThanOrEqualTo(String value) {
+            addCriterion("option_score <=", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreIn(List<String> values) {
-            addCriterion("select_score in", values, "selectScore");
+        public Criteria andOptionScoreLike(String value) {
+            addCriterion("option_score like", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreNotIn(List<String> values) {
-            addCriterion("select_score not in", values, "selectScore");
+        public Criteria andOptionScoreNotLike(String value) {
+            addCriterion("option_score not like", value, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreBetween(String value1, String value2) {
-            addCriterion("select_score between", value1, value2, "selectScore");
+        public Criteria andOptionScoreIn(List<String> values) {
+            addCriterion("option_score in", values, "optionScore");
             return (Criteria) this;
         }
 
-        public Criteria andSelectScoreNotBetween(String value1, String value2) {
-            addCriterion("select_score not between", value1, value2, "selectScore");
+        public Criteria andOptionScoreNotIn(List<String> values) {
+            addCriterion("option_score not in", values, "optionScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andOptionScoreBetween(String value1, String value2) {
+            addCriterion("option_score between", value1, value2, "optionScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andOptionScoreNotBetween(String value1, String value2) {
+            addCriterion("option_score not between", value1, value2, "optionScore");
             return (Criteria) this;
         }
 

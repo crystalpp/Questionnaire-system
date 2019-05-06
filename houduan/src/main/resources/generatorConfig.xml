@@ -56,17 +56,17 @@
         </javaClientGenerator>
 
         <!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等 -->
-        <!-- <table tableName="select" domainObjectName="Select"
+         <table tableName="questionOption" domainObjectName="QuestionOption"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/>
-        <table tableName="user" domainObjectName="User"
+        <!--<table tableName="user" domainObjectName="User"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/> -->
-        <table tableName="question" domainObjectName="Question"
+        <!-- <table tableName="question" domainObjectName="Question"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"/>
+               selectByExampleQueryId="true"/> -->
     </context>
 </generatorConfiguration>

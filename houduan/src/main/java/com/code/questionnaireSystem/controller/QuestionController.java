@@ -1,7 +1,5 @@
 package com.code.questionnaireSystem.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +15,7 @@ public class QuestionController {
 	private QuestionService questionService;
 
 	@PostMapping("/add")
-	public Result add(String title, String subdesc, String type, Boolean required, List<String> options) {
+	public Result add(String title, String subdesc, String type, String required, String options) {
 		return questionService.add(title, subdesc, type, required, options);
 	}
 }
