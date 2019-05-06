@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.code.questionnaireSystem.mapper.SelectMapper" >
+  <resultMap id="BaseResultMap" type="com.code.questionnaireSystem.pojo.Select" >
+    <id column="select_id" property="selectId" jdbcType="INTEGER" />
+    <result column="select_content" property="selectContent" jdbcType="VARCHAR" />
+    <result column="select_score" property="selectScore" jdbcType="VARCHAR" />
+    <result column="question_id" property="questionId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    select_id, select_content, select_score, question_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.SelectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from select
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from select
+    where select_id = #{selectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from select
+    where select_id = #{selectId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.code.questionnaireSystem.pojo.SelectExample" >
+    delete from select
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.Select" >
+    insert into select (select_id, select_content, select_score, 
+      question_id)
+    values (#{selectId,jdbcType=INTEGER}, #{selectContent,jdbcType=VARCHAR}, #{selectScore,jdbcType=VARCHAR}, 
+      #{questionId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.Select" >
+    insert into select
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="selectId != null" >
+        select_id,
+      </if>
+      <if test="selectContent != null" >
+        select_content,
+      </if>
+      <if test="selectScore != null" >
+        select_score,
+      </if>
+      <if test="questionId != null" >
+        question_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="selectId != null" >
+        #{selectId,jdbcType=INTEGER},
+      </if>
+      <if test="selectContent != null" >
+        #{selectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="selectScore != null" >
+        #{selectScore,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.code.questionnaireSystem.pojo.SelectExample" resultType="java.lang.Integer" >
+    select count(*) from select
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update select
+    <set >
+      <if test="record.selectId != null" >
+        select_id = #{record.selectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.selectContent != null" >
+        select_content = #{record.selectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.selectScore != null" >
+        select_score = #{record.selectScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.questionId != null" >
+        question_id = #{record.questionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update select
+    set select_id = #{record.selectId,jdbcType=INTEGER},
+      select_content = #{record.selectContent,jdbcType=VARCHAR},
+      select_score = #{record.selectScore,jdbcType=VARCHAR},
+      question_id = #{record.questionId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.code.questionnaireSystem.pojo.Select" >
+    update select
+    <set >
+      <if test="selectContent != null" >
+        select_content = #{selectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="selectScore != null" >
+        select_score = #{selectScore,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null" >
+        question_id = #{questionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where select_id = #{selectId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.code.questionnaireSystem.pojo.Select" >
+    update select
+    set select_content = #{selectContent,jdbcType=VARCHAR},
+      select_score = #{selectScore,jdbcType=VARCHAR},
+      question_id = #{questionId,jdbcType=VARCHAR}
+    where select_id = #{selectId,jdbcType=INTEGER}
+  </update>
+</mapper>

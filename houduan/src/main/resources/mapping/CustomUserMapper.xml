@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace= "com.code.questionnaireSystem.mapper.UserMapper" >
+<mapper namespace= "com.code.questionnaireSystem.mapper.CustomUserMapper" >
     <resultMap id ="UserInfoMap" type="com.code.questionnaireSystem.pojo.User">
-        <result column="user_id" property="user_id"/>
-        <result column="user_name" property="user_name"/>
-        <result column="user_password" property="user_password"/>
-        <result column="user_phone" property="user_phone"/>
-        <result column="user_email" property="user_email"/>
-        <result column="role_id" property="role_id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_password" property="userPassword"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="user_email" property="userEmail"/>
     </resultMap>
-
-    <select id = "queryAllUsers" resultMap="UserInfoMap">
-        select
+    <select id="login" parameterType="com.code.questionnaireSystem.pojo.User" resultMap="UserInfoMap">
+    	select
           user_id,
           user_name,
           user_password,
           user_phone,
-          user_email,
-          role_id
+          user_email
         from
           user
+        where (user_phone = #{userName} and user_password = #{userPassword}) or (user_email = #{userName} and user_password = #{userPassword})
     </select>
 </mapper>

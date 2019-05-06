@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--数据库驱动mysql jar -->
+
+    <classPathEntry
+            location="E:\Threeterm\Threetermlast\Produce\source\myrepo1\mysql\mysql-connector-java\5.1.41\mysql-connector-java-5.1.41.jar"/>
+    <!--数据库驱动oracle jar -->
+    <!--
+    <classPathEntry
+            location="E:\app\Acer\product\11.2.0\client_2\jdbc\lib\ojdbc5.jar"/>-->
+    <context id="Tables" targetRuntime="MyBatis3">
+
+        <!-- 生成的pojo，将implements Serializable -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <!--去除注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--mysql数据库连接 -->
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/questionnaire" userId="root"
+                        password="">
+        </jdbcConnection>
+
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，
+                也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下 -->
+        <!--<javaModelGenerator targetPackage="com.joey.mybaties.test.pojo" targetProject="MAVEN"> -->
+        <javaModelGenerator targetPackage="com.code.questionnaireSystem.pojo"
+                            targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--对应的mapper.xml文件 -->
+        <sqlMapGenerator targetPackage="mapping"
+                         targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 对应的Mapper接口类文件 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.code.questionnaireSystem.mapper" targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等 -->
+        <!-- <table tableName="select" domainObjectName="Select"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/>
+        <table tableName="user" domainObjectName="User"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/> -->
+        <table tableName="question" domainObjectName="Question"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/>
+    </context>
+</generatorConfiguration>

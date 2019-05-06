@@ -2,83 +2,69 @@ package com.code.questionnaireSystem.pojo;
 
 import java.io.Serializable;
 
-import lombok.Data;
-
-@Data
 public class User implements Serializable {
-	/**
-	 * 
-	 */
+	private String userId;
+
+	private String userName;
+
+	private String userPassword;
+
+	private String userPhone;
+
+	private String userEmail;
+
 	private static final long serialVersionUID = 1L;
 
-	private Integer user_id;
-
-	private String user_name;
-
-	private String user_password;
-
-	private String user_phone;
-
-	private String user_email;
-
-	private Integer role_id;
-
-	public User(Integer user_id, String user_name, String user_password, String user_phone, String user_email,
-			Integer role_id) {
-		this.user_id = user_id;
-		this.user_name = user_name;
-		this.user_password = user_password;
-		this.user_phone = user_phone;
-		this.user_email = user_email;
-		this.role_id = role_id;
+	public User(String userId, String userName, String userPassword, String userPhone, String userEmail) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.userPhone = userPhone;
+		this.userEmail = userEmail;
 	}
 
-	public Integer getUser_id() {
-		return user_id;
+	public User() {
+		super();
 	}
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public void setUserId(String userId) {
+		this.userId = userId == null ? null : userId.trim();
 	}
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public String getUserName() {
+		return userName;
 	}
 
-	public String getUser_password() {
-		return user_password;
+	public void setUserName(String userName) {
+		this.userName = userName == null ? null : userName.trim();
 	}
 
-	public void setUser_password(String user_password) {
-		this.user_password = user_password;
+	public String getUserPassword() {
+		return userPassword;
 	}
 
-	public String getUser_phone() {
-		return user_phone;
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword == null ? null : userPassword.trim();
 	}
 
-	public void setUser_phone(String user_phone) {
-		this.user_phone = user_phone;
+	public String getUserPhone() {
+		return userPhone;
 	}
 
-	public String getUser_email() {
-		return user_email;
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone == null ? null : userPhone.trim();
 	}
 
-	public void setUser_email(String user_email) {
-		this.user_email = user_email;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public Integer getRole_id() {
-		return role_id;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail == null ? null : userEmail.trim();
 	}
-
-	public void setRole_id(Integer role_id) {
-		this.role_id = role_id;
-	}
-
 }
