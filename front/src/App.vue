@@ -33,11 +33,15 @@ export default {
 html{
   font-size: 100px;
 }
+body{
+  font-size: 16px;
+}
 html, body{
     width: 100%;
     height: 100%;
 }
 #app {
+  /* font-size: 0.12rem; */
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

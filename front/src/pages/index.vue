@@ -2,9 +2,10 @@
   <div class="index-content">
     <!-- <img src="../assets/img/index.png" alt="" style="width:100%"> -->
       <div class="header">
-          <div>关于我们</div>
-          <div>联系我们</div>
-          <div>案例展示</div>
+        <!-- 下面三个为学院的介绍 -->
+          <div> <a href="http://cs.cqut.edu.cn/xygk/xyjj.htm" target="_blank" class="aStyle">学院简介</a> </div>
+          <div><a href="https://github.com/crystalpp" target="_blank" class="aStyle">反馈意见</a></div>
+          <div><a href="https://crystalpp.github.io/" target="_blank" class="aStyle">关于我</a> </div>
       </div>
       <div class="main-container">
           <div class="title">{{title}}</div>
@@ -32,6 +33,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
+.aStyle{
+  text-decoration: none;
+  color: #6D6F85;
+}
 .index-content{
     font-size: 0.18rem;
     color: #6D6F85;

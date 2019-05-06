@@ -117,7 +117,7 @@ export default {
           date: '2019-02-04'
         }
       ],
-      cardIcon: 'icon1',
+      cardIcon: 'icon1Click',
       tableIcon: 'icon2',
       indexitem: 0,
       show: 'status',
@@ -143,6 +143,8 @@ export default {
   methods: {
     // 新建问卷
     creatQues () {
+      this.$store.commit('set_showQuesStep', true)
+      this.$store.commit('set_menuActiveIndex', 'newQues')
       this.$router.push({name: 'creat'})
     },
     showOption (index) {

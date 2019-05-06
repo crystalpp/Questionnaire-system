@@ -3,7 +3,7 @@
     <div class="ques-header">
       <div class="ques-header-select">
         <el-menu
-          :default-active="activeIndex"
+          :default-active="menuActiveIndex"
           class="el-menu-demo"
           mode="horizontal"
           @select="handleSelect"
@@ -12,8 +12,8 @@
           active-text-color="#FFF799">
           <el-submenu index="1">
             <template slot="title">创建问卷</template>
-            <el-menu-item index="creat">创建空白问卷</el-menu-item>
-            <el-menu-item index="1-2">选择现有模板</el-menu-item>
+            <el-menu-item index="newQues">创建空白问卷</el-menu-item>
+            <el-menu-item index="templateQues">选择现有模板</el-menu-item>
             <el-menu-item index="1-3">文本编辑问卷</el-menu-item>
           </el-submenu>
           <el-menu-item index="show">我的问卷</el-menu-item>
@@ -22,9 +22,9 @@
       </div>
       <div class="ques-header-user">
         <i class="iconfont icon-xxhdpiShape item1"></i> 
-        <p class="item2">遇见</p>
-        <i class="iconfont icon-exit item3"></i> 
-        <p class="item4">退出</p>
+        <p class="item2">{{userInfo.userName}}</p>
+        <i class="iconfont icon-exit item3" @click="quit"></i> 
+        <p class="item4" @click="quit">退出</p>
       </div>
     </div>
     <div class="isFixed" v-show="showQuesStep">
@@ -32,7 +32,7 @@
          创建空白问卷
         </div>
         <div class="part2">
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelectQues">
+        <el-menu :default-active="submenuActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelectQues">
             <el-menu-item index="creat">创建问卷 </el-menu-item>
             <el-menu-item> <i class="el-icon-arrow-right"></i> </el-menu-item>
             <el-menu-item index="release">发布问卷</el-menu-item>
@@ -51,7 +51,7 @@
       <el-form :model="releaseLimitForm" label-width="80px" style="text-align:left">
         <el-form-item label="截止时间">
            <el-date-picker
-            v-model="releaseLimitForm.endTime"
+            v-model="releaseLimitForm.endTime" 
             type="datetime"
             placeholder="选择日期时间">
           </el-date-picker>
@@ -71,6 +71,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import commonFunc from '../client/bll/apis/common/common.js'
 export default {
   data () {
     return {
@@ -79,23 +80,34 @@ export default {
         isLimitedIP: true // 是否限制一个ip只能填写一次
       },
       dialogReleaseVisible: false, // 发布问卷时展示的dialog
-      activeIndex: 'creat',
-      contentClass: 'ques-content'
+      contentClass: 'ques-content-noStep',
+      userInfo: {}
     }
   },
   computed: {
     ...mapState({
-      showQuesStep: state => state.commonState.showQuesStep
+      showQuesStep: state => state.commonState.showQuesStep,
+      menuActiveIndex: state => state.commonState.menuActiveIndex,
+      submenuActiveIndex: state => state.commonState.submenuActiveIndex
     })
   },
+  mounted () {
+    this.getUserInfo()
+  },
   methods: {
+    getUserInfo () {
+      this.userInfo = JSON.parse(commonFunc.getLocalStorage('userInfo'))
+    },
+    quit () {
+      this.$router.push({name: 'index'})
+    },
     releaseQues () {
       this.dialogReleaseVisible = false
       this.$router.push({name: 'release'})
     },
     cancelRelease () {
       this.dialogReleaseVisible = false
-      this.activeIndex = 'creat'
+      this.menuActiveIndex = 'creat'
     },
     handleSelectQues (key) {
       this.$store.commit('set_showQuesStep', true)
@@ -107,13 +119,19 @@ export default {
       }
     },
     handleSelect (key) {
-      debugger
       if (key === 'show') {
         this.$store.commit('set_showQuesStep', false)
         this.contentClass = 'ques-content-noStep'
       } else {
         this.$store.commit('set_showQuesStep', true)
         this.contentClass = 'ques-content'
+      }
+      if (key === 'newQues') {
+        this.$store.commit('set_createQuesType', 'newQues')
+        key = 'creat'
+      } else if (key === 'templateQues') {
+        this.$store.commit('set_createQuesType', 'templateQues')
+        key = 'creat'
       }
       this.$router.push({name: key})
     }
@@ -147,19 +165,24 @@ export default {
       margin-left: 1rem;
     }
     .ques-header-user{
-        color: #efffff;
+      color: #efffff;
+      line-height: 0.221rem;
       display: flex;
       width: 20%;
       .item1{
         margin-right: 0.1rem;
-        margin-top: 0.04rem;
+        // margin-top: 0.04rem;
       }
       .item2{
         margin-right: 0.3rem;
       }
       .item3{
-        margin-top: 0.04rem;
+        cursor: pointer;
+        // margin-top: 0.04rem;
         margin-right: 0.1rem;
+      }
+      .item4{
+        cursor: pointer;
       }
 
     }

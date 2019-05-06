@@ -11,7 +11,7 @@
       <div class="login-main">
           <div class="title">账号登录</div>
           <div class="middle-part">
-              <el-form label-position="right" :model="userInfo" ref="userInfo"  class="demo-ruleForm">
+              <el-form label-position="right" :model="userInfo" ref="userInfo"  class="demo-ruleForm" :rules="rules">
                   <el-form-item label="账号" prop="name">
                       <el-input v-model="userInfo.name" placeholder="请输入手机号码/邮箱">
                         <i slot="prefix" class="iconfont icon-user"></i>
@@ -26,7 +26,7 @@
           </div>
           <div class="buttom-part">忘记密码?</div>
           <div class="login-part">
-              <el-button class="login-button" type="primary" round @click="creatQuestion">登录</el-button>
+              <el-button class="login-button" type="primary" round @click="login('userInfo')">登录</el-button>
               <p @click="goToregister">立即注册</p>
           </div>
       </div>
@@ -34,6 +34,8 @@
   </div>
 </template>
 <script>
+import userApi from '../client/bll/apis/user.js'
+import commonFunc from '../client/bll/apis/common/common.js'
 export default {
   name: 'login',
   data () {
@@ -42,6 +44,14 @@ export default {
       userInfo: {
         name: '',
         password: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入手机号码或者邮箱', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -54,8 +64,27 @@ export default {
     goToregister () {
       this.$router.push({name: 'register'})
     },
-    creatQuestion () {
-      this.$router.push({name: 'questionaire'})
+    async login (formName) {
+      let parms = {
+        userName: this.userInfo.name,
+        password: this.userInfo.password
+      }
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          let res = await userApi.login(parms)
+          // console.log(res)
+          if (res.code === 0) {
+            commonFunc.showMessage('登录成功', 'success')
+            commonFunc.setLocalStorage('userInfo', JSON.stringify(res.data))
+            this.$router.push({name: 'show'})
+          } else {
+            commonFunc.showMessage('登录失败，请重新输入', 'error')
+          }
+        } else {
+          // console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
@@ -64,6 +93,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
+
 button{
   background-color: #415DDE;
   width: 1rem;

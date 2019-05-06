@@ -1,6 +1,7 @@
 // 用方法和变量封装
 // import Vue from 'vue's
 // import { Toast, Indicator } from 'mint-ui'
+import { Message } from 'element-ui'
 const commonFunc = {
   // 全局统一控制打印log日志--部署版本前请务必注释打印代码
   myConsole (logObj) {
@@ -39,13 +40,20 @@ const commonFunc = {
   },
   // 隐藏 loading
   hideLoading () {
-    // Indicator.close()
+    // Loading.close()
   },
   // 显示 loading
   showLoading () {
-    // Indicator.open()
+    // Loading.open()
   },
   // 显示提示
+  showMessage (msg, type) {
+    Message({
+      message: msg,
+      type: type,
+      duration: 3000
+    })
+  },
   // showToast(msg, position) {
   //   Toast({
   //     message: msg,

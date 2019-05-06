@@ -56,7 +56,7 @@ const requestService = {
       Vue.axios(options)
         .then(resp => {
           // commonFunc.myConsole(resp)
-          if (resp.data.code === 0) {
+          if (resp.data.code === 200) {
             // 成功正确的返回 -- resolve
             commonFunc.hideLoading()
             resolve(resp.data)
@@ -85,17 +85,18 @@ const requestService = {
     commonFunc.myConsole(serverUrl)
     commonFunc.myConsole(optionsParams)
     //
-    let isForm =
-      commonFunc.isDefine(formSubmission) && formSubmission === 'form'
+    // let isForm =
+    //   commonFunc.isDefine(formSubmission) && formSubmission === 'form'
     let options = {
       method: 'post',
       url: serverUrl,
       // mode:'cors',
       headers: {
         Accept: 'application/json',
-        'Content-Type': isForm
-          ? 'application/x-www-form-urlencoded'
-          : 'application/json'
+        // 'Content-Type': isForm
+        //   ? 'application/x-www-form-urlencoded'
+        //   : 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       // timeout: 3600,
       // `withCredentials` indicates whether or not cross-site Access-Control requests
@@ -104,16 +105,17 @@ const requestService = {
 
       // `data` is the data to be sent as the request body
       // Only applicable for request methods 'PUT', 'POST', and 'PATCH'
-      data: isForm
-        ? qs.stringify(optionsParams, { indices: false })
-        : optionsParams
+      // data: isForm
+      //   ? qs.stringify(optionsParams, { indices: false })
+      //   : optionsParams
+      data: qs.stringify(optionsParams, { indices: false })
     }
     commonFunc.showLoading()
     return new Promise((resolve, reject) => {
       Vue.axios(options)
         .then(resp => {
           // commonFunc.myConsole(resp)
-          if (resp.data.code === 0) {
+          if (resp.data.code === 200) {
             // 成功正确的返回 -- resolve
             // console.log(resp)
             commonFunc.hideLoading()
@@ -171,7 +173,7 @@ const requestService = {
       Vue.axios(options)
         .then(resp => {
           // commonFunc.myConsole(resp)
-          if (resp.data.code === 0) {
+          if (resp.data.code === 200) {
             // 成功正确的返回 -- resolve
             // console.log(resp)
             commonFunc.hideLoading()

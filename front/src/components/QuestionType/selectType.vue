@@ -1,17 +1,19 @@
 <template>
 <!-- 用于单选题，双选题，文本题的设计(文本题就是没有选项)-->
   <div class="selectType">
-    <el-form :model='selectFormdata' label-width="0.8rem" class="demo-dynamic">
-      <el-form-item label="题目">
+    <el-form :model='selectFormdata' label-width="0.8rem" class="demo-dynamic" :rules="rules" ref="selectFormdata">
+      <el-form-item label="题目" prop="title">
         <el-input v-model="selectFormdata.title"></el-input>
       </el-form-item>
-      <el-form-item label="备注">
+      <el-form-item label="备注" prop="subdesc">
         <el-input v-model="selectFormdata.subdesc"></el-input>
       </el-form-item>
-      <el-form-item label="必填">
+      <el-form-item label="必填" prop="required">
           <el-switch v-model="selectFormdata.required"></el-switch>
       </el-form-item>
-      <el-form-item
+      <el-form-item :rules="{
+          required: true, message: '选项不能为空', trigger: 'blur'
+        }"
         v-for="(option, index) in selectFormdata.options"
         :label="'选项' + (index+1)"
         :key="option.key"
@@ -25,17 +27,23 @@
         <div class="line"></div>
       </el-form-item>
       <el-form-item style="text-align:right">
-        <el-button plain>取消</el-button>
-        <el-button type="primary" @click="confirm">确定</el-button>
+        <el-button plain @click="cancelSubmit()">取消</el-button>
+        <el-button type="primary" @click="confirm('selectFormdata')">确定</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
+import questionApi from '../../client/bll/apis/question.js'
 export default {
   props: ['selectFormdata'],
   data () {
     return {
+      rules: {
+        title: [
+          { required: true, message: '请输入题目', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -51,10 +59,23 @@ export default {
         key: Date.now()
       })
     },
-    // 确定按钮
-    confirm () {
+    // 取消按钮
+    cancelSubmit () {
       this.selectFormdata.display = false
-      this.$emit('getSelectForm', this.selectFormdata)
+    },
+    // 确定按钮
+    confirm (formName) {
+      debugger
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          this.selectFormdata.display = false
+          this.$emit('getSelectForm', this.selectFormdata)
+          let res = await questionApi.add(this.selectFormdata)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
