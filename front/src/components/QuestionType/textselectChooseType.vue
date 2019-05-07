@@ -1,6 +1,6 @@
 <template>
   <div class="textSelectType">
-    <el-form :model='formData' label-width="0.1rem" label-position="left">
+    <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
         <p class="textSelect-descri">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
@@ -11,6 +11,12 @@
         <el-input ></el-input>
       </el-form-item>
     </el-form>
+    <div class="optionPart">
+      <el-button-group>
+        <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
+        <el-button  plain icon="el-icon-delete"></el-button>
+      </el-button-group>
+    </div>
   </div>
 </template>
 <script>
@@ -34,6 +40,12 @@ export default {
       //   ] // 选项
       // }
     }
+  },
+  methods: {
+    edit () {
+      this.formData.display = true
+      this.$emit('editSelectForm', this.formData)
+    }
   }
 }
 </script>
@@ -41,7 +53,14 @@ export default {
 .el-form-item{
 margin-bottom: 0;
 }
+.selectPart{
+  flex: 15;
+}
+.optionPart{
+  flex: 2;
+}
 .textSelectType{
+  display: flex;
   width: 95%;
   margin: 0 auto;
   margin-top: 0.1rem;

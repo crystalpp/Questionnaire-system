@@ -35,6 +35,7 @@
 </template>
 <script>
 import questionApi from '../../client/bll/apis/question.js'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['selectFormdata'],
   data () {
@@ -65,12 +66,23 @@ export default {
     },
     // 确定按钮
     confirm (formName) {
-      debugger
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
+          debugger
           this.selectFormdata.display = false
           this.$emit('getSelectForm', this.selectFormdata)
+          let newOptionsArr = []
+          for (let i of this.selectFormdata.options) {
+            newOptionsArr.push(i.value)
+          }
+          this.selectFormdata.optionsValue = newOptionsArr
+          this.selectFormdata.surverId = this.$route.query.surverId
           let res = await questionApi.add(this.selectFormdata)
+          if (res.code === 0) {
+            commonFunc.showMessage('新增成功', 'success')
+          } else {
+            commonFunc.showMessage('新增失败，请稍后再试', 'error')
+          }
         } else {
           console.log('error submit!!')
           return false

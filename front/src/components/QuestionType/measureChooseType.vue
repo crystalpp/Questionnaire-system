@@ -1,6 +1,6 @@
 <template>
   <div class="measurechooseType">
-    <el-form :model='formData' label-width="0.1rem" label-position="left">
+    <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
         <p class="measure-descri">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
@@ -11,6 +11,12 @@
         <el-rate v-model="score" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" show-text :texts="showText"> </el-rate>
       </el-form-item>
     </el-form>
+    <div class="optionPart">
+      <el-button-group>
+        <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
+        <el-button  plain icon="el-icon-delete"></el-button>
+      </el-button-group>
+    </div>
   </div>
 </template>
 <script>
@@ -18,7 +24,7 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
-      score: '',
+      score: 0,
       showText: []
     }
   },
@@ -26,6 +32,10 @@ export default {
     this.changeText()
   },
   methods: {
+    edit () {
+      this.formData.display = true
+      // this.$emit('editSelectForm', this.formData)
+    },
     // 根据选择不同的量表类型，评分时显示不同的文字
     changeText () {
       let value1 = '非常不' + this.formData.measureValue
@@ -42,7 +52,14 @@ export default {
 .el-form-item{
 margin-bottom: 0;
 }
+.selectPart{
+  flex: 15;
+}
+.optionPart{
+  flex: 2;
+}
 .measurechooseType{
+  display: flex;
   width: 95%;
   margin: 0 auto;
   margin-top: 0.1rem;

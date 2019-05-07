@@ -1,8 +1,8 @@
 <template>
 <!-- 用于量表题的设计-->
   <div class="measureType">
-    <el-form :model='selectForm' label-width="0.8rem" class="demo-dynamic">
-      <el-form-item label="题目">
+    <el-form :model='selectForm' label-width="0.8rem" class="demo-dynamic" ref="selectForm" :rules="rules">
+      <el-form-item label="题目" prop="title">
         <el-input v-model="selectForm.title"></el-input>
       </el-form-item>
       <el-form-item label="备注">
@@ -11,7 +11,9 @@
       <el-form-item label="必填">
           <el-switch v-model="selectForm.required"></el-switch>
       </el-form-item>
-      <el-form-item label="量表类型">
+      <el-form-item label="量表类型" :rules="{
+          required: true, message: '量表类型不能为空', trigger: 'blur'
+        }">
         <el-select  v-model="selectForm.measureValue"  placeholder="请选择量表类型">
           <el-option
             v-for="item in selectForm.options"
@@ -26,15 +28,22 @@
       </el-form-item>
       <el-form-item style="text-align:right">
         <el-button plain>取消</el-button>
-        <el-button type="primary" @click="confirm">确定</el-button>
+        <el-button type="primary" @click="confirm('selectForm')">确定</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
+import commonFunc from '../../client/bll/apis/common/common'
+import questionApi from '../../client/bll/apis/question.js'
 export default {
   data () {
     return {
+      rules: {
+        title: [
+          { required: true, message: '请输入题目', trigger: 'blur' }
+        ]
+      },
       selectForm: {
         title: '', // 题目
         subdesc: '', // 备注
@@ -63,9 +72,25 @@ export default {
     }
   },
   methods: {
-    confirm () {
-      this.selectForm.display = false
-      this.$emit('getmeasureSelectform', this.selectForm)
+    confirm (formName) {
+      debugger
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          this.selectForm.display = false
+          this.$emit('getmeasureSelectform', this.selectForm)
+          this.selectForm.optionsValue = this.selectForm.measureValue
+          this.selectForm.surverId = this.$route.query.surverId
+          let res = await questionApi.add(this.selectForm)
+          if (res.code === 0) {
+            commonFunc.showMessage('新增成功', 'success')
+          } else {
+            commonFunc.showMessage('新增失败，请稍后再试', 'fail')
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }

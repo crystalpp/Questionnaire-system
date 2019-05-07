@@ -88,6 +88,8 @@
   </div>
 </template>
 <script>
+import surverApi from '../../client/bll/apis/surver.js'
+import commonFunc from '../../client/bll/apis/common/common.js'
 export default {
   data () {
     return {
@@ -142,10 +144,16 @@ export default {
   },
   methods: {
     // 新建问卷
-    creatQues () {
-      this.$store.commit('set_showQuesStep', true)
-      this.$store.commit('set_menuActiveIndex', 'newQues')
-      this.$router.push({name: 'creat'})
+    async creatQues () {
+      let userInfor = JSON.parse(commonFunc.getLocalStorage('userInfo'))
+      let res = await surverApi.add(userInfor.userId)
+      if (res.code === 0) {
+        commonFunc.setLocalStorage('contentClass', 'ques-content')
+        commonFunc.setLocalStorage('showQuesStep', true)
+        commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+        commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+        this.$router.push({name: 'creat', query: {surverId: res.data.surverId}})
+      }
     },
     showOption (index) {
       this.indexitem = index

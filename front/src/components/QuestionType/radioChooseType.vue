@@ -1,6 +1,6 @@
 <template>
   <div class="radioType" >
-    <el-form :model='formData' label-width="0.1rem" label-position="left" class="formPart">
+    <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
         <p class="radio-descri">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
@@ -37,6 +37,12 @@ export default {
 <style lang="scss" scoped>
 .el-form-item{
 margin-bottom: 0;
+}
+.selectPart{
+  flex: 15;
+}
+.optionPart{
+  flex: 2;
 }
 .radioType{
   display: flex;

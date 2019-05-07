@@ -70,7 +70,6 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import commonFunc from '../client/bll/apis/common/common.js'
 export default {
   data () {
@@ -81,20 +80,37 @@ export default {
       },
       dialogReleaseVisible: false, // 发布问卷时展示的dialog
       contentClass: 'ques-content-noStep',
-      userInfo: {}
+      userInfo: {},
+      showQuesStep: '',
+      menuActiveIndex: '',
+      submenuActiveIndex: 'creat'
     }
   },
   computed: {
-    ...mapState({
-      showQuesStep: state => state.commonState.showQuesStep,
-      menuActiveIndex: state => state.commonState.menuActiveIndex,
-      submenuActiveIndex: state => state.commonState.submenuActiveIndex
-    })
+    // ...mapState({
+    //   showQuesStep: state => state.commonState.showQuesStep,
+    //   menuActiveIndex: state => state.commonState.menuActiveIndex,
+    //   submenuActiveIndex: state => state.commonState.submenuActiveIndex
+    // })
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.refreshLocalData()
+    next()
   },
   mounted () {
+    this.refreshLocalData()
     this.getUserInfo()
   },
   methods: {
+    /**
+     * [更新localStorage中的数据]
+     */
+    refreshLocalData () {
+      this.contentClass = commonFunc.getLocalStorage('contentClass')
+      this.showQuesStep = JSON.parse(commonFunc.getLocalStorage('showQuesStep'))
+      this.menuActiveIndex = commonFunc.getLocalStorage('menuActiveIndex')
+      this.submenuActiveIndex = commonFunc.getLocalStorage('submenuActiveIndex')
+    },
     getUserInfo () {
       this.userInfo = JSON.parse(commonFunc.getLocalStorage('userInfo'))
     },
@@ -110,7 +126,8 @@ export default {
       this.menuActiveIndex = 'creat'
     },
     handleSelectQues (key) {
-      this.$store.commit('set_showQuesStep', true)
+      commonFunc.setLocalStorage('showQuesStep', true)
+      // this.$store.commit('set_showQuesStep', true)
       this.contentClass = 'ques-content'
       if (key === 'release') {
         this.dialogReleaseVisible = true
@@ -120,11 +137,18 @@ export default {
     },
     handleSelect (key) {
       if (key === 'show') {
-        this.$store.commit('set_showQuesStep', false)
+        commonFunc.setLocalStorage('showQuesStep', false)
+        this.showQuesStep = JSON.parse(commonFunc.getLocalStorage('showQuesStep'))
+        commonFunc.setLocalStorage('menuActiveIndex', 'show')
+        // this.$store.commit('set_showQuesStep', false)
         this.contentClass = 'ques-content-noStep'
+        commonFunc.setLocalStorage('contentClass', 'ques-content-noStep')
       } else {
-        this.$store.commit('set_showQuesStep', true)
+        commonFunc.setLocalStorage('showQuesStep', true)
+        this.showQuesStep = JSON.parse(commonFunc.getLocalStorage('showQuesStep'))
+        // this.$store.commit('set_showQuesStep', true)
         this.contentClass = 'ques-content'
+        commonFunc.setLocalStorage('contentClass', 'ques-content')
       }
       if (key === 'newQues') {
         this.$store.commit('set_createQuesType', 'newQues')
@@ -149,7 +173,7 @@ export default {
 
   font-size: 0.16rem;
   width: 100%;
-  height: 100%;
+  height: 90%;
   .ques-header {
     background: #0078C8;
     width: 100%;
@@ -215,13 +239,13 @@ export default {
   }
   .ques-content {
     width: 100%;
-    height: 78%;
+    height: 87%;
     background: #F0F0F0;
     z-index: 999;
   }
   .ques-content-noStep {
     width: 100%;
-    height: 90%;
+    height: 100%;
     background: #F0F0F0;
     z-index: 999;
   }

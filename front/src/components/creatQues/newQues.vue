@@ -48,19 +48,19 @@
               <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></radio-choose-type>
             </div>
             <div v-if="item.type === 'Multiselect'">
-              <multiselect-choose-type :formData = 'item' :index = 'index'></multiselect-choose-type>
+              <multiselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></multiselect-choose-type>
             </div>
             <div v-if="item.type === 'Drop-down'">
-              <dropdown-choose-type :formData = 'item' :index = 'index'></dropdown-choose-type>
+              <dropdown-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></dropdown-choose-type>
             </div>
             <div v-if="item.type === 'textselect'"> 
-              <textselect-choose-type :formData = 'item' :index = 'index'></textselect-choose-type>
+              <textselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></textselect-choose-type>
             </div>
             <div v-if="item.type === 'measure'">
-              <measure-choose-type :formData = 'item' :index = 'index'></measure-choose-type>
+              <measure-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></measure-choose-type>
             </div>
             <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
-              <matrix-choose-type :formData = 'item' :index = 'index'></matrix-choose-type>
+              <matrix-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></matrix-choose-type>
             </div>
           </div>
           <!-- 问卷设计的div -->
@@ -99,6 +99,8 @@ import dropdownType from '../QuestionType/dropdownChooseType'
 import textselectType from '../QuestionType/textselectChooseType'
 import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
+import surverApi from '../../client/bll/apis/surver'
+import questionApi from '../../client/bll/apis/question'
 export default {
   components: {
     'select-type': selectType,
@@ -159,8 +161,9 @@ export default {
       }
     }
   },
-  mounted () {
-    // this.createWangeditor()
+  async mounted () {
+    let surverId = this.$route.query.surverId
+    await questionApi.searchBySueverId(surverId)
   },
   methods: {
     handleSelect (key) {
@@ -236,7 +239,17 @@ export default {
     },
     // 改变问卷标题和问卷标题下面问候语的编辑和显示状态
     unfocused (item, e) {
+      let surverId = this.$route.query.surverId
       item.display = true
+      let params = {
+        title: this.survey.surveyTitle.value,
+        description: this.survey.surveyDescr.value,
+        id: surverId
+      }
+      let res = surverApi.update(params)
+      if (res.code === 0) {
+        console.log(1)
+      }
     },
     removeOption (item) {
       var index = this.selectForm.options.indexOf(item)

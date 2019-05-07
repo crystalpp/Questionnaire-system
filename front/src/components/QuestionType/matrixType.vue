@@ -1,8 +1,8 @@
 <template>
 <!-- 用于量表题的设计-->
   <div class="matrixType">
-    <el-form :model='selectForm' label-width="0.8rem" class="demo-dynamic">
-      <el-form-item label="题目">
+    <el-form :model='selectForm' label-width="0.8rem"  :rules="rules" ref="selectForm">
+      <el-form-item label="题目" prop="title">
         <el-input v-model="selectForm.title"></el-input>
       </el-form-item>
       <el-form-item label="备注">
@@ -12,7 +12,9 @@
           <el-switch v-model="selectForm.required"></el-switch>
       </el-form-item>
       <!-- 问题 -->
-      <el-form-item
+      <el-form-item :rules="{
+          required: true, message: '问题不能为空', trigger: 'blur'
+        }"
           v-for="(question, index) in selectForm.questions"
           :label="'问题' + (index+1)"
           :key="question.key"
@@ -24,7 +26,9 @@
           <el-button type="primary" plain @click="addQuestion" v-if="selectForm.questions.length>0">新增问题</el-button>
       </el-form-item>
       <!-- 选项 -->
-       <el-form-item
+       <el-form-item :rules="{
+          required: true, message: '选项不能为空', trigger: 'blur'
+        }"
           v-for="(option, index) in selectForm.options"
           :label="'选项' + (index+1)"
           :key="option.key"
@@ -40,21 +44,54 @@
       </el-form-item>
       <el-form-item style="text-align:right">
         <el-button plain>取消</el-button>
-        <el-button type="primary" @click="confirm">确定</el-button>
+        <el-button type="primary" @click="confirm('selectForm')">确定</el-button>
       </el-form-item>
     </el-form>
+    
   </div>
 </template>
 <script>
+import commonFunc from '../../client/bll/apis/common/common'
+import questionApi from '../../client/bll/apis/question.js'
 export default {
   props: ['selectForm'],
   data () {
-    return {}
+    return {
+      rules: {
+        title: [
+          { required: true, message: '请输入题目', trigger: 'blur' }
+        ]
+      }
+    }
   },
   methods: {
-    confirm () {
-      this.selectForm.display = false
-      this.$emit('getSelectForm', this.selectForm)
+    confirm (formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          this.selectForm.display = false
+          this.$emit('getSelectForm', this.selectForm)
+          let newOptionsArr = []
+          for (let i of this.selectForm.options) {
+            newOptionsArr.push(i.value)
+          }
+          this.selectForm.optionsValue = newOptionsArr
+          let newQuestionsArr = []
+          for (let j of this.selectForm.questions) {
+            newQuestionsArr.push(j.value)
+          }
+          this.selectForm.questionsValue = newQuestionsArr
+          this.selectForm.surverId = this.$route.query.surverId
+          let res = await questionApi.add(this.selectForm)
+          if (res.code === 0) {
+            commonFunc.showMessage('新增成功', 'success')
+          } else {
+            commonFunc.showMessage('新增失败，请稍后再试', 'error')
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     removeOption (item) {
       var index = this.selectForm.options.indexOf(item)
@@ -70,7 +107,6 @@ export default {
       })
     },
     removeQuestion (item) {
-      debugger
       var index = this.selectForm.questions.indexOf(item)
       if (index !== -1) {
         this.selectForm.questions.splice(index, 1)
@@ -87,6 +123,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .matrixType{
+  display: flex;
   width: 60%;
   margin: 0 auto;
   margin-top: 0.1rem;
