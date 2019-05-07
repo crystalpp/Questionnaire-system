@@ -8,6 +8,7 @@
     <result column="question_need" property="questionNeed" jdbcType="VARCHAR" />
     <result column="queType_id" property="quetypeId" jdbcType="VARCHAR" />
     <result column="surver_id" property="surverId" jdbcType="VARCHAR" />
+    <result column="subQuestion_id" property="subquestionId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    question_id, question_name, question_direction, question_need, queType_id, surver_id
+    question_id, question_name, question_direction, question_need, queType_id, surver_id, 
+    subQuestion_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.QuestionExample" >
     select
@@ -103,11 +105,11 @@
   </delete>
   <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.Question" >
     insert into question (question_id, question_name, question_direction, 
-      question_need, queType_id, surver_id
-      )
+      question_need, queType_id, surver_id, 
+      subQuestion_id)
     values (#{questionId,jdbcType=VARCHAR}, #{questionName,jdbcType=VARCHAR}, #{questionDirection,jdbcType=VARCHAR}, 
-      #{questionNeed,jdbcType=VARCHAR}, #{quetypeId,jdbcType=VARCHAR}, #{surverId,jdbcType=VARCHAR}
-      )
+      #{questionNeed,jdbcType=VARCHAR}, #{quetypeId,jdbcType=VARCHAR}, #{surverId,jdbcType=VARCHAR}, 
+      #{subquestionId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.Question" >
     insert into question
@@ -130,6 +132,9 @@
       <if test="surverId != null" >
         surver_id,
       </if>
+      <if test="subquestionId != null" >
+        subQuestion_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="questionId != null" >
@@ -149,6 +154,9 @@
       </if>
       <if test="surverId != null" >
         #{surverId,jdbcType=VARCHAR},
+      </if>
+      <if test="subquestionId != null" >
+        #{subquestionId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -179,6 +187,9 @@
       <if test="record.surverId != null" >
         surver_id = #{record.surverId,jdbcType=VARCHAR},
       </if>
+      <if test="record.subquestionId != null" >
+        subQuestion_id = #{record.subquestionId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -191,7 +202,8 @@
       question_direction = #{record.questionDirection,jdbcType=VARCHAR},
       question_need = #{record.questionNeed,jdbcType=VARCHAR},
       queType_id = #{record.quetypeId,jdbcType=VARCHAR},
-      surver_id = #{record.surverId,jdbcType=VARCHAR}
+      surver_id = #{record.surverId,jdbcType=VARCHAR},
+      subQuestion_id = #{record.subquestionId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -214,6 +226,9 @@
       <if test="surverId != null" >
         surver_id = #{surverId,jdbcType=VARCHAR},
       </if>
+      <if test="subquestionId != null" >
+        subQuestion_id = #{subquestionId,jdbcType=VARCHAR},
+      </if>
     </set>
     where question_id = #{questionId,jdbcType=VARCHAR}
   </update>
@@ -223,7 +238,8 @@
       question_direction = #{questionDirection,jdbcType=VARCHAR},
       question_need = #{questionNeed,jdbcType=VARCHAR},
       queType_id = #{quetypeId,jdbcType=VARCHAR},
-      surver_id = #{surverId,jdbcType=VARCHAR}
+      surver_id = #{surverId,jdbcType=VARCHAR},
+      subQuestion_id = #{subquestionId,jdbcType=VARCHAR}
     where question_id = #{questionId,jdbcType=VARCHAR}
   </update>
 </mapper>

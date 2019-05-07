@@ -1,7 +1,7 @@
 package com.code.questionnaireSystem.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,9 +14,15 @@ public class SurverController {
 	@Autowired
 	private SurverService surverService;
 
-	@GetMapping("/insertQues")
-	public Result insert() {
-		return surverService.insert();
+	@PostMapping("/add")
+	public Result insert(String userId) {
+		return surverService.insert(userId);
+	}
+
+	@PostMapping("/update")
+
+	public Result update(String title, String description, String id) {
+		return surverService.update(title, description, id);
 	}
 
 }

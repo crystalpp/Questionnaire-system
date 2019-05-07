@@ -314,6 +314,76 @@ public class QuestionOptionExample {
             return (Criteria) this;
         }
 
+        public Criteria andSubquestionIdIsNull() {
+            addCriterion("subQuestion_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdIsNotNull() {
+            addCriterion("subQuestion_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdEqualTo(String value) {
+            addCriterion("subQuestion_id =", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdNotEqualTo(String value) {
+            addCriterion("subQuestion_id <>", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdGreaterThan(String value) {
+            addCriterion("subQuestion_id >", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdGreaterThanOrEqualTo(String value) {
+            addCriterion("subQuestion_id >=", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdLessThan(String value) {
+            addCriterion("subQuestion_id <", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdLessThanOrEqualTo(String value) {
+            addCriterion("subQuestion_id <=", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdLike(String value) {
+            addCriterion("subQuestion_id like", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdNotLike(String value) {
+            addCriterion("subQuestion_id not like", value, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdIn(List<String> values) {
+            addCriterion("subQuestion_id in", values, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdNotIn(List<String> values) {
+            addCriterion("subQuestion_id not in", values, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdBetween(String value1, String value2) {
+            addCriterion("subQuestion_id between", value1, value2, "subquestionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubquestionIdNotBetween(String value1, String value2) {
+            addCriterion("subQuestion_id not between", value1, value2, "subquestionId");
+            return (Criteria) this;
+        }
+
         public Criteria andQuestionIdIsNull() {
             addCriterion("question_id is null");
             return (Criteria) this;

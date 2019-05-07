@@ -68,5 +68,9 @@
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/> -->
+         <!-- <table tableName="surver" domainObjectName="Surver"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/> -->
     </context>
 </generatorConfiguration>

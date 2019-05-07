@@ -5,6 +5,7 @@
     <id column="option_id" property="optionId" jdbcType="VARCHAR" />
     <result column="option_content" property="optionContent" jdbcType="VARCHAR" />
     <result column="option_score" property="optionScore" jdbcType="VARCHAR" />
+    <result column="subQuestion_id" property="subquestionId" jdbcType="VARCHAR" />
     <result column="question_id" property="questionId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    option_id, option_content, option_score, question_id
+    option_id, option_content, option_score, subQuestion_id, question_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.QuestionOptionExample" >
     select
@@ -101,9 +102,9 @@
   </delete>
   <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.QuestionOption" >
     insert into questionoption (option_id, option_content, option_score, 
-      question_id)
+      subQuestion_id, question_id)
     values (#{optionId,jdbcType=VARCHAR}, #{optionContent,jdbcType=VARCHAR}, #{optionScore,jdbcType=VARCHAR}, 
-      #{questionId,jdbcType=VARCHAR})
+      #{subquestionId,jdbcType=VARCHAR}, #{questionId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.QuestionOption" >
     insert into questionoption
@@ -116,6 +117,9 @@
       </if>
       <if test="optionScore != null" >
         option_score,
+      </if>
+      <if test="subquestionId != null" >
+        subQuestion_id,
       </if>
       <if test="questionId != null" >
         question_id,
@@ -130,6 +134,9 @@
       </if>
       <if test="optionScore != null" >
         #{optionScore,jdbcType=VARCHAR},
+      </if>
+      <if test="subquestionId != null" >
+        #{subquestionId,jdbcType=VARCHAR},
       </if>
       <if test="questionId != null" >
         #{questionId,jdbcType=VARCHAR},
@@ -154,6 +161,9 @@
       <if test="record.optionScore != null" >
         option_score = #{record.optionScore,jdbcType=VARCHAR},
       </if>
+      <if test="record.subquestionId != null" >
+        subQuestion_id = #{record.subquestionId,jdbcType=VARCHAR},
+      </if>
       <if test="record.questionId != null" >
         question_id = #{record.questionId,jdbcType=VARCHAR},
       </if>
@@ -167,6 +177,7 @@
     set option_id = #{record.optionId,jdbcType=VARCHAR},
       option_content = #{record.optionContent,jdbcType=VARCHAR},
       option_score = #{record.optionScore,jdbcType=VARCHAR},
+      subQuestion_id = #{record.subquestionId,jdbcType=VARCHAR},
       question_id = #{record.questionId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -181,6 +192,9 @@
       <if test="optionScore != null" >
         option_score = #{optionScore,jdbcType=VARCHAR},
       </if>
+      <if test="subquestionId != null" >
+        subQuestion_id = #{subquestionId,jdbcType=VARCHAR},
+      </if>
       <if test="questionId != null" >
         question_id = #{questionId,jdbcType=VARCHAR},
       </if>
@@ -191,6 +205,7 @@
     update questionoption
     set option_content = #{optionContent,jdbcType=VARCHAR},
       option_score = #{optionScore,jdbcType=VARCHAR},
+      subQuestion_id = #{subquestionId,jdbcType=VARCHAR},
       question_id = #{questionId,jdbcType=VARCHAR}
     where option_id = #{optionId,jdbcType=VARCHAR}
   </update>
