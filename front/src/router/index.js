@@ -55,6 +55,14 @@ export default new Router({
           }
         },
         {
+          path: '/edit',
+          name: 'edit',
+          component: creatQues,
+          meta: {
+            title: '编辑问卷'
+          }
+        },
+        {
           path: '/show',
           name: 'show',
           component: myQues,

@@ -20,17 +20,18 @@
             <el-button class="ques-button" @click="showQuestion('text')"><i class="iconfont icon-stars"></i>文本描述</el-button>
           </el-tab-pane>
           <el-tab-pane label="问卷大纲" class="tab2">
-            <p class="sigelQues" v-for="(item,index) in survey.questions" :key="item.keys">
-              <i class="iconfont icon-danxuan" v-if="item.type === 'radioselect'"></i>
-              <i class="iconfont icon-duoxuanyixuan" v-if="item.type === 'Multiselect'"></i>
-              <i class="iconfont icon-xialakuang" v-if="item.type === 'Drop-down'"></i>
-              <i class="iconfont icon-wenben" v-if="item.type === 'textselect'"></i>
-              <i class="iconfont icon-paixu" v-if="item.type === 'sort'"></i>
-              <i class="iconfont icon-square-inc" v-if="item.type === 'matrix-radio'"></i>
-              <i class="iconfont icon-danxuan" v-if="item.type === 'matrix-multi'"></i>
-              <i class="iconfont icon-square-star" v-if="item.type === 'measure'"></i>
-              <i class="iconfont icon-square-stars" v-if="item.type === 'text'"></i>
-            {{index+1}}.{{item.title}}</p>
+            <p class="sigelQues" v-for="(item,index) in surverQuestionsData" :key="item.keys">
+{{index+1}}.
+              <i  v-if="item.type === 'radioselect'">(单选)</i>
+              <i  v-if="item.type === 'Multiselect'">(多选)</i>
+              <i  v-if="item.type === 'Drop-down'">(下拉题)</i>
+              <i  v-if="item.type === 'textselect'">(文本题)</i>
+              <i  v-if="item.type === 'sort'">(排序题)</i>
+              <i  v-if="item.type === 'matrix-radio'">(矩阵单选)</i>
+              <i  v-if="item.type === 'matrix-multi'">(矩阵多选)</i>
+              <i  v-if="item.type === 'measure'">(量表题)</i>
+              <i  v-if="item.type === 'text'">(文字)</i>
+            {{item.title}} </p>
           </el-tab-pane>
         </el-tabs>
       </el-aside>
@@ -43,7 +44,7 @@
             <el-input type="textarea" autosize :rows="2" v-if="!survey.surveyDescr.display" v-model="survey.surveyDescr.value" @blur="unfocused(survey.surveyDescr,$event)"></el-input>
           </div>
           <!-- 设计好的问卷显示的div -->
-           <div  class="survey-container" v-for="(item,index) in survey.questions" :key="item.key">
+           <div  class="survey-container"  v-for="(item,index) in surverQuestionsData" :key="item.key" >
             <div v-if="item.type === 'radioselect'">
               <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></radio-choose-type>
             </div>
@@ -85,7 +86,6 @@
       </el-main>
     </el-container>
   </div>
-  
 </template>
 <script>
 import E from 'wangeditor'
@@ -101,6 +101,7 @@ import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
 import surverApi from '../../client/bll/apis/surver'
 import questionApi from '../../client/bll/apis/question'
+// import questionApi from '../../client/bll/apis/question'
 export default {
   components: {
     'select-type': selectType,
@@ -158,14 +159,61 @@ export default {
           }
         ],
         dropdownValue: ''
-      }
+      },
+      surverQuestionsData: []
     }
   },
   async mounted () {
-    let surverId = this.$route.query.surverId
-    await questionApi.searchBySueverId(surverId)
+    await this.getSurverQuesions()
+    await this.getSurvers()
   },
   methods: {
+    async getSurvers () {
+      let surverId = this.$route.query.surverId
+      let res = await surverApi.search(surverId)
+      if (res.code === 0) {
+        this.survey.surveyTitle.value = res.data[0].surverTitle
+        this.survey.surveyDescr.value = res.data[0].surverDescription
+      }
+    },
+    async getSurverQuesions () {
+      let surverId = this.$route.query.surverId
+      let res = await questionApi.searchBySueverId(surverId)
+      console.log(res)
+      if (res.code === 0) {
+        // this.surverQuestionsData = res.data
+        this.transTypeCode(res.data)
+      }
+    },
+    transTypeCode (data) {
+      debugger
+      for (let item of data) {
+        let oneitem = {}
+        if (item.quetypeId === '1') {
+          item.quesType = 'radioselect'
+        } else if (item.quetypeId === '2') {
+          item.quesType = 'Multiselect'
+        } else if (item.quetypeId === '3') {
+          item.quesType = 'Drop-down'
+        } else if (item.quetypeId === '4') {
+          item.quesType = 'textselect'
+        } else if (item.quetypeId === '5') {
+          item.quesType = 'measure'
+        } else if (item.quetypeId === '6') {
+          item.quesType = 'matrix-radio'
+        }
+        debugger
+        oneitem.type = item.quesType
+        oneitem.title = item.questionName
+        oneitem.questionId = item.questionId
+        oneitem.subdesc = item.questionDirection
+        oneitem.required = item.questionNeed
+        oneitem.surverId = item.surverId
+        oneitem.options = item.options
+        oneitem.questions = item.subQuestions
+        this.surverQuestionsData.push(oneitem)
+      }
+    },
     handleSelect (key) {
       this.$router.push({name: key})
     },
@@ -307,7 +355,7 @@ export default {
     color: #999999;
     text-align: left;
     font-size: 0.14rem;
-    margin-left: 0.3rem;
+    margin-left: 0.05rem;
     .sigelQues{
       margin-top: 0.2rem;
     }

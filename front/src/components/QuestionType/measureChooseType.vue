@@ -14,12 +14,14 @@
     <div class="optionPart">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
-        <el-button  plain icon="el-icon-delete"></el-button>
+        <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
       </el-button-group>
     </div>
   </div>
 </template>
 <script>
+import questionApi from '../../client/bll/apis/question'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
   data () {
@@ -38,13 +40,19 @@ export default {
     },
     // 根据选择不同的量表类型，评分时显示不同的文字
     changeText () {
-      let value1 = '非常不' + this.formData.measureValue
-      let value2 = '不' + this.formData.measureValue
+      let value1 = '非常不' + this.formData.options[0].optionContent
+      let value2 = '不' + this.formData.options[0].optionContent
       let value3 = '一般'
-      let value4 = this.formData.measureValue
-      let value5 = '非常' + this.formData.measureValue
+      let value4 = this.formData.options[0].optionContent
+      let value5 = '非常' + this.formData.options[0].optionContent
       this.showText = [value1, value2, value3, value4, value5]
-    }
+    },
+    async deleteQues (id) {
+      let res = await questionApi.deleteByQuestionId(id)
+      if (res.code === 0) {
+        commonFunc.showMessage('删除成功', 'success')
+      }
+    },
   }
 }
 </script>

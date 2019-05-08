@@ -34,12 +34,37 @@ const questionApi = {
     let res = await requestService.post(url, param)
     return res
   },
+  /**
+   * 根据surverId查询所有的问题
+   * @param {*} params
+   */
   async searchBySueverId (params) {
     let param = {
       surverId: params
     }
     let url = config.APISERVER.host + '/question/searchBySurverId'
     let res = await requestService.get(url, param)
+    return res
+  },
+  async deleteBySueverId (params) {
+    let param = {
+      surverId: params
+    }
+    let url = config.APISERVER.host + '/question/deleteBySurverId'
+    let res = await requestService.post(url, param)
+    return res
+  },
+  async deleteByQuestionId (params) {
+    let param = {
+      questionId: params
+    }
+    let url = config.APISERVER.host + '/question/deleteByQuestionId'
+    let res = await requestService.post(url, param)
+    return res
+  },
+  async updateByQuestionId (params) {
+    let url = config.APISERVER.host + '/question/updateByQuestionId'
+    let res = await requestService.post(url, params)
     return res
   }
 }

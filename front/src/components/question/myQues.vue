@@ -21,51 +21,51 @@
             新建
           </div>
       </div>
-      <div class=" questions" @mouseover="showOption(index)" @mouseout="showStatus(index)" v-for="(item, index) in tableData" :key="item.key">
+      <div class=" questions" @mouseover="showOption(index)" @mouseout="showStatus(index)" v-for="(item, index) in surversData" :key="item.key">
           <div class="card-container">
             <div class="card-icon">问卷</div>
-            <div class="card-title">{{item.title}}</div>
-            <div class="card-time">{{item.date}}</div>
+            <div class="card-title">{{item.surverTitle}}</div>
+            <div class="card-time">{{item.surverCreattime}}</div>
             <div class="card-footer" v-show="show === 'status' || indexitem !== index ">
-              <div class="card-num">{{item.dataNum}}份数据</div>
-              <div class="card-status">{{item.status}}</div>
+              <div class="card-num">{{item.surverRecovernum}}份数据</div>
+              <div class="card-status">{{item.surverPulishstarttime}}</div>
             </div>
             <div class="card-footer-Option" v-show="show === 'option' && indexitem === index ">
-              <div class="item"><i class="el-icon-edit-outline"></i><br/>编辑</div>
+              <div class="item" @click="editSurver(item.surverId)"><i class="el-icon-edit-outline"></i><br/>编辑</div>
               <div class="item"><i class="el-icon-upload"></i><br/>发布</div>
               <div class="item"><i class="el-icon-view"></i><br/>预览</div>
               <div class="item"><i class="el-icon-document"></i><br/>数据</div>
-              <div class="item"><i class="el-icon-delete"></i><br/>删除</div>
+              <div class="item" @click="showDeleteDialog(item.surverId)"><i class="el-icon-delete"></i><br/>删除</div>
             </div>
           </div>
       </div>
     </div>
     <div class="myQues-body-table" v-show="show2 === 'table'">
       <el-table
-        :data="tableData"
+        :data="surversData"
         stripe
         style="width: 100%">
         <el-table-column
           fixed
           align='left'
-          prop="title"
+          prop="surverTitle"
           label="问卷标题"
           width="500">
         </el-table-column>
         <el-table-column
-          prop="status"
+          prop="surverPulishstarttime"
           align='center'
           label="状态"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="dataNum"
+          prop="surverRecovernum"
           align='center'
           label="收到数据"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="surverCreattime"
           align='center'
           label="创建时间"
           width="200">
@@ -76,49 +76,63 @@
           label="操作"
           width="300">
           <template slot-scope="scope">
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small" @click="editSurver(scope.row.surverId)">编辑</el-button>
             <el-button type="text" size="small">发布</el-button>
             <el-button  type="text" size="small">预览</el-button>
             <el-button  type="text" size="small">数据</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small" @click="showDeleteDialog(scope.row.surverId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
+    <el-dialog
+      title="删除提醒"
+      :visible.sync="deleteSuverVisible"
+      width="30%"
+      >
+      <span>确定要删除该问卷吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteSuverVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteSurver">确 定</el-button>
+      </span>
+  </el-dialog>
   </div>
 </template>
 <script>
 import surverApi from '../../client/bll/apis/surver.js'
 import commonFunc from '../../client/bll/apis/common/common.js'
+import questionApi from '../../client/bll/apis/question'
 export default {
   data () {
     return {
-      tableData: [
-        {
-          title: '网购消费者的行为调查',
-          status: '未发布',
-          dataNum: 0,
-          date: '2019-02-04'
-        },
-        {
-          title: '大学生在校消费调查表',
-          status: '未发布',
-          dataNum: 0,
-          date: '2019-02-04'
-        },
-        {
-          title: '计算机学院毕业设计要求调查表',
-          status: '未发布',
-          dataNum: 0,
-          date: '2019-02-04'
-        },
-        {
-          title: '大学生网络调查',
-          status: '未发布',
-          dataNum: 0,
-          date: '2019-02-04'
-        }
-      ],
+      // tableData: [
+      //   {
+      //     title: '网购消费者的行为调查',
+      //     status: '未发布',
+      //     dataNum: 0,
+      //     date: '2019-02-04'
+      //   },
+      //   {
+      //     title: '大学生在校消费调查表',
+      //     status: '未发布',
+      //     dataNum: 0,
+      //     date: '2019-02-04'
+      //   },
+      //   {
+      //     title: '计算机学院毕业设计要求调查表',
+      //     status: '未发布',
+      //     dataNum: 0,
+      //     date: '2019-02-04'
+      //   },
+      //   {
+      //     title: '大学生网络调查',
+      //     status: '未发布',
+      //     dataNum: 0,
+      //     date: '2019-02-04'
+      //   }
+      // ],
+      deleteSuverVisible: false, // 问卷删除提醒dialog
+      deleteSurverId: '',
       cardIcon: 'icon1Click',
       tableIcon: 'icon2',
       indexitem: 0,
@@ -139,10 +153,66 @@ export default {
           value: 'year',
           label: '过去一个年内'
         }
-      ]
+      ],
+      surversData: []
     }
   },
+  async beforeRouteUpdate (to, from, next) {
+    await this.getSurvers()
+    next()
+  },
+  async mounted () {
+    await this.getSurvers()
+  },
   methods: {
+    /**
+     * 根据问卷id删除问卷
+     */
+    async deleteSurver () {
+      this.deleteSuverVisible = false
+      let res = await questionApi.deleteBySueverId(this.deleteSurverId)
+      let res1 = await surverApi.deleteById(this.deleteSurverId)
+      if (res.code === 0 && res1.code === 0) {
+        await this.getSurvers()
+      }
+    },
+    showDeleteDialog (id) {
+      this.deleteSurverId = id
+      this.deleteSuverVisible = true
+    },
+    /**
+     * 根据问卷id修改问卷
+     */
+    editSurver (id) {
+      commonFunc.setLocalStorage('contentClass', 'ques-content')
+      commonFunc.setLocalStorage('showQuesStep', true)
+      commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+      commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+      this.$router.push({name: 'edit', query: {surverId: id}})
+    },
+    async getSurvers () {
+      let userId = JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
+      let res = await surverApi.searchByuserId(userId)
+      if (res.code === 0) {
+        this.surversData = res.data
+        this.rederData()
+      }
+      // console.log(res)
+    },
+    rederData () {
+      Date.prototype.toLocaleString = function () {
+        return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + ' ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds()
+      }
+      for (let item of this.surversData) {
+        if (item.surverPulishstarttime === null) {
+          item.surverPulishstarttime = '未发布'
+        }
+        var unixTimestamp = new Date(item.surverCreattime)
+        let commonTime = unixTimestamp.toLocaleString()
+        item.surverCreattime = commonTime
+        // alert(commonTime)
+      }
+    },
     // 新建问卷
     async creatQues () {
       let userInfor = JSON.parse(commonFunc.getLocalStorage('userInfo'))

@@ -15,11 +15,11 @@
             label=""
             width="180">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.value }}</span>
+              <span style="margin-left: 10px">{{ scope.row.questionName }}</span>
             </template>
           </el-table-column>
           <el-table-column v-for="(option,index) in formData.options" :key="option.key"
-            :label="option.value"
+            :label="option.optionContent"
             width="180">
             <template slot-scope="scope">
              <!-- <el-radio-group v-model="radio2">
@@ -54,12 +54,14 @@
     <div class="optionPart">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
-        <el-button  plain icon="el-icon-delete"></el-button>
+        <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
       </el-button-group>
     </div>
   </div>
 </template>
 <script>
+import questionApi from '../../client/bll/apis/question'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
   data () {
@@ -94,6 +96,12 @@ export default {
     edit () {
       this.formData.display = true
       this.$emit('editSelectForm', this.formData)
+    },
+    async deleteQues (id) {
+      let res = await questionApi.deleteByQuestionId(id)
+      if (res.code === 0) {
+        commonFunc.showMessage('删除成功', 'success')
+      }
     },
     getCurrentColumn (index, row, itemIndex) {
       // debugger

@@ -11,9 +11,9 @@
          <el-select v-model="formData.dropdownValue" placeholder="请选择">
           <el-option
             v-for="item in formData.options"
-            :key="item.value"
+            :key="item.optionContent"
             :label="item.label"
-            :value="item.value">
+            :value="item.optionContent">
           </el-option>
          </el-select>
       </el-form-item>
@@ -21,12 +21,14 @@
     <div class="optionPart">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
-        <el-button  plain icon="el-icon-delete"></el-button>
+        <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
       </el-button-group>
     </div>
   </div>
 </template>
 <script>
+import questionApi from '../../client/bll/apis/question'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
   data () {
@@ -37,6 +39,12 @@ export default {
     edit () {
       this.formData.display = true
       this.$emit('editSelectForm', this.formData)
+    },
+    async deleteQues (id) {
+      let res = await questionApi.deleteByQuestionId(id)
+      if (res.code === 0) {
+        commonFunc.showMessage('删除成功', 'success')
+      }
     }
   }
 }

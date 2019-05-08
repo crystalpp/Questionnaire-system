@@ -29,7 +29,7 @@
     </div>
     <div class="isFixed" v-show="showQuesStep">
         <div class="part1">
-         创建空白问卷
+         {{surverTile }}
         </div>
         <div class="part2">
         <el-menu :default-active="submenuActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelectQues">
@@ -71,9 +71,11 @@
 </template>
 <script>
 import commonFunc from '../client/bll/apis/common/common.js'
+import surverApi from '../client/bll/apis/surver.js'
 export default {
   data () {
     return {
+      surverTile: '',
       releaseLimitForm: {
         endTime: '', // 问卷填写截止时间
         isLimitedIP: true // 是否限制一个ip只能填写一次
@@ -81,7 +83,7 @@ export default {
       dialogReleaseVisible: false, // 发布问卷时展示的dialog
       contentClass: 'ques-content-noStep',
       userInfo: {},
-      showQuesStep: '',
+      showQuesStep: false,
       menuActiveIndex: '',
       submenuActiveIndex: 'creat'
     }
@@ -93,15 +95,30 @@ export default {
     //   submenuActiveIndex: state => state.commonState.submenuActiveIndex
     // })
   },
-  beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate (to, from, next) {
     this.refreshLocalData()
+    await this.getSurvers()
     next()
   },
-  mounted () {
+  async mounted () {
     this.refreshLocalData()
     this.getUserInfo()
+    await this.getSurvers()
   },
   methods: {
+    async getSurvers () {
+      if (commonFunc.isDefine(this.$route.query.surverId)) {
+        let surverId = this.$route.query.surverId
+        let res = await surverApi.search(surverId)
+        if (res.code === 0) {
+          if (res.data[0].surverTitle === '问卷标题') {
+            this.surverTile = '创建空白问卷'
+          } else {
+            this.surverTile = res.data[0].surverTitle
+          }
+        }
+      }
+    },
     /**
      * [更新localStorage中的数据]
      */
@@ -151,6 +168,7 @@ export default {
         commonFunc.setLocalStorage('contentClass', 'ques-content')
       }
       if (key === 'newQues') {
+        commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
         this.$store.commit('set_createQuesType', 'newQues')
         key = 'creat'
       } else if (key === 'templateQues') {
