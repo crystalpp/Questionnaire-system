@@ -1,6 +1,7 @@
 package com.code.questionnaireSystem.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class QuestionExample {
@@ -451,6 +452,66 @@ public class QuestionExample {
 
         public Criteria andQuetypeIdNotBetween(String value1, String value2) {
             addCriterion("queType_id not between", value1, value2, "quetypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeIsNull() {
+            addCriterion("question_creatTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeIsNotNull() {
+            addCriterion("question_creatTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeEqualTo(Date value) {
+            addCriterion("question_creatTime =", value, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeNotEqualTo(Date value) {
+            addCriterion("question_creatTime <>", value, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeGreaterThan(Date value) {
+            addCriterion("question_creatTime >", value, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("question_creatTime >=", value, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeLessThan(Date value) {
+            addCriterion("question_creatTime <", value, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeLessThanOrEqualTo(Date value) {
+            addCriterion("question_creatTime <=", value, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeIn(List<Date> values) {
+            addCriterion("question_creatTime in", values, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeNotIn(List<Date> values) {
+            addCriterion("question_creatTime not in", values, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeBetween(Date value1, Date value2) {
+            addCriterion("question_creatTime between", value1, value2, "questionCreattime");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionCreattimeNotBetween(Date value1, Date value2) {
+            addCriterion("question_creatTime not between", value1, value2, "questionCreattime");
             return (Criteria) this;
         }
 

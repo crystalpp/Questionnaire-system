@@ -8,4 +8,10 @@ public interface SurverService {
 
 	Result update(String title, String description, String id);
 
+	Result search(String surverId);
+
+	Result seachByUserId(String userId);
+
+	Result deleteById(String surverId);
+
 }

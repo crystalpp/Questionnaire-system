@@ -495,6 +495,66 @@ public class SurverExample {
             return (Criteria) this;
         }
 
+        public Criteria andSurverRecovernumIsNull() {
+            addCriterion("surver_recoverNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumIsNotNull() {
+            addCriterion("surver_recoverNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumEqualTo(Integer value) {
+            addCriterion("surver_recoverNum =", value, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumNotEqualTo(Integer value) {
+            addCriterion("surver_recoverNum <>", value, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumGreaterThan(Integer value) {
+            addCriterion("surver_recoverNum >", value, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("surver_recoverNum >=", value, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumLessThan(Integer value) {
+            addCriterion("surver_recoverNum <", value, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumLessThanOrEqualTo(Integer value) {
+            addCriterion("surver_recoverNum <=", value, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumIn(List<Integer> values) {
+            addCriterion("surver_recoverNum in", values, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumNotIn(List<Integer> values) {
+            addCriterion("surver_recoverNum not in", values, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumBetween(Integer value1, Integer value2) {
+            addCriterion("surver_recoverNum between", value1, value2, "surverRecovernum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverRecovernumNotBetween(Integer value1, Integer value2) {
+            addCriterion("surver_recoverNum not between", value1, value2, "surverRecovernum");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;

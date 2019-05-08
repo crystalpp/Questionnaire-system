@@ -16,6 +16,8 @@ public class Surver implements Serializable {
 
     private Date surverEndtime;
 
+    private Integer surverRecovernum;
+
     private String userId;
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +68,14 @@ public class Surver implements Serializable {
 
     public void setSurverEndtime(Date surverEndtime) {
         this.surverEndtime = surverEndtime;
+    }
+
+    public Integer getSurverRecovernum() {
+        return surverRecovernum;
+    }
+
+    public void setSurverRecovernum(Integer surverRecovernum) {
+        this.surverRecovernum = surverRecovernum;
     }
 
     public String getUserId() {

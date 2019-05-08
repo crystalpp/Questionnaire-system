@@ -1,6 +1,8 @@
+
 package com.code.questionnaireSystem.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +16,7 @@ import com.code.questionnaireSystem.pojo.QuestionExample;
 import com.code.questionnaireSystem.pojo.QuestionOption;
 import com.code.questionnaireSystem.pojo.QuestionOptionExample;
 import com.code.questionnaireSystem.pojo.QuestionsResult;
+import com.code.questionnaireSystem.response.QuestionResponse;
 import com.code.questionnaireSystem.service.QuestionService;
 import com.code.questionnaireSystem.utils.Result;
 import com.code.questionnaireSystem.utils.ResultCode;
@@ -57,6 +60,7 @@ public class QuestionServiceImpl implements QuestionService {
 		question.setQuetypeId(type);
 		question.setSurverId(surverId);
 		question.setSubquestionId(subQuesionIds);
+		question.setQuestionCreattime(new Date());
 		int num = questionMapper.insertSelective(question);
 		if (options != null) {
 			String[] optionsList = options.split(",");
@@ -90,6 +94,7 @@ public class QuestionServiceImpl implements QuestionService {
 		List<QuestionsResult> questionsResults = new ArrayList<>();
 		QuestionExample questionExample = new QuestionExample();
 		QuestionExample.Criteria criteria = questionExample.createCriteria();
+		questionExample.setOrderByClause("question_creatTime ASC");
 		criteria.andSurverIdEqualTo(surverId);
 		List<Question> questions = questionMapper.selectByExample(questionExample);
 		for (Question q : questions) {
@@ -114,7 +119,7 @@ public class QuestionServiceImpl implements QuestionService {
 					QuestionExample.Criteria subQCriteria1 = subQExample.createCriteria();
 					subQCriteria1.andQuestionIdEqualTo(subQuesId);
 					List<Question> subQuestion = questionMapper.selectByExample(subQExample);
-					System.out.println(subQuestion.get(0).getQuestionName());
+					// System.out.println(subQuestion.get(0).getQuestionName());
 					subQuestions.add(subQuestion.get(0));
 				}
 
@@ -125,6 +130,98 @@ public class QuestionServiceImpl implements QuestionService {
 			questionsResults.add(questionResult);
 		}
 		return Result.success(questionsResults);
+	}
+
+	@Override
+	public Result deleteBySurverId(String surverId) {
+		// 查找问题表中属于该问卷的所有问题
+		QuestionExample questionExample = new QuestionExample();
+		QuestionExample.Criteria qCriteria = questionExample.createCriteria();
+		qCriteria.andSurverIdEqualTo(surverId);
+		// 按照surverid查询出所有的问题，判断其是否有副问题，如果有，将副问题也删除
+		List<Question> qList = questionMapper.selectByExample(questionExample);
+		if (qList.size() != 0) {
+			Result result = deleteQuestionAndOption(qList);
+			int num = questionMapper.deleteByExample(questionExample);
+			if (num < 1) {
+				return Result.failure(ResultCode.FAIL);
+			} else {
+				return Result.success();
+			}
+		}
+		return Result.success();
+	}
+
+	/**
+	 * 删除问题和问题选项 不涉及前端接口
+	 */
+	public Result deleteQuestionAndOption(List<Question> qList) {
+		for (Question q : qList) {
+			if (!q.getSubquestionId().equals("")) {
+				String[] subQuestions = q.getSubquestionId().split(",");
+				for (String subQ : subQuestions) {
+					QuestionExample qsubDelExample = new QuestionExample();
+					QuestionExample.Criteria qsubCriteria = qsubDelExample.createCriteria();
+					qsubCriteria.andQuestionIdEqualTo(subQ);
+					int num1 = questionMapper.deleteByExample(qsubDelExample);
+					if (num1 < 1) {
+						return Result.failure(ResultCode.FAIL);
+					}
+				}
+
+			} else {
+				// 根据questionID删除问题表中的问题
+				QuestionExample qDelExample = new QuestionExample();
+				QuestionExample.Criteria qDelCriteria = qDelExample.createCriteria();
+				qDelCriteria.andQuestionIdEqualTo(q.getQuestionId());
+				int qDelnum1 = questionMapper.deleteByExample(qDelExample);
+				if (qDelnum1 < 1) {
+					return Result.failure(ResultCode.FAIL);
+				}
+
+			}
+			QuestionOptionExample qOptionExample = new QuestionOptionExample();
+			QuestionOptionExample.Criteria qOptionCriteria = qOptionExample.createCriteria();
+			qOptionCriteria.andQuestionIdEqualTo(q.getQuestionId());
+			int qOptionNum = questionoptionMapper.deleteByExample(qOptionExample);
+			if (qOptionNum < 1) {
+				return Result.failure(ResultCode.FAIL);
+			}
+		}
+		return Result.success();
+	}
+
+	@Override
+	public Result deleteByQuestionId(String questionId) {
+		// TODO Auto-generated method stub
+		QuestionExample questionExample = new QuestionExample();
+		QuestionExample.Criteria qCriteria = questionExample.createCriteria();
+		qCriteria.andQuestionIdEqualTo(questionId);
+		// 按照surverid查询出所有的问题，判断其是否有副问题，如果有，将副问题也删除
+		List<Question> qList = questionMapper.selectByExample(questionExample);
+		Result result = deleteQuestionAndOption(qList);
+		int num = questionMapper.deleteByExample(questionExample);
+		if (num < 1) {
+			return Result.failure(ResultCode.FAIL);
+		} else {
+			return Result.success();
+		}
+	}
+
+	@Override
+	public Result updateByQuestionId(QuestionResponse questionResponse) {
+		// TODO Auto-generated method stub
+		Question question = new Question();
+		question.setQuestionId(questionResponse.getQuestionId());
+		/*
+		 * question.setQuestionName(title);
+		 * question.setQuestionDirection(subdesc); question.setQuetypeId(type);
+		 * question.setQuestionNeed(required);
+		 */
+		// question.setSubquestionId(questions);
+
+		int num = questionMapper.updateByPrimaryKeySelective(question);
+		return null;
 	}
 
 }

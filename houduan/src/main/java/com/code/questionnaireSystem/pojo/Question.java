@@ -1,6 +1,7 @@
 package com.code.questionnaireSystem.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Question implements Serializable {
     private String questionId;
@@ -12,6 +13,8 @@ public class Question implements Serializable {
     private String questionNeed;
 
     private String quetypeId;
+
+    private Date questionCreattime;
 
     private String surverId;
 
@@ -57,6 +60,14 @@ public class Question implements Serializable {
 
     public void setQuetypeId(String quetypeId) {
         this.quetypeId = quetypeId == null ? null : quetypeId.trim();
+    }
+
+    public Date getQuestionCreattime() {
+        return questionCreattime;
+    }
+
+    public void setQuestionCreattime(Date questionCreattime) {
+        this.questionCreattime = questionCreattime;
     }
 
     public String getSurverId() {
