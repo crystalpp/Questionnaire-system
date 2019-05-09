@@ -9,6 +9,7 @@ import creatQues from '@/components/question/creatQues'
 import myQues from '@/components/question/myQues'
 import release from '@/components/question/releaseQues'
 import statistics from '@/components/question/statisticsQues'
+import preview from '@/pages/preview'
 import source from '@/components/statistics/source'
 import chart from '@/components/statistics/chart'
 import answerDetail from '@/components/statistics/answerDetail'
@@ -36,6 +37,14 @@ export default new Router({
       component: register,
       meta: {
         title: '新用户注册'
+      }
+    },
+    {
+      path: '/preview',
+      name: 'preview',
+      component: preview,
+      meta: {
+        title: '问卷预览'
       }
     },
     {

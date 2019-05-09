@@ -2,7 +2,7 @@
   <div class="measurechooseType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="measure-descri">{{index+1}}、{{formData.title}}</p>
+        <p class="measure-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
        <p class="measure-descri">{{formData.subdesc}}</p>
@@ -11,7 +11,7 @@
         <el-rate v-model="score" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" show-text :texts="showText"> </el-rate>
       </el-form-item>
     </el-form>
-    <div class="optionPart">
+    <div class="optionPart" v-if="editOrPreview === 'edit'">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
         <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
@@ -27,16 +27,21 @@ export default {
   data () {
     return {
       score: 0,
-      showText: []
+      showText: [],
+      editOrPreview: ''
     }
   },
   mounted () {
     this.changeText()
+    this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
     edit () {
       this.formData.display = true
-      // this.$emit('editSelectForm', this.formData)
+      let quesType = 'measure'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
+      this.$emit('editSelectForm', this.formData)
     },
     // 根据选择不同的量表类型，评分时显示不同的文字
     changeText () {
@@ -52,7 +57,7 @@ export default {
       if (res.code === 0) {
         commonFunc.showMessage('删除成功', 'success')
       }
-    },
+    }
   }
 }
 </script>

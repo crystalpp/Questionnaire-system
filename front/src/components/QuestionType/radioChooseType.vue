@@ -2,7 +2,7 @@
   <div class="radioType" >
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="radio-descri">{{index+1}}、{{formData.title}}</p>
+        <p class="radio-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
        <p class="radio-descri">{{formData.subdesc}}</p>
@@ -11,7 +11,7 @@
         <el-radio :label="item.optionContent" v-model="formData.selected"></el-radio>
       </el-form-item>
     </el-form>
-    <div class="optionPart">
+    <div class="optionPart" v-if="editOrPreview === 'edit'">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
         <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
@@ -26,14 +26,22 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
+      editOrPreview: ''
     }
+  },
+  mounted () {
+    this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
     async edit () {
-      debugger
       this.formData.display = true
+      // this.formData.quesType = 'select'
+      let quesType = 'select'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
+      // this.$emit('editQuesType', quesType)
       this.$emit('editSelectForm', this.formData)
-      let res = await questionApi.updateByQuestionId(this.formData)
+      // let res = await questionApi.updateByQuestionId(this.formData)
     },
     async deleteQues (id) {
       let res = await questionApi.deleteByQuestionId(id)

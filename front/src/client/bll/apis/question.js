@@ -64,7 +64,7 @@ const questionApi = {
   },
   async updateByQuestionId (params) {
     let url = config.APISERVER.host + '/question/updateByQuestionId'
-    let res = await requestService.post(url, params)
+    let res = await requestService.postJson(url, params)
     return res
   }
 }

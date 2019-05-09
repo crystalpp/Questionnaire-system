@@ -11,7 +11,7 @@
         <el-input ></el-input>
       </el-form-item>
     </el-form>
-    <div class="optionPart">
+    <div class="optionPart" v-if="editOrPreview === 'edit'">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
         <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)" ></el-button>
@@ -26,6 +26,7 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
+      editOrPreview: ''
       // formData: {
       //   title: '问题1', // 题目
       //   subdesc: '描述', // 备注
@@ -43,9 +44,15 @@ export default {
       // }
     }
   },
+  mounted () {
+    this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+  },
   methods: {
     edit () {
       this.formData.display = true
+      let quesType = 'select'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
       this.$emit('editSelectForm', this.formData)
     },
     async deleteQues (id) {

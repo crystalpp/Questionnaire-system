@@ -18,9 +18,9 @@
           v-for="(question, index) in selectForm.questions"
           :label="'问题' + (index+1)"
           :key="question.key"
-          :prop="'questions.' + index + '.value'"
+          :prop="'questions.' + index + '.questionName'"
         >
-        <el-input v-model="question.value"></el-input><i @click.prevent="removeQuestion(question)" class="el-icon-close deleteicon"></i>
+        <el-input v-model="question.questionName"></el-input><i @click.prevent="removeQuestion(question)" class="el-icon-close deleteicon"></i>
        </el-form-item>
        <el-form-item>
           <el-button type="primary" plain @click="addQuestion" v-if="selectForm.questions.length>0">新增问题</el-button>
@@ -32,9 +32,9 @@
           v-for="(option, index) in selectForm.options"
           :label="'选项' + (index+1)"
           :key="option.key"
-          :prop="'options.' + index + '.value'"
+          :prop="'options.' + index + '.optionContent'"
         >
-        <el-input v-model="option.value"></el-input><i @click.prevent="removeOption(option)" class="el-icon-close deleteicon"></i>
+        <el-input v-model="option.optionContent"></el-input><i @click.prevent="removeOption(option)" class="el-icon-close deleteicon"></i>
        </el-form-item>
        <el-form-item>
           <el-button type="primary" plain @click="addOption" v-if="selectForm.options.length>0">新增选项</el-button>
@@ -43,7 +43,7 @@
         <div class="line"></div>
       </el-form-item>
       <el-form-item style="text-align:right">
-        <el-button plain>取消</el-button>
+        <el-button plain @click="cancelSubmit()">取消</el-button>
         <el-button type="primary" @click="confirm('selectForm')">确定</el-button>
       </el-form-item>
     </el-form>
@@ -63,6 +63,8 @@ export default {
         ]
       }
     }
+  },
+  mounted () {
   },
   methods: {
     confirm (formName) {
@@ -92,6 +94,11 @@ export default {
           return false
         }
       })
+    },
+    // 取消按钮
+    cancelSubmit () {
+      this.selectForm.display = false
+      this.$emit('getSelectForm', this.selectForm)
     },
     removeOption (item) {
       var index = this.selectForm.options.indexOf(item)

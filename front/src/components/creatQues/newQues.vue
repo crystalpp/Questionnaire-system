@@ -21,7 +21,7 @@
           </el-tab-pane>
           <el-tab-pane label="问卷大纲" class="tab2">
             <p class="sigelQues" v-for="(item,index) in surverQuestionsData" :key="item.keys">
-{{index+1}}.
+              {{index+1}}.
               <i  v-if="item.type === 'radioselect'">(单选)</i>
               <i  v-if="item.type === 'Multiselect'">(多选)</i>
               <i  v-if="item.type === 'Drop-down'">(下拉题)</i>
@@ -46,7 +46,7 @@
           <!-- 设计好的问卷显示的div -->
            <div  class="survey-container"  v-for="(item,index) in surverQuestionsData" :key="item.key" >
             <div v-if="item.type === 'radioselect'">
-              <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></radio-choose-type>
+              <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' ></radio-choose-type>
             </div>
             <div v-if="item.type === 'Multiselect'">
               <multiselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></multiselect-choose-type>
@@ -73,7 +73,7 @@
               <matrix-type :selectForm='selectForm' @getSelectForm = 'getSelectForm'></matrix-type>
             </div>
             <div  v-if="quesType==='measure'">
-              <measure-type @getmeasureSelectform = 'getSelectForm'></measure-type>
+              <measure-type :selectForm='selectForm' @getmeasureSelectform = 'getSelectForm'></measure-type>
             </div>
             <div  v-if="quesType==='text'">
               <text-type></text-type>
@@ -88,7 +88,7 @@
   </div>
 </template>
 <script>
-import E from 'wangeditor'
+// import E from 'wangeditor'
 import selectType from '../QuestionType/selectType'
 import measureType from '../QuestionType/measureType'
 import matrixType from '../QuestionType/matrixType'
@@ -101,6 +101,7 @@ import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
 import surverApi from '../../client/bll/apis/surver'
 import questionApi from '../../client/bll/apis/question'
+import commonFunc from '../../client/bll/apis/common/common'
 // import questionApi from '../../client/bll/apis/question'
 export default {
   components: {
@@ -135,27 +136,27 @@ export default {
       },
       selectForm: {
         option: '', // 操作方式，增加或者修改
-        display: true,
+        display: false,
         title: '', // 题目
         subdesc: '', // 备注
         type: '', // 题目类型
         required: true, // 是否必填
         options: [
           {
-            value: ''
+            optionContent: ''
           },
           {
-            value: ''
+            optionContent: ''
           }
         ], // 选项
         questions: [
           {
-            value: '',
-            checked: false
+            questionName: ''
+            // checked: false
           },
           {
-            value: '',
-            checked: false
+            questionName: ''
+            // checked: false
           }
         ],
         dropdownValue: ''
@@ -163,7 +164,17 @@ export default {
       surverQuestionsData: []
     }
   },
+  watch: {
+    'selectForm': {
+      handler (val, oldVal) {
+        debugger
+        // console.log('b.value: ' + val.value, oldVal.value)
+      },
+      deep: true
+    }
+  },
   async mounted () {
+    commonFunc.setLocalStorage('editOrPreview', 'edit')
     await this.getSurverQuesions()
     await this.getSurvers()
   },
@@ -186,7 +197,6 @@ export default {
       }
     },
     transTypeCode (data) {
-      debugger
       for (let item of data) {
         let oneitem = {}
         if (item.quetypeId === '1') {
@@ -202,7 +212,6 @@ export default {
         } else if (item.quetypeId === '6') {
           item.quesType = 'matrix-radio'
         }
-        debugger
         oneitem.type = item.quesType
         oneitem.title = item.questionName
         oneitem.questionId = item.questionId
@@ -218,23 +227,30 @@ export default {
       this.$router.push({name: key})
     },
     editSelectForm (data) {
-      this.selectForm = data
+      debugger
+      this.selectForm = JSON.parse(JSON.stringify(data))
+      if (this.selectForm.required === 'true') {
+        this.selectForm.required = true
+      } else {
+        this.selectForm.required = false
+      }
+      this.quesType = data.quesType
     },
     getSelectForm (data) {
-      this.selectForm = data
-      this.survey.questions.push(JSON.parse(JSON.stringify(data)))
+      this.selectForm = JSON.parse(JSON.stringify(data))
+      // this.survey.questions.push(JSON.parse(JSON.stringify(data)))
     },
-    createWangeditor () {
-      var editor = new E('#editor')
-      editor.customConfig.onchange = (html) => {
-        this.formArticle = html
-      }
-      editor.customConfig.uploadImgServer = '<%=path%>/Img/upload' // 上传URL
-      editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024
-      editor.customConfig.uploadImgMaxLength = 5
-      editor.customConfig.uploadFileName = 'myFileName'
-      editor.create()
-    },
+    // createWangeditor () {
+    //   var editor = new E('#editor')
+    //   editor.customConfig.onchange = (html) => {
+    //     this.formArticle = html
+    //   }
+    //   editor.customConfig.uploadImgServer = '<%=path%>/Img/upload' // 上传URL
+    //   editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024
+    //   editor.customConfig.uploadImgMaxLength = 5
+    //   editor.customConfig.uploadFileName = 'myFileName'
+    //   editor.create()
+    // },
     // 根据题型判断应该选择哪种类型的设计样式，并传入不同的值
     showQuestion (type) {
       this.selectForm.display = true
@@ -245,10 +261,10 @@ export default {
         this.quesType = 'select'
         this.selectForm.options = [
           {
-            value: ''
+            optionContent: ''
           },
           {
-            value: ''
+            optionContent: ''
           }
         ]
       } else if (type === 'textselect') {
@@ -258,25 +274,43 @@ export default {
         this.quesType = 'matrix'
         this.selectForm.questions = [
           {
-            value: ''
+            questionName: ''
           },
           {
-            value: ''
+            questionName: ''
           }
         ]
         this.selectForm.options = [
           {
-            value: '',
+            optionContent: '',
             checked: false
           },
           {
-            value: '',
+            optionContent: '',
             checked: false
           }
         ]
         this.selectForm.measureValue = ''
       } else if (type === 'measure') {
         this.quesType = 'measure'
+        this.selectForm.options = [
+          {
+            value: '满意',
+            label: '满意度'
+          },
+          {
+            value: '认同',
+            label: '认同度'
+          },
+          {
+            value: '重要',
+            label: '重要度'
+          },
+          {
+            value: '符合',
+            label: '符合度'
+          }
+        ]
       } else if (type === 'text') {
         this.quesType = 'text'
       }

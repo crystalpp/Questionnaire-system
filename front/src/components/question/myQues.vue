@@ -200,6 +200,7 @@ export default {
       // console.log(res)
     },
     rederData () {
+      // eslint-disable-next-line
       Date.prototype.toLocaleString = function () {
         return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + ' ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds()
       }

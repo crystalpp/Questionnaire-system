@@ -41,7 +41,7 @@
           </el-menu>
         </div>
         <div class="part3">
-          <el-button type="primary" plain size="small">预览</el-button>
+          <el-button type="primary" plain size="small" @click="previewQues">预览</el-button>
         </div> 
     </div>
     <div :class='contentClass'>
@@ -106,6 +106,10 @@ export default {
     await this.getSurvers()
   },
   methods: {
+    previewQues () {
+      let surverId = this.$route.query.surverId
+      this.$router.push({name: 'preview', query: {surverId: surverId}})
+    },
     async getSurvers () {
       if (commonFunc.isDefine(this.$route.query.surverId)) {
         let surverId = this.$route.query.surverId

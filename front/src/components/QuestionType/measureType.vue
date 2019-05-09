@@ -14,7 +14,7 @@
       <el-form-item label="量表类型" :rules="{
           required: true, message: '量表类型不能为空', trigger: 'blur'
         }">
-        <el-select  v-model="selectForm.measureValue"  placeholder="请选择量表类型">
+        <el-select  v-model="selectForm.options[0].optionContent"  placeholder="请选择量表类型">
           <el-option
             v-for="item in selectForm.options"
             :key="item.value"
@@ -37,39 +37,42 @@
 import commonFunc from '../../client/bll/apis/common/common'
 import questionApi from '../../client/bll/apis/question.js'
 export default {
+  props: ['selectForm'],
   data () {
     return {
       rules: {
         title: [
           { required: true, message: '请输入题目', trigger: 'blur' }
         ]
-      },
-      selectForm: {
-        title: '', // 题目
-        subdesc: '', // 备注
-        type: 'measure', // 题目类型
-        required: true, // 是否必填
-        measureValue: '',
-        options: [
-          {
-            value: '满意',
-            label: '满意度'
-          },
-          {
-            value: '认同',
-            label: '认同度'
-          },
-          {
-            value: '重要',
-            label: '重要度'
-          },
-          {
-            value: '符合',
-            label: '符合度'
-          }
-        ] // 选项
       }
+      // selectForm: {
+      //   title: '', // 题目
+      //   subdesc: '', // 备注
+      //   type: 'measure', // 题目类型
+      //   required: true, // 是否必填
+      //   measureValue: '',
+      //   options: [
+      //     {
+      //       value: '满意',
+      //       label: '满意度'
+      //     },
+      //     {
+      //       value: '认同',
+      //       label: '认同度'
+      //     },
+      //     {
+      //       value: '重要',
+      //       label: '重要度'
+      //     },
+      //     {
+      //       value: '符合',
+      //       label: '符合度'
+      //     }
+      //   ] // 选项
+      // }
     }
+  },
+  mounted () {
   },
   methods: {
     confirm (formName) {

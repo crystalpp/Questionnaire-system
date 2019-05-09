@@ -75,6 +75,48 @@ const requestService = {
     })
   },
   /**
+   * post json对象时，需要改变content Type 和数据类型
+   * @param {*} serverUrl
+   * @param {*} optionsParams
+   * @param {*} formSubmission
+   */
+  postJson: function (serverUrl, optionsParams, formSubmission) {
+    let options = {
+      method: 'post',
+      url: serverUrl,
+      // mode:'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      withCredentials: false, // default: false
+      data: JSON.stringify(optionsParams)
+    }
+    commonFunc.showLoading()
+    return new Promise((resolve, reject) => {
+      Vue.axios(options)
+        .then(resp => {
+          // commonFunc.myConsole(resp)
+          if (resp.data.code === 200) {
+            // 成功正确的返回 -- resolve
+            // console.log(resp)
+            commonFunc.hideLoading()
+            resolve(resp.data)
+          } else {
+            // 业务自定义错误码返回 -- reject
+            commonFunc.hideLoading()
+            resolve(resp.data)
+          }
+        })
+        .catch(error => {
+          // 服务器或网络错误码返回 -- reject
+          // commonFunc.myConsole(error)
+          commonFunc.hideLoading()
+          resolve(error)
+        })
+    })
+  },
+  /**
    * POST
    * @param  {object} optionsParams   相关参数传入
    * @param  {string} serverUrl  动态传入的获取数据的地址
@@ -97,6 +139,7 @@ const requestService = {
         //   ? 'application/x-www-form-urlencoded'
         //   : 'application/json'
         'Content-Type': 'application/x-www-form-urlencoded'
+        // 'Content-Type': 'application/json'
       },
       // timeout: 3600,
       // `withCredentials` indicates whether or not cross-site Access-Control requests
@@ -109,6 +152,7 @@ const requestService = {
       //   ? qs.stringify(optionsParams, { indices: false })
       //   : optionsParams
       data: qs.stringify(optionsParams, { indices: false })
+      // data: JSON.stringify(optionsParams)
     }
     commonFunc.showLoading()
     return new Promise((resolve, reject) => {

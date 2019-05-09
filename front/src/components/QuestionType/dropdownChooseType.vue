@@ -2,7 +2,7 @@
   <div class="dropDownType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="dropdown-descri">{{index+1}}、{{formData.title}}</p>
+        <p class="dropdown-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
        <p class="dropdown-descri">{{formData.subdesc}}</p>
@@ -18,7 +18,7 @@
          </el-select>
       </el-form-item>
     </el-form>
-    <div class="optionPart">
+    <div class="optionPart" v-if="editOrPreview === 'edit'">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
         <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
@@ -33,11 +33,18 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
+      editOrPreview: ''
     }
+  },
+  mounted () {
+    this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
     edit () {
       this.formData.display = true
+      let quesType = 'select'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
       this.$emit('editSelectForm', this.formData)
     },
     async deleteQues (id) {

@@ -2,7 +2,7 @@
   <div class="matrixRadioChooseType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="matrixRadio-descri">{{index+1}}、{{formData.title}}</p>
+        <p class="matrixRadio-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
        <p class="matrixRadio-descri">{{formData.subdesc}}</p>
@@ -51,7 +51,7 @@
         </el-table> -->
       </el-form-item>
     </el-form>
-    <div class="optionPart">
+    <div class="optionPart" v-if="editOrPreview === 'edit'">
       <el-button-group>
         <el-button  plain icon="el-icon-edit" @click="edit"></el-button>
         <el-button  plain icon="el-icon-delete" @click="deleteQues(formData.questionId)"></el-button>
@@ -66,6 +66,7 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
+      editOrPreview: '',
       // 参考数据
       radio: '',
       tableData: [{
@@ -92,9 +93,15 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+  },
   methods: {
     edit () {
       this.formData.display = true
+      let quesType = 'matrix'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
       this.$emit('editSelectForm', this.formData)
     },
     async deleteQues (id) {

@@ -17,8 +17,8 @@
         v-for="(option, index) in selectFormdata.options"
         :label="'选项' + (index+1)"
         :key="option.key"
-        :prop="'options.' + index + '.value'">
-      <el-input v-model="option.value"></el-input><i @click.prevent="removeOption(option)" class="el-icon-close deleteicon"></i>
+        :prop="'options.' + index + '.optionContent'">
+      <el-input v-model="option.optionContent"></el-input><i @click.prevent="removeOption(option)" class="el-icon-close deleteicon"></i>
       </el-form-item>
       <el-form-item>
           <el-button type="primary" plain @click="addOption" v-if="selectFormdata.options.length>0">新增选项</el-button>
@@ -47,6 +47,8 @@ export default {
       }
     }
   },
+  mounted () {
+  },
   methods: {
     removeOption (item) {
       var index = this.selectFormdata.options.indexOf(item)
@@ -56,38 +58,57 @@ export default {
     },
     addOption () {
       this.selectFormdata.options.push({
-        value: '',
+        optionContent: '',
         key: Date.now()
       })
     },
     // 取消按钮
     cancelSubmit () {
+      debugger
       this.selectFormdata.display = false
+      this.$emit('getSelectForm', this.selectFormdata)
     },
     // 确定按钮
     confirm (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          debugger
+          if (this.selectFormdata.optionMethod === 'edit') {
+            await this.editQuestion()
+          } else {
+            await this.addQuestion()
+          }
           this.selectFormdata.display = false
           this.$emit('getSelectForm', this.selectFormdata)
-          let newOptionsArr = []
-          for (let i of this.selectFormdata.options) {
-            newOptionsArr.push(i.value)
-          }
-          this.selectFormdata.optionsValue = newOptionsArr
-          this.selectFormdata.surverId = this.$route.query.surverId
-          let res = await questionApi.add(this.selectFormdata)
-          if (res.code === 0) {
-            commonFunc.showMessage('新增成功', 'success')
-          } else {
-            commonFunc.showMessage('新增失败，请稍后再试', 'error')
-          }
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    async addQuestion () {
+      let newOptionsArr = []
+      for (let i of this.selectFormdata.options) {
+        newOptionsArr.push(i.optionContent)
+      }
+      this.selectFormdata.optionsValue = newOptionsArr
+      this.selectFormdata.surverId = this.$route.query.surverId
+      let res = await questionApi.add(this.selectFormdata)
+      if (res.code === 0) {
+        commonFunc.showMessage('新增成功', 'success')
+      } else {
+        commonFunc.showMessage('新增失败，请稍后再试', 'error')
+      }
+    },
+    async editQuestion () {
+      debugger
+      let res = await questionApi.updateByQuestionId(this.selectFormdata)
+      if (res.code === 0) {
+        if (res.code === 0) {
+          commonFunc.showMessage('修改成功', 'success')
+        } else {
+          commonFunc.showMessage('修改失败，请稍后再试', 'error')
+        }
+      }
     }
   }
 }
