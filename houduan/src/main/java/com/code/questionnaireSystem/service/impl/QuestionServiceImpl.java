@@ -211,17 +211,41 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public Result updateByQuestionId(QuestionResponse questionResponse) {
 		// TODO Auto-generated method stub
+		// 更新矩阵的副问题
+		// deleteByQuestionId(questionResponse.getQuestionId());
+		/**
+		 * 还有问题稍后更改
+		 */
+		String subQues = "";
+		System.out.println(questionResponse.getQuestions());
+		if (questionResponse.getQuestions() != null) {
+			for (Question subQuestion : questionResponse.getQuestions()) {
+				subQues += subQuestion.getQuestionId();
+				int subNum = questionMapper.updateByPrimaryKeySelective(subQuestion);
+				if (subNum < 1) {
+					return Result.failure(ResultCode.FAIL);
+				}
+			}
+		}
+		// 更新主问题
 		Question question = new Question();
 		question.setQuestionId(questionResponse.getQuestionId());
-		/*
-		 * question.setQuestionName(title);
-		 * question.setQuestionDirection(subdesc); question.setQuetypeId(type);
-		 * question.setQuestionNeed(required);
-		 */
-		// question.setSubquestionId(questions);
-
+		question.setQuestionName(questionResponse.getTitle());
+		question.setQuestionNeed(questionResponse.getRequired());
+		question.setQuestionDirection(questionResponse.getSubdesc());
+		question.setSubquestionId(subQues);
 		int num = questionMapper.updateByPrimaryKeySelective(question);
-		return null;
+		if (num < 1) {
+			return Result.failure(ResultCode.FAIL);
+		}
+		// 更新选项
+		for (QuestionOption qOption : questionResponse.getOptions()) {
+			int num1 = questionoptionMapper.updateByPrimaryKeySelective(qOption);
+			if (num1 < 1) {
+				return Result.failure(ResultCode.FAIL);
+			}
+		}
+		return Result.success();
 	}
 
 }
