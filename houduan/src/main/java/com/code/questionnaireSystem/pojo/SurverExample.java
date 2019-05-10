@@ -555,6 +555,126 @@ public class SurverExample {
             return (Criteria) this;
         }
 
+        public Criteria andSurverIstemplateIsNull() {
+            addCriterion("surver_isTemplate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateIsNotNull() {
+            addCriterion("surver_isTemplate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateEqualTo(Integer value) {
+            addCriterion("surver_isTemplate =", value, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateNotEqualTo(Integer value) {
+            addCriterion("surver_isTemplate <>", value, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateGreaterThan(Integer value) {
+            addCriterion("surver_isTemplate >", value, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("surver_isTemplate >=", value, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateLessThan(Integer value) {
+            addCriterion("surver_isTemplate <", value, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateLessThanOrEqualTo(Integer value) {
+            addCriterion("surver_isTemplate <=", value, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateIn(List<Integer> values) {
+            addCriterion("surver_isTemplate in", values, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateNotIn(List<Integer> values) {
+            addCriterion("surver_isTemplate not in", values, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateBetween(Integer value1, Integer value2) {
+            addCriterion("surver_isTemplate between", value1, value2, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIstemplateNotBetween(Integer value1, Integer value2) {
+            addCriterion("surver_isTemplate not between", value1, value2, "surverIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipIsNull() {
+            addCriterion("surver_limitIP is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipIsNotNull() {
+            addCriterion("surver_limitIP is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipEqualTo(Integer value) {
+            addCriterion("surver_limitIP =", value, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipNotEqualTo(Integer value) {
+            addCriterion("surver_limitIP <>", value, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipGreaterThan(Integer value) {
+            addCriterion("surver_limitIP >", value, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipGreaterThanOrEqualTo(Integer value) {
+            addCriterion("surver_limitIP >=", value, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipLessThan(Integer value) {
+            addCriterion("surver_limitIP <", value, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipLessThanOrEqualTo(Integer value) {
+            addCriterion("surver_limitIP <=", value, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipIn(List<Integer> values) {
+            addCriterion("surver_limitIP in", values, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipNotIn(List<Integer> values) {
+            addCriterion("surver_limitIP not in", values, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipBetween(Integer value1, Integer value2) {
+            addCriterion("surver_limitIP between", value1, value2, "surverLimitip");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverLimitipNotBetween(Integer value1, Integer value2) {
+            addCriterion("surver_limitIP not between", value1, value2, "surverLimitip");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;

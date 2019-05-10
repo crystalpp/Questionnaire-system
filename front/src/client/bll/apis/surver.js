@@ -37,6 +37,11 @@ const surverApi = {
     let url = config.APISERVER.host + '/surver/deleteById'
     let res = await requestService.post(url, param)
     return res
+  },
+  async updateEndTime (params) {
+    let url = config.APISERVER.host + '/surver/updatePublish'
+    let res = await requestService.post(url, params)
+    return res
   }
 }
 

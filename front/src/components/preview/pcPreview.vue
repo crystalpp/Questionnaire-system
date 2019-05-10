@@ -4,29 +4,34 @@
         <!-- {{survey.surveyTitle.value}} {{survey.surveyDescr.value}} -->
         <p class="survey-title">{{survey.title}}</p> 
         <p class="survey-descr">{{survey.descr}}</p>
-      </div>
-      <div class="survey-container">
-        <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
-          <div v-if="item.type === 'radioselect'">
-            <radio-choose-type :formData = 'item' :index = 'index' ></radio-choose-type>
-          </div>
-          <div v-if="item.type === 'Multiselect'">
-            <multiselect-choose-type :formData = 'item' :index = 'index' ></multiselect-choose-type>
-          </div>
-          <div v-if="item.type === 'Drop-down'">
-            <dropdown-choose-type :formData = 'item' :index = 'index' ></dropdown-choose-type>
-          </div>
-          <div v-if="item.type === 'textselect'"> 
-            <textselect-choose-type :formData = 'item' :index = 'index' ></textselect-choose-type>
-          </div>
-          <div v-if="item.type === 'measure'">
-            <measure-choose-type :formData = 'item' :index = 'index' ></measure-choose-type>
-          </div>
-          <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
-            <matrix-choose-type :formData = 'item' :index = 'index' ></matrix-choose-type>
-          </div>
+    </div>
+    <div class="survey-container">
+      <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
+        <div v-if="item.type === 'radioselect'">
+          <radio-choose-type :formData = 'item' :index = 'index' ></radio-choose-type>
+        </div>
+        <div v-if="item.type === 'Multiselect'">
+          <multiselect-choose-type :formData = 'item' :index = 'index' ></multiselect-choose-type>
+        </div>
+        <div v-if="item.type === 'Drop-down'">
+          <dropdown-choose-type :formData = 'item' :index = 'index' ></dropdown-choose-type>
+        </div>
+        <div v-if="item.type === 'textselect'"> 
+          <textselect-choose-type :formData = 'item' :index = 'index' ></textselect-choose-type>
+        </div>
+        <div v-if="item.type === 'measure'">
+          <measure-choose-type :formData = 'item' :index = 'index' ></measure-choose-type>
+        </div>
+        <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
+          <matrix-choose-type :formData = 'item' :index = 'index' ></matrix-choose-type>
         </div>
       </div>
+       <div class="submit">
+        <el-button type="primary" >提交</el-button>
+      </div>
+    </div>
+   <div class="footer">
+   </div>
   </div>
 </template>
 <script>
@@ -51,14 +56,19 @@ export default {
     }
   },
   mounted () {
+    document.getElementsByTagName('html')[0].style.fontSize = '100px'
   },
   methods: {
   }
 }
 </script>
 <style lang="scss" scoped>
+.el-button--primary{
+  width: 20%;
+}
 .pcPreview-container{
     background: #EFEFEF;
+    // margin-bottom: 1rem;
     .survey-head{
       width: 75%;
       margin: 0 auto;
@@ -79,6 +89,14 @@ export default {
       width: 75%;
       margin: 0 auto;
       background: #ffffff;
+      .submit{
+        text-align: center;
+        padding-bottom: 0.2rem;
+      }
+    }
+    .footer{
+      height: 0.2rem;
+      background: #EFEFEF;
     }
   }
 </style>

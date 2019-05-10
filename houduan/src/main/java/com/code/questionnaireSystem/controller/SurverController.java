@@ -46,6 +46,14 @@ public class SurverController {
 	}
 
 	/**
+	 * 问卷发布时，更新问卷的填写截止时间和是否限制同一ip填写多次
+	 */
+	@PostMapping("/updatePublish")
+	public Result updateEndTime(String surverId, String EndTime, int limitIP) {
+		return surverService.updateEndTime(surverId, EndTime, limitIP);
+	}
+
+	/**
 	 * 根据问卷id查询该问卷的信息
 	 * 
 	 * @param surverId

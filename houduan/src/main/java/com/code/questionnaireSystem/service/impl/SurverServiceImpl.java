@@ -1,5 +1,7 @@
 package com.code.questionnaireSystem.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -85,6 +87,37 @@ public class SurverServiceImpl implements SurverService {
 		SurverExample.Criteria criteria = surverExample.createCriteria();
 		criteria.andSurverIdEqualTo(surverId);
 		int num = surverMapper.deleteByExample(surverExample);
+		if (num < 1) {
+			return Result.failure(ResultCode.FAIL);
+		} else {
+			return Result.success();
+		}
+	}
+
+	/**
+	 * 更新问卷的发布截止时间，是否限制ip等字段
+	 */
+	@Override
+	public Result updateEndTime(String surverId, String endTime, int limitIP) {
+		// TODO Auto-generated method stub
+		Date d = null;
+		endTime = endTime.replace("Z", " UTC");// 注意是空格+UTC
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+		try {
+			d = format.parse(endTime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		SurverExample surverExample = new SurverExample();
+		SurverExample.Criteria criteria = surverExample.createCriteria();
+		criteria.andSurverIdEqualTo(surverId);
+		Surver surver = new Surver();
+		surver.setSurverId(surverId);
+		surver.setSurverPulishstarttime(new Date());
+		surver.setSurverEndtime(d);
+		surver.setSurverLimitip(limitIP);
+		int num = surverMapper.updateByPrimaryKeySelective(surver);
 		if (num < 1) {
 			return Result.failure(ResultCode.FAIL);
 		} else {

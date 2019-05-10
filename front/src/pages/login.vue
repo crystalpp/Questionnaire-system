@@ -76,6 +76,7 @@ export default {
           if (res.code === 0) {
             commonFunc.showMessage('登录成功', 'success')
             commonFunc.setLocalStorage('menuActiveIndex', 'show')
+            commonFunc.setLocalStorage('showQuesStep', false)
             commonFunc.setLocalStorage('userInfo', JSON.stringify(res.data))
             this.$router.push({name: 'show'})
           } else {

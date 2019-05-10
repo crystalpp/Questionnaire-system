@@ -14,4 +14,6 @@ public interface SurverService {
 
 	Result deleteById(String surverId);
 
+	Result updateEndTime(String surverId, String endTime, int limitIP);
+
 }

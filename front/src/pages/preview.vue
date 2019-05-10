@@ -2,22 +2,23 @@
   <div class="preiewContainer">
     <div class="header">
       <div class="option">
-        <div :class="phoneClass" @click="phonePreview">
-          <i class="iconfont icon-phone" style="font-size: 0.38rem;"></i>
-          <span class="text">手机预览</span>
-        </div>
         <div :class="PCClass" @click="pcPreview">
-          <i class="iconfont icon-pc" style="font-size: 0.38rem;"></i>
+          <i class="iconfont icon-pc" style="font-size: 38px"></i>
           <span class="text">电脑预览</span>
         </div>
+        <div :class="phoneClass" @click="phonePreview">
+          <i class="iconfont icon-phone" style="font-size: 38px;"></i>
+          <span class="text">手机预览</span>
+        </div>
+        
       </div>
-      <div class="closeButon">
-         <el-button plain type="primary" size="small">退出</el-button>
+      <div class="closeButon" >
+         <el-button plain type="primary" size="small" @click="creatPreview">退出</el-button>
       </div>
     </div>
     <div class="pre-body">
       <pc-preview :survey='survey' v-if="pcOrPhone === 'PC'"></pc-preview>
-      <phone-preview v-if="pcOrPhone === 'phone'"></phone-preview>
+      <phone-preview :survey='survey' v-if="pcOrPhone === 'phone'"></phone-preview>
       <!-- 设计好的问卷显示的div -->
       
     </div>
@@ -41,17 +42,21 @@ export default {
         descr: '',
         surverQuestions: []
       },
-      phoneClass: 'phoneCheck',
-      PCClass: 'PC',
-      pcOrPhone: 'phone'
+      phoneClass: 'phone',
+      PCClass: 'PCCheck',
+      pcOrPhone: 'PC'
     }
   },
   async mounted () {
+    document.getElementsByTagName('html')[0].style.fontSize = '100px'
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()
     await this.getSurverQuesions()
   },
   methods: {
+    creatPreview () {
+      this.$router.go(-1)
+    },
     pcPreview () {
       this.phoneClass = 'phone'
       this.PCClass = 'PCCheck'
@@ -111,13 +116,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .preiewContainer{
-  font-size: 0.16rem;
+  font-size: 16px;
   width: 100%;
   height: 104%;
   overflow: auto;
   .header{
     background: #FFFFFF;
-    height: 0.8rem;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,38 +130,38 @@ export default {
       flex: 3;
       display: flex;
       justify-content: center;
-      margin-left: 2.8rem;
+      margin-left: 280px;
       .phoneCheck {
         cursor: pointer;
         color: #479DE6;
-        line-height: 0.8rem;
+        line-height: 80px;
         display: flex;
-        margin-left: 0.1rem;
-        margin-right: 0.1rem;
+        margin-left: 10px;
+        margin-right: 10px;
       }
       .phone{
         cursor: pointer;
         color: #000000;
-        line-height: 0.8rem;
+        line-height: 80px;
         display: flex;
-        margin-left: 0.1rem;
-        margin-right: 0.1rem;
+        margin-left: 10px;
+        margin-right: 10px;
       }
       .PCCheck{
         cursor: pointer;
         color: #479DE6;
-        line-height: 0.8rem;
+        line-height: 80px;
         display: flex;
-        margin-left: 0.1rem;
-        margin-right: 0.1rem;
+        margin-left:10px;
+        margin-right: 10px;
       }
       .PC{
         cursor: pointer;
         color: #000000;
-        line-height: 0.8rem;
+        line-height: 80px;
         display: flex;
-        margin-left: 0.1rem;
-        margin-right: 0.1rem;
+        margin-left: 10px;
+        margin-right: 10px;
       }
     }
     .closeButon{

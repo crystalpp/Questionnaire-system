@@ -2,33 +2,33 @@
   <div class="matrixRadioChooseType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="matrixRadio-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
+        <p class="matrixRadio-title" >{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
        <p class="matrixRadio-descri">{{formData.subdesc}}</p>
       </el-form-item>
-      <el-form-item>
+      <el-form-item style="width:88%" >
         <el-table
           :data="formData.questions"
           style="width: 100%">
           <el-table-column
             label=""
-            width="180">
+           >
             <template slot-scope="scope">
               <span style="margin-left: 10px">{{ scope.row.questionName }}</span>
             </template>
           </el-table-column>
           <el-table-column v-for="(option,index) in formData.options" :key="option.key"
             :label="option.optionContent"
-            width="180">
+            >
             <template slot-scope="scope">
              <!-- <el-radio-group v-model="radio2">
               <el-radio :label="3">备选项</el-radio>
               <el-radio :label="6">备选项</el-radio>
               <el-radio :label="9">备选项</el-radio>
             </el-radio-group> -->
-             <el-radio v-model="formData.questions[scope.$index].checked"  @change="getCurrentColumn(scope.$index,scope.row)" v-if="formData.type === 'matrix-radio'"> </el-radio>
-             <el-checkbox v-model="formData.questions[scope.$index].checked"  @change="getCurrentColumn(scope.$index,scope.row)" v-if="formData.type === 'matrix-multi'"> </el-checkbox>
+             <el-radio v-model="formData.questions[scope.$index]"  @change="getCurrentColumn(scope.$index,scope.row)" v-if="formData.type === 'matrix-radio'"> </el-radio>
+             <el-checkbox v-model="formData.questions[scope.$index]"  @change="getCurrentColumn(scope.$index,scope.row)" v-if="formData.type === 'matrix-multi'"> </el-checkbox>
             </template>
           </el-table-column>
         </el-table>
@@ -131,8 +131,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
 .selectPart{
   flex: 15;
+  width: 100%;
 }
 .optionPart{
   flex: 2;
@@ -148,6 +150,9 @@ margin-bottom: 0;
   margin-bottom: 0.2rem;
   .matrixRadio-descri{
     font-size: 0.12rem;
+  }
+  .matrixRadio-title{
+    font-size: 0.18rem;
   }
 }
 </style>

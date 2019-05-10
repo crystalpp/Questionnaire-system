@@ -96,9 +96,39 @@
         <el-button type="primary" @click="deleteSurver">确 定</el-button>
       </span>
   </el-dialog>
+  <el-dialog
+      title="问卷类型"
+      :visible.sync="surverTypeVisible"
+      width="50%"
+      >
+      <el-tag
+        :key="tag.survertypeId"
+        v-for="tag in dynamicTags"
+        closable
+        :disable-transitions="false"
+        @close="handleClose(tag)">
+        {{tag.survertypeName}}
+      </el-tag>
+      <el-input
+        class="input-new-tag"
+        v-if="inputVisible"
+        v-model="inputValue"
+        ref="saveTagInput"
+        size="small"
+        @keyup.enter.native="handleInputConfirm"
+        @blur="handleInputConfirm"
+      >
+      </el-input>
+      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="surverTypeVisible = false">取 消</el-button>
+        <el-button type="primary" >确 定</el-button>
+      </span>
+  </el-dialog>
   </div>
 </template>
 <script>
+import questionTypeApi from '../../client/bll/apis/questionType.js'
 import surverApi from '../../client/bll/apis/surver.js'
 import commonFunc from '../../client/bll/apis/common/common.js'
 import questionApi from '../../client/bll/apis/question'
@@ -131,6 +161,10 @@ export default {
       //     date: '2019-02-04'
       //   }
       // ],
+      surverTypeVisible: false,
+      inputVisible: false,
+      inputValue: '',
+      dynamicTags: [],
       deleteSuverVisible: false, // 问卷删除提醒dialog
       deleteSurverId: '',
       cardIcon: 'icon1Click',
@@ -165,6 +199,42 @@ export default {
     await this.getSurvers()
   },
   methods: {
+    async handleClose (tag) {
+      let params = {
+        id: tag.survertypeId
+      }
+      let res = await questionTypeApi.delete(params)
+      if (res.code === 0) {
+        commonFunc.showMessage('删除成功', 'success')
+        await this.getAllSurverTypes()
+      }
+      // this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    },
+    showInput () {
+      debugger
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    async handleInputConfirm () {
+      debugger
+      let inputValue = this.inputValue
+      if (inputValue) {
+        let params = {
+          name: this.inputValue,
+          userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
+        }
+        let res = await questionTypeApi.add(params)
+        if (res.code === 0) {
+          // this.dynamicTags.push(inputValue)
+          commonFunc.showMessage('新增成功', 'success')
+          await this.getAllSurverTypes()
+        }
+        this.inputVisible = false
+        this.inputValue = ''
+      }
+    },
     /**
      * 根据问卷id删除问卷
      */
@@ -207,6 +277,8 @@ export default {
       for (let item of this.surversData) {
         if (item.surverPulishstarttime === null) {
           item.surverPulishstarttime = '未发布'
+        } else {
+          item.surverPulishstarttime = '已发布'
         }
         var unixTimestamp = new Date(item.surverCreattime)
         let commonTime = unixTimestamp.toLocaleString()
@@ -214,17 +286,29 @@ export default {
         // alert(commonTime)
       }
     },
+    async getAllSurverTypes () {
+      let params = {
+        userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
+      }
+      let res = await questionTypeApi.getAll(params)
+      if (res.code === 0) {
+        debugger
+        this.dynamicTags = res.data
+      }
+    },
     // 新建问卷
     async creatQues () {
-      let userInfor = JSON.parse(commonFunc.getLocalStorage('userInfo'))
-      let res = await surverApi.add(userInfor.userId)
-      if (res.code === 0) {
-        commonFunc.setLocalStorage('contentClass', 'ques-content')
-        commonFunc.setLocalStorage('showQuesStep', true)
-        commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
-        commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
-        this.$router.push({name: 'creat', query: {surverId: res.data.surverId}})
-      }
+      this.surverTypeVisible = true
+      await this.getAllSurverTypes()
+      // let userInfor = JSON.parse(commonFunc.getLocalStorage('userInfo'))
+      // let res = await surverApi.add(userInfor.userId)
+      // if (res.code === 0) {
+      //   commonFunc.setLocalStorage('contentClass', 'ques-content')
+      //   commonFunc.setLocalStorage('showQuesStep', true)
+      //   commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+      //   commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+      //   this.$router.push({name: 'creat', query: {surverId: res.data.surverId}})
+      // }
     },
     showOption (index) {
       this.indexitem = index
@@ -249,6 +333,21 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
 .myQues{
     height: 100%;
     overflow: auto;

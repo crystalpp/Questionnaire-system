@@ -9,6 +9,8 @@
     <result column="surver_pulishStartTime" property="surverPulishstarttime" jdbcType="TIMESTAMP" />
     <result column="surver_endTime" property="surverEndtime" jdbcType="TIMESTAMP" />
     <result column="surver_recoverNum" property="surverRecovernum" jdbcType="INTEGER" />
+    <result column="surver_isTemplate" property="surverIstemplate" jdbcType="INTEGER" />
+    <result column="surver_limitIP" property="surverLimitip" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -71,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     surver_id, surver_title, surver_description, surver_creatTime, surver_pulishStartTime, 
-    surver_endTime, surver_recoverNum, user_id
+    surver_endTime, surver_recoverNum, surver_isTemplate, surver_limitIP, user_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.SurverExample" >
     select
@@ -107,12 +109,12 @@
   <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.Surver" >
     insert into surver (surver_id, surver_title, surver_description, 
       surver_creatTime, surver_pulishStartTime, 
-      surver_endTime, surver_recoverNum, user_id
-      )
+      surver_endTime, surver_recoverNum, surver_isTemplate, 
+      surver_limitIP, user_id)
     values (#{surverId,jdbcType=VARCHAR}, #{surverTitle,jdbcType=VARCHAR}, #{surverDescription,jdbcType=VARCHAR}, 
       #{surverCreattime,jdbcType=TIMESTAMP}, #{surverPulishstarttime,jdbcType=TIMESTAMP}, 
-      #{surverEndtime,jdbcType=TIMESTAMP}, #{surverRecovernum,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}
-      )
+      #{surverEndtime,jdbcType=TIMESTAMP}, #{surverRecovernum,jdbcType=INTEGER}, #{surverIstemplate,jdbcType=INTEGER}, 
+      #{surverLimitip,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.Surver" >
     insert into surver
@@ -137,6 +139,12 @@
       </if>
       <if test="surverRecovernum != null" >
         surver_recoverNum,
+      </if>
+      <if test="surverIstemplate != null" >
+        surver_isTemplate,
+      </if>
+      <if test="surverLimitip != null" >
+        surver_limitIP,
       </if>
       <if test="userId != null" >
         user_id,
@@ -163,6 +171,12 @@
       </if>
       <if test="surverRecovernum != null" >
         #{surverRecovernum,jdbcType=INTEGER},
+      </if>
+      <if test="surverIstemplate != null" >
+        #{surverIstemplate,jdbcType=INTEGER},
+      </if>
+      <if test="surverLimitip != null" >
+        #{surverLimitip,jdbcType=INTEGER},
       </if>
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
@@ -199,6 +213,12 @@
       <if test="record.surverRecovernum != null" >
         surver_recoverNum = #{record.surverRecovernum,jdbcType=INTEGER},
       </if>
+      <if test="record.surverIstemplate != null" >
+        surver_isTemplate = #{record.surverIstemplate,jdbcType=INTEGER},
+      </if>
+      <if test="record.surverLimitip != null" >
+        surver_limitIP = #{record.surverLimitip,jdbcType=INTEGER},
+      </if>
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=VARCHAR},
       </if>
@@ -216,6 +236,8 @@
       surver_pulishStartTime = #{record.surverPulishstarttime,jdbcType=TIMESTAMP},
       surver_endTime = #{record.surverEndtime,jdbcType=TIMESTAMP},
       surver_recoverNum = #{record.surverRecovernum,jdbcType=INTEGER},
+      surver_isTemplate = #{record.surverIstemplate,jdbcType=INTEGER},
+      surver_limitIP = #{record.surverLimitip,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -242,6 +264,12 @@
       <if test="surverRecovernum != null" >
         surver_recoverNum = #{surverRecovernum,jdbcType=INTEGER},
       </if>
+      <if test="surverIstemplate != null" >
+        surver_isTemplate = #{surverIstemplate,jdbcType=INTEGER},
+      </if>
+      <if test="surverLimitip != null" >
+        surver_limitIP = #{surverLimitip,jdbcType=INTEGER},
+      </if>
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
@@ -256,6 +284,8 @@
       surver_pulishStartTime = #{surverPulishstarttime,jdbcType=TIMESTAMP},
       surver_endTime = #{surverEndtime,jdbcType=TIMESTAMP},
       surver_recoverNum = #{surverRecovernum,jdbcType=INTEGER},
+      surver_isTemplate = #{surverIstemplate,jdbcType=INTEGER},
+      surver_limitIP = #{surverLimitip,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=VARCHAR}
     where surver_id = #{surverId,jdbcType=VARCHAR}
   </update>

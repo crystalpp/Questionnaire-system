@@ -10,6 +10,7 @@ import myQues from '@/components/question/myQues'
 import release from '@/components/question/releaseQues'
 import statistics from '@/components/question/statisticsQues'
 import preview from '@/pages/preview'
+import fill from '@/pages/fill'
 import source from '@/components/statistics/source'
 import chart from '@/components/statistics/chart'
 import answerDetail from '@/components/statistics/answerDetail'
@@ -45,6 +46,14 @@ export default new Router({
       component: preview,
       meta: {
         title: '问卷预览'
+      }
+    },
+    {
+      path: '/fill/:id',
+      name: 'fill',
+      component: fill,
+      meta: {
+        title: '问卷填写'
       }
     },
     {

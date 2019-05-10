@@ -18,6 +18,10 @@ public class Surver implements Serializable {
 
     private Integer surverRecovernum;
 
+    private Integer surverIstemplate;
+
+    private Integer surverLimitip;
+
     private String userId;
 
     private static final long serialVersionUID = 1L;
@@ -76,6 +80,22 @@ public class Surver implements Serializable {
 
     public void setSurverRecovernum(Integer surverRecovernum) {
         this.surverRecovernum = surverRecovernum;
+    }
+
+    public Integer getSurverIstemplate() {
+        return surverIstemplate;
+    }
+
+    public void setSurverIstemplate(Integer surverIstemplate) {
+        this.surverIstemplate = surverIstemplate;
+    }
+
+    public Integer getSurverLimitip() {
+        return surverLimitip;
+    }
+
+    public void setSurverLimitip(Integer surverLimitip) {
+        this.surverLimitip = surverLimitip;
     }
 
     public String getUserId() {

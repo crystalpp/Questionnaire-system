@@ -101,6 +101,7 @@ export default {
     next()
   },
   async mounted () {
+    document.getElementsByTagName('html')[0].style.fontSize = '100px'
     this.refreshLocalData()
     this.getUserInfo()
     await this.getSurvers()
@@ -138,9 +139,24 @@ export default {
     quit () {
       this.$router.push({name: 'index'})
     },
-    releaseQues () {
-      this.dialogReleaseVisible = false
-      this.$router.push({name: 'release'})
+    async releaseQues () {
+      let limitIP = 0
+      if (this.releaseLimitForm.isLimitedIP) {
+        limitIP = 1
+      } else {
+        limitIP = 0
+      }
+      let params = {
+        surverId: this.$route.query.surverId,
+        EndTime: this.releaseLimitForm.endTime,
+        limitIP: limitIP
+      }
+      let res = await surverApi.updateEndTime(params)
+      debugger
+      if (res.code === 0) {
+        this.dialogReleaseVisible = false
+        this.$router.push({name: 'release', query: {surverId: this.$route.query.surverId}})
+      }
     },
     cancelRelease () {
       this.dialogReleaseVisible = false
