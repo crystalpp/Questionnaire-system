@@ -64,7 +64,6 @@ export default {
     },
     // 取消按钮
     cancelSubmit () {
-      debugger
       this.selectFormdata.display = false
       this.$emit('getSelectForm', this.selectFormdata)
     },
@@ -100,7 +99,6 @@ export default {
       }
     },
     async editQuestion () {
-      debugger
       let res = await questionApi.updateByQuestionId(this.selectFormdata)
       if (res.code === 0) {
         if (res.code === 0) {

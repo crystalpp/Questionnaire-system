@@ -7,7 +7,6 @@ const questioinTypeApi = {
     return res
   },
   async add (params) {
-    debugger
     let url = config.APISERVER.host + '/surverType/add'
     let res = await requestService.post(url, params)
     return res

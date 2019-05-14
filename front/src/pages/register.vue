@@ -55,7 +55,6 @@ import commonFunc from '../client/bll/apis/common/common.js'
 export default {
   data () {
     var valiate = (rule, value, callback) => {
-      // debugger
       console.log(this.valiteInfo + '1111')
       if (this.valiteInfo !== '') {
         callback(new Error(this.valiteInfo))

@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     copyUrl () {
-      debugger
       var input = document.getElementById('input')
       input.value = (this.linkUrl + this.surverId) // 修改文本框的内容
       input.select() // 选中文本

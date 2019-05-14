@@ -53,7 +53,6 @@ export default {
     }
   },
   mounted () {
-    debugger
     document.getElementsByTagName('html')[0].style.fontSize = '50px'
   },
   methods: {

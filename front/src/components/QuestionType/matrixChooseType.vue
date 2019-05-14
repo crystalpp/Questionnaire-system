@@ -111,7 +111,6 @@ export default {
       }
     },
     getCurrentColumn (index, row, itemIndex) {
-      // debugger
       // for (let i = 0; i < this.formData.questions.length; i++) {
       //   if (this.formData.questions[i].value !== row.value) {
       //     this.formData.options[i].checked = false

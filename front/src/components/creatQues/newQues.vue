@@ -167,7 +167,6 @@ export default {
   watch: {
     'selectForm': {
       handler (val, oldVal) {
-        debugger
         // console.log('b.value: ' + val.value, oldVal.value)
       },
       deep: true
@@ -227,7 +226,6 @@ export default {
       this.$router.push({name: key})
     },
     editSelectForm (data) {
-      debugger
       this.selectForm = JSON.parse(JSON.stringify(data))
       if (this.selectForm.required === 'true') {
         this.selectForm.required = true

@@ -152,7 +152,6 @@ export default {
         limitIP: limitIP
       }
       let res = await surverApi.updateEndTime(params)
-      debugger
       if (res.code === 0) {
         this.dialogReleaseVisible = false
         this.$router.push({name: 'release', query: {surverId: this.$route.query.surverId}})

@@ -211,14 +211,12 @@ export default {
       // this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     },
     showInput () {
-      debugger
       this.inputVisible = true
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
     async handleInputConfirm () {
-      debugger
       let inputValue = this.inputValue
       if (inputValue) {
         let params = {
@@ -292,7 +290,6 @@ export default {
       }
       let res = await questionTypeApi.getAll(params)
       if (res.code === 0) {
-        debugger
         this.dynamicTags = res.data
       }
     },

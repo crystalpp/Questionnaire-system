@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     async getSurvers () {
-      debugger
       let surverId = this.$route.params.id
       let res = await surverApi.search(surverId)
       if (res.code === 0) {
