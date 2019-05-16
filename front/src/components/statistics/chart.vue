@@ -1,12 +1,12 @@
 <template>
   <div class="answerChart">
-    <div class="oneQues">
+    <div class="oneQues" v-for="(item) in answers">
       <div class="titleArea">
-        1、你的年龄?
+        {{item.title}}
       </div>
       <div class="tableArea">
         <el-table
-        :data="quesionData"
+        :data="item.quesionData"
         show-summary
         style="width: 100%">
         <el-table-column
@@ -42,18 +42,23 @@
 export default {
   data () {
     return {
-      quesionData: [
+      answers: [
         {
-          name: '大三',
-          value: 1
-        },
-        {
-          name: '大四',
-          value: 2
-        },
-        {
-          name: '其他',
-          value: 3
+          title: '你对所学的专业是否满意',
+          quesionData: [
+            {
+              name: '非常满意',
+              value: 8
+            },
+            {
+              name: '一般',
+              value: 2
+            },
+            {
+              name: '非常不满意',
+              value: 0
+            }
+          ]
         }
       ],
       currentChart: 'bar'
@@ -61,7 +66,7 @@ export default {
   },
   mounted () {
     this.drawBarChart('quesBarChart', this.getLengendData(), this.getValueData())
-    this.drawPieChart('quesPieChart', this.getLengendData(), this.quesionData)
+    this.drawPieChart('quesPieChart', this.getLengendData(), this.answers[0].quesionData)
   },
   methods: {
     changeChart (key) {
@@ -69,14 +74,14 @@ export default {
     },
     getValueData () {
       let res = []
-      for (let item of this.quesionData) {
+      for (let item of this.answers[0].quesionData) {
         res.push(item.value)
       }
       return res
     },
     getLengendData () {
       let res = []
-      for (let item of this.quesionData) {
+      for (let item of this.answers[0].quesionData) {
         res.push(item.name)
       }
       return res

@@ -1,6 +1,6 @@
 import config from '../../config/config.js'
 import requestService from './common/request.js'
-const questioinTypeApi = {
+const surverTypeApi = {
   async getAll (params) {
     let url = config.APISERVER.host + '/surverType/getAll'
     let res = await requestService.get(url, params)
@@ -15,6 +15,14 @@ const questioinTypeApi = {
     let url = config.APISERVER.host + '/surverType/delete'
     let res = await requestService.post(url, params)
     return res
+  },
+  async selectById (params) {
+    let parm = {
+      id: params
+    }
+    let url = config.APISERVER.host + '/surverType/selectById'
+    let res = await requestService.get(url, parm)
+    return res
   }
 }
-export default questioinTypeApi
+export default surverTypeApi

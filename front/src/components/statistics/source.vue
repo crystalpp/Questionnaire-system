@@ -4,19 +4,19 @@
     <div class="dataScreening">
       <div class="item">
         <p class="title">有效回收量</p>
-        <p class="num">5</p>
+        <p class="num">10</p>
       </div>
       <div class="item">
         <p class="title">浏览量</p>
-        <p class="num">5</p>
+        <p class="num">12</p>
       </div>
       <div class="item">
         <p class="title">平均答题时间</p>
-        <p class="num">1分20秒</p>
+        <p class="num">20秒</p>
       </div>
       <div class="item">
         <p class="title">回收率</p>
-        <p class="num">50%</p>
+        <p class="num">83.3%</p>
       </div>
     </div>
     <!-- 每日回答情况（散点图）和回答者地域（中国地图）分布 -->
@@ -117,31 +117,30 @@ export default {
       operateLegendData: ['IOS', 'Windows', 'MacOS', 'Android', '其他'],
       deviceLegendData: ['计算机', '移动设备', '其他'],
       browerData: [
-        {value: 1, name: 'chrome'},
+        {value: 5, name: 'chrome'},
         {value: 2, name: 'firefox'},
         {value: 3, name: 'oprea'},
-        {value: 4, name: 'IE'},
-        {value: 5, name: '其他'}
+        {value: 0, name: 'IE'},
+        {value: 0, name: '其他'}
       ],
       operateData: [
-        {value: 1, name: 'IOS'},
-        {value: 2, name: 'Windows'},
-        {value: 3, name: 'MacOS'},
-        {value: 4, name: 'Android'},
-        {value: 5, name: '其他'}
+        {value: 2, name: 'IOS'},
+        {value: 0, name: 'Windows'},
+        {value: 0, name: 'MacOS'},
+        {value: 8, name: 'Android'},
+        {value: 0, name: '其他'}
       ],
       deviceData: [
-        {value: 1, name: '计算机'},
-        {value: 2, name: '移动设备'},
-        {value: 5, name: '其他'}
+        {value: 5, name: '计算机'},
+        {value: 5, name: '移动设备'},
+        {value: 0, name: '其他'}
       ],
       areaData: [
-        {'name': '北京', 'value': 225},
-        {'name': '上海', 'value': 142},
-        {'name': '黑龙江', 'value': 50},
-        {'name': '深圳', 'value': 92},
-        {'name': '湖北', 'value': 410},
-        {'name': '四川', 'value': 453}
+        {'name': '北京', 'value': 1},
+        {'name': '上海', 'value': 1},
+        {'name': '湖北', 'value': 1},
+        {'name': '四川', 'value': 2},
+        {'name': '重庆', 'value': 5}
       ],
       chinaData: chinaDataJSON.data
     }
@@ -174,13 +173,13 @@ export default {
         color: ['#0078C8'],
         xAxis: {
           type: 'category',
-          data: ['2-11', '2-12', '2-13', '2-15', '2-16', '2-17', '2-18']
+          data: ['5-11', '5-12', '5-13', '5-14']
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          data: [4, 3, 1, 2],
           type: 'line'
         }]
       }
@@ -199,7 +198,7 @@ export default {
         },
         visualMap: {
           min: 0,
-          max: 500,
+          max: 5,
           text: ['高', '低'],
           realtime: false,
           calculable: true,

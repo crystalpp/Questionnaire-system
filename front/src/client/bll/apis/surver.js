@@ -42,6 +42,19 @@ const surverApi = {
     let url = config.APISERVER.host + '/surver/updatePublish'
     let res = await requestService.post(url, params)
     return res
+  },
+  async getQRcodeImage (params) {
+    let url = config.APISERVER.host + '/surver/getQRimage'
+    let res = await requestService.get(url, '123')
+    return res
+  },
+  async selectBySurverType (params) {
+    let param = {
+      surverTypeId: params
+    }
+    let url = config.APISERVER.host + '/surver/selectBySurverType'
+    let res = await requestService.get(url, param)
+    return res
   }
 }
 

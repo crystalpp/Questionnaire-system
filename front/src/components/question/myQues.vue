@@ -3,16 +3,18 @@
     <div class="myQues-header">
       <i :class="'el-icon-menu '+cardIcon" @click="showCard"></i>
       <i :class="'el-icon-tickets '+ tableIcon" @click="showTable"></i>
-      <el-select class="select" v-model="timeValue" placeholder="请选择" size="small">
+      <el-select class="select" v-model="surverType" placeholder="请选择" size="small" @change="selectSurverType">
         <el-option 
-          v-for="item in timeOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in dynamicTags"
+          :key="item.survertypeId"
+          :label="item.survertypeName"
+          :value="item.survertypeId">
         </el-option>
       </el-select>
       <el-input class="input" v-model="searchData"  suffix-icon="el-icon-search" size="small" placeholder="问卷标题"></el-input>
+      <el-button @click="resetSurverData" type="primary" size="small" style="background: #2672FF;margin-left:0.2rem;" >重置</el-button>
       <el-button @click="creatQues" type="primary" icon="el-icon-circle-plus" size="small" style="background: #2672FF;margin-left:0.2rem;" v-show="show2 === 'table'">新建问卷</el-button>
+      
     </div>
     <div class="myQues-body-card" v-show="show2 === 'card'">
       <div class="creatQues" @click="creatQues">
@@ -23,7 +25,7 @@
       </div>
       <div class=" questions" @mouseover="showOption(index)" @mouseout="showStatus(index)" v-for="(item, index) in surversData" :key="item.key">
           <div class="card-container">
-            <div class="card-icon">问卷</div>
+            <div class="card-icon">{{item.surverTypeName}}</div>
             <div class="card-title">{{item.surverTitle}}</div>
             <div class="card-time">{{item.surverCreattime}}</div>
             <div class="card-footer" v-show="show === 'status' || indexitem !== index ">
@@ -50,19 +52,25 @@
           align='left'
           prop="surverTitle"
           label="问卷标题"
-          width="500">
+          width="450">
+        </el-table-column>
+        <el-table-column
+          prop="surverTypeName"
+          align='center'
+          label="分类"
+          width="120">
         </el-table-column>
         <el-table-column
           prop="surverPulishstarttime"
           align='center'
           label="状态"
-          width="120">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="surverRecovernum"
           align='center'
           label="收到数据"
-          width="120">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="surverCreattime"
@@ -128,7 +136,7 @@
   </div>
 </template>
 <script>
-import questionTypeApi from '../../client/bll/apis/questionType.js'
+import surverTypeApi from '../../client/bll/apis/surverType.js'
 import surverApi from '../../client/bll/apis/surver.js'
 import commonFunc from '../../client/bll/apis/common/common.js'
 import questionApi from '../../client/bll/apis/question'
@@ -173,37 +181,43 @@ export default {
       show: 'status',
       show2: 'card', // 控制是列表还是卡片模式
       searchData: '',
-      timeValue: '',
-      timeOptions: [
-        {
-          value: 'week',
-          label: '过去一周内'
-        },
-        {
-          value: 'month',
-          label: '过去一个月内'
-        },
-        {
-          value: 'year',
-          label: '过去一个年内'
-        }
-      ],
+      surverType: '',
       surversData: []
     }
   },
   async beforeRouteUpdate (to, from, next) {
     await this.getSurvers()
+    await this.getAllSurverTypes()
     next()
   },
   async mounted () {
     await this.getSurvers()
+    await this.getAllSurverTypes()
   },
   methods: {
+    /**
+     * 重置搜索和筛选条件
+     */
+    async resetSurverData () {
+      this.surverType = ''
+      await this.getSurvers()
+    },
+    /**
+     * 根据分类筛选问卷
+     */
+    async selectSurverType () {
+      debugger
+      let res = await surverApi.selectBySurverType(this.surverType)
+      if (res.code === 0) {
+        this.surversData = res.data
+        await this.rederData()
+      }
+    },
     async handleClose (tag) {
       let params = {
         id: tag.survertypeId
       }
-      let res = await questionTypeApi.delete(params)
+      let res = await surverTypeApi.delete(params)
       if (res.code === 0) {
         commonFunc.showMessage('删除成功', 'success')
         await this.getAllSurverTypes()
@@ -223,7 +237,7 @@ export default {
           name: this.inputValue,
           userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
         }
-        let res = await questionTypeApi.add(params)
+        let res = await surverTypeApi.add(params)
         if (res.code === 0) {
           // this.dynamicTags.push(inputValue)
           commonFunc.showMessage('新增成功', 'success')
@@ -263,11 +277,11 @@ export default {
       let res = await surverApi.searchByuserId(userId)
       if (res.code === 0) {
         this.surversData = res.data
-        this.rederData()
+        await this.rederData()
       }
       // console.log(res)
     },
-    rederData () {
+    async rederData () {
       // eslint-disable-next-line
       Date.prototype.toLocaleString = function () {
         return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + ' ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds()
@@ -282,13 +296,21 @@ export default {
         let commonTime = unixTimestamp.toLocaleString()
         item.surverCreattime = commonTime
         // alert(commonTime)
+        let res = await surverTypeApi.selectById(item.survertypeId)
+        if (res.code === 0) {
+          if (res.data.length >= 1) {
+            item.surverTypeName = res.data[0].survertypeName
+          } else {
+            item.surverTypeName = ''
+          }
+        }
       }
     },
     async getAllSurverTypes () {
       let params = {
         userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
       }
-      let res = await questionTypeApi.getAll(params)
+      let res = await surverTypeApi.getAll(params)
       if (res.code === 0) {
         this.dynamicTags = res.data
       }
@@ -447,7 +469,7 @@ export default {
       width: 90%;
       margin: 0 auto;
       .card-icon {
-        width: 0.4rem;
+        // width: 0.4rem;
         height: 0.2rem;
         line-height: 0.2rem;
         background: #2672FF;

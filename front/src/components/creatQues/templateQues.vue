@@ -10,7 +10,7 @@
               <li>全部</li>
               <li>新生调查</li>
               <li>毕业生调查</li>
-              <li>大四毕业生调查</li>
+              <li>应届毕业生调查</li>
               <li>计算机科学与技术系</li>
               <li>软件工程系</li>
               <li>物联网工程系</li>
@@ -23,14 +23,28 @@
           <div class="oneItem">
             <div class="line"></div>
             <div class="text">
-              <div class="text1">大学生问卷调查</div>
+              <div class="text1">计算机学院新生入学调查问卷</div>
               <div class="text2"><i class="el-icon-view"></i> 预览</div>
             </div>
           </div>
           <div class="oneItem">
             <div class="line"></div>
             <div class="text">
-              <div class="text1">大学生问卷调查</div>
+              <div class="text1">计算机科学与技术专业毕业生问卷调查</div>
+              <div class="text2"><i class="el-icon-view"></i> 预览</div>
+            </div>
+          </div>
+          <div class="oneItem">
+            <div class="line"></div>
+            <div class="text">
+              <div class="text1">计算机学院应届毕业生调查</div>
+              <div class="text2"><i class="el-icon-view"></i> 预览</div>
+            </div>
+          </div>
+          <div class="oneItem">
+            <div class="line"></div>
+            <div class="text">
+              <div class="text1">计算机学院往届毕业生调查</div>
               <div class="text2"><i class="el-icon-view"></i> 预览</div>
             </div>
           </div>

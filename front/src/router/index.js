@@ -5,6 +5,7 @@ import index from '@/pages/index'
 import login from '@/pages/login'
 import register from '@/pages/register'
 import questionIndex from '@/pages/questionIndex'
+import user from '@/pages/user'
 import creatQues from '@/components/question/creatQues'
 import myQues from '@/components/question/myQues'
 import release from '@/components/question/releaseQues'
@@ -54,6 +55,14 @@ export default new Router({
       component: fill,
       meta: {
         title: '问卷填写'
+      }
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: user,
+      meta: {
+        title: '用户中心'
       }
     },
     {

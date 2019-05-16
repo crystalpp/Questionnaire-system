@@ -3,7 +3,7 @@
    <!-- 控制内层的宽度和高度 -->
    <div class="releaseQues-container">
      <div class="QRcode">
-        <img src="../../assets/img/qrcode.png" alt="" style="width:100%">
+        <img :src="imageUrl" alt="" style="width:100%">
       </div>
       <div class="option">
         <div class="link">
@@ -21,17 +21,26 @@
 </template>
 <script>
 import commonFunc from '../../client/bll/apis/common/common'
+import surverApi from '../../client/bll/apis/surver'
 export default {
   data () {
     return {
       linkUrl: 'http://localhost:8082/#/fill/',
-      surverId: '123'
+      surverId: '123',
+      imageUrl: ''
     }
   },
-  mounted () {
+  async mounted () {
+    await this.getQRcode()
     this.surverId = this.$route.query.surverId
   },
   methods: {
+    async getQRcode () {
+      let res = await surverApi.getQRcodeImage()
+      if (res.code === 0) {
+        this.imageUrl = res.data
+      }
+    },
     copyUrl () {
       var input = document.getElementById('input')
       input.value = (this.linkUrl + this.surverId) // 修改文本框的内容

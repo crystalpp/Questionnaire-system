@@ -42,10 +42,10 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="100"
+        :page-sizes="[5, 10]"
+        :page-size="5"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="40">
+        :total="10">
       </el-pagination>
     </div>
   </div>
@@ -57,24 +57,60 @@ export default {
       answerData: [
         {
           id: 1,
+          startTime: '2019-05-11 12:39:59',
+          endTime: '2019-03-30 12:40:21',
+          time: '0分22秒'
+        },
+        {
+          id: 2,
+          startTime: '2019-05-11 15:11:20',
+          endTime: '2019-05-11 15:11:42',
+          time: '0分22秒'
+        },
+        {
+          id: 3,
+          startTime: '2019-05-11 21:19:59',
+          endTime: '2019-05-11 21:20:18',
+          time: '0分19秒'
+        },
+        {
+          id: 4,
+          startTime: '2019-05-11 22:05:01',
+          endTime: '2019-05-11 22:05:21',
+          time: '0分20秒'
+        },
+        {
+          id: 5,
+          startTime: '2019-05-12 8:05:05',
+          endTime: '2019-05-12 8:05:23',
+          time: '0分18秒'
+        },
+        {
+          id: 6,
+          startTime: '2019-05-12 13:16:23',
+          endTime: '2019-05-12 13:16:44',
+          time: '0分21秒'
+        },
+        {
+          id: 7,
           startTime: '2019-03-30 21:39:59',
           endTime: '2019-03-30 21:40:21',
           time: '0分49秒'
         },
         {
-          id: 1,
+          id: 8,
           startTime: '2019-03-30 21:39:59',
           endTime: '2019-03-30 21:40:21',
           time: '0分49秒'
         },
         {
-          id: 1,
+          id: 9,
           startTime: '2019-03-30 21:39:59',
           endTime: '2019-03-30 21:40:21',
           time: '0分49秒'
         },
         {
-          id: 1,
+          id: 10,
           startTime: '2019-03-30 21:39:59',
           endTime: '2019-03-30 21:40:21',
           time: '0分49秒'

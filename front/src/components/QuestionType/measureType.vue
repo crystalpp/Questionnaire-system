@@ -73,14 +73,16 @@ export default {
     }
   },
   mounted () {
+    debugger
   },
   methods: {
     confirm (formName) {
+      debugger
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.selectForm.display = false
           this.$emit('getmeasureSelectform', this.selectForm)
-          this.selectForm.optionsValue = this.selectForm.measureValue
+          this.selectForm.optionsValue = this.selectForm.options[0].optionContent
           this.selectForm.surverId = this.$route.query.surverId
           let res = await questionApi.add(this.selectForm)
           if (res.code === 0) {

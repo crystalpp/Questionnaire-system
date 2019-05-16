@@ -22,7 +22,7 @@
       </div>
       <div class="ques-header-user">
         <i class="iconfont icon-xxhdpiShape item1"></i> 
-        <p class="item2">{{userInfo.userName}}</p>
+        <p class="item2" @click="editUser">{{userInfo.userName}}</p>
         <i class="iconfont icon-exit item3" @click="quit"></i> 
         <p class="item4" @click="quit">退出</p>
       </div>
@@ -107,6 +107,9 @@ export default {
     await this.getSurvers()
   },
   methods: {
+    editUser () {
+      this.$router.push({name: 'user'})
+    },
     previewQues () {
       let surverId = this.$route.query.surverId
       this.$router.push({name: 'preview', query: {surverId: surverId}})

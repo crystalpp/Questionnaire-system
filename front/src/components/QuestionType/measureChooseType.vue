@@ -45,12 +45,15 @@ export default {
     },
     // 根据选择不同的量表类型，评分时显示不同的文字
     changeText () {
-      let value1 = '非常不' + this.formData.options[0].optionContent
-      let value2 = '不' + this.formData.options[0].optionContent
-      let value3 = '一般'
-      let value4 = this.formData.options[0].optionContent
-      let value5 = '非常' + this.formData.options[0].optionContent
-      this.showText = [value1, value2, value3, value4, value5]
+      debugger
+      if (this.formData.options.length > 0) {
+        let value1 = '非常不' + this.formData.options[0].optionContent
+        let value2 = '不' + this.formData.options[0].optionContent
+        let value3 = '一般'
+        let value4 = this.formData.options[0].optionContent
+        let value5 = '非常' + this.formData.options[0].optionContent
+        this.showText = [value1, value2, value3, value4, value5]
+      }
     },
     async deleteQues (id) {
       let res = await questionApi.deleteByQuestionId(id)

@@ -235,6 +235,7 @@ export default {
       this.quesType = data.quesType
     },
     getSelectForm (data) {
+      debugger
       this.selectForm = JSON.parse(JSON.stringify(data))
       // this.survey.questions.push(JSON.parse(JSON.stringify(data)))
     },
