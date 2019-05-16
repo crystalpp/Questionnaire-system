@@ -62,4 +62,14 @@ public class SurverTypeServiceImpl implements SurverTypeService {
 		return Result.success(surverTypes);
 	}
 
+	@Override
+	public Result selectById(String id) {
+		// TODO Auto-generated method stub
+		SurverTypeExample surverTypeExample = new SurverTypeExample();
+		SurverTypeExample.Criteria criteria = surverTypeExample.createCriteria();
+		criteria.andSurvertypeIdEqualTo(id);
+		List<SurverType> surverTypes = surverTypeMapper.selectByExample(surverTypeExample);
+		return Result.success(surverTypes);
+	}
+
 }

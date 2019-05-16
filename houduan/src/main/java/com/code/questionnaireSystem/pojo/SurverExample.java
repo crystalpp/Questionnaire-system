@@ -615,6 +615,76 @@ public class SurverExample {
             return (Criteria) this;
         }
 
+        public Criteria andSurvertypeIdIsNull() {
+            addCriterion("surverType_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdIsNotNull() {
+            addCriterion("surverType_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdEqualTo(String value) {
+            addCriterion("surverType_id =", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdNotEqualTo(String value) {
+            addCriterion("surverType_id <>", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdGreaterThan(String value) {
+            addCriterion("surverType_id >", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdGreaterThanOrEqualTo(String value) {
+            addCriterion("surverType_id >=", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdLessThan(String value) {
+            addCriterion("surverType_id <", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdLessThanOrEqualTo(String value) {
+            addCriterion("surverType_id <=", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdLike(String value) {
+            addCriterion("surverType_id like", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdNotLike(String value) {
+            addCriterion("surverType_id not like", value, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdIn(List<String> values) {
+            addCriterion("surverType_id in", values, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdNotIn(List<String> values) {
+            addCriterion("surverType_id not in", values, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdBetween(String value1, String value2) {
+            addCriterion("surverType_id between", value1, value2, "survertypeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIdNotBetween(String value1, String value2) {
+            addCriterion("surverType_id not between", value1, value2, "survertypeId");
+            return (Criteria) this;
+        }
+
         public Criteria andSurverLimitipIsNull() {
             addCriterion("surver_limitIP is null");
             return (Criteria) this;

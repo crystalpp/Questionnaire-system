@@ -20,6 +20,8 @@ public class Surver implements Serializable {
 
     private Integer surverIstemplate;
 
+    private String survertypeId;
+
     private Integer surverLimitip;
 
     private String userId;
@@ -88,6 +90,14 @@ public class Surver implements Serializable {
 
     public void setSurverIstemplate(Integer surverIstemplate) {
         this.surverIstemplate = surverIstemplate;
+    }
+
+    public String getSurvertypeId() {
+        return survertypeId;
+    }
+
+    public void setSurvertypeId(String survertypeId) {
+        this.survertypeId = survertypeId == null ? null : survertypeId.trim();
     }
 
     public Integer getSurverLimitip() {

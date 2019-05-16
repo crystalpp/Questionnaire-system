@@ -124,4 +124,19 @@ public class SurverServiceImpl implements SurverService {
 			return Result.success();
 		}
 	}
+
+	@Override
+	public Result selectBySurverType(String surverTypeId) {
+		SurverExample surverExample = new SurverExample();
+		SurverExample.Criteria criteria = surverExample.createCriteria();
+		criteria.andSurvertypeIdEqualTo(surverTypeId);
+		List<Surver> survers = surverMapper.selectByExample(surverExample);
+		return Result.success(survers);
+	}
+
+	@Override
+	public Result selectBySurverTitle(String surverTitle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

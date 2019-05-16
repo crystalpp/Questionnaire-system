@@ -33,4 +33,9 @@ public class SurverTypeController {
 		return surverTypeService.getAll(userId);
 	}
 
+	@GetMapping("/selectById")
+	public Result selectById(String id) {
+		return surverTypeService.selectById(id);
+	}
+
 }

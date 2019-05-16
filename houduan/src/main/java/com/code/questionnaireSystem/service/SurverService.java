@@ -16,4 +16,8 @@ public interface SurverService {
 
 	Result updateEndTime(String surverId, String endTime, int limitIP);
 
+	Result selectBySurverType(String surverTypeId);
+
+	Result selectBySurverTitle(String surverTitle);
+
 }

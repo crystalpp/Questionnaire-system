@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.code.questionnaireSystem.service.SurverService;
+import com.code.questionnaireSystem.utils.QrCodeUtils;
 import com.code.questionnaireSystem.utils.Result;
+import com.code.questionnaireSystem.utils.ResultCode;
 
 /**
  * 问卷controller层
@@ -86,4 +88,32 @@ public class SurverController {
 		return surverService.deleteById(surverId);
 	}
 
+	@GetMapping("/getQRimage")
+	public Result productcode(String url) {
+		String imagePath = QrCodeUtils.zxingCodeCreate("http://www.baidu.com",
+				"E:/CODE/Questionnaire-system/front/src/assets/img/QR/", 500,
+				"E:/CODE/Questionnaire-system/material/img/logo.jpg");
+		if (imagePath != null) {
+			return Result.success(imagePath);
+		} else {
+			return Result.failure(ResultCode.FAIL);
+		}
+	}
+
+	/**
+	 * 根据问卷类型筛选问卷
+	 * 
+	 * @param surverTypeId
+	 * @return
+	 */
+
+	@GetMapping("selectBySurverType")
+	public Result selectBySurverType(String surverTypeId) {
+		return surverService.selectBySurverType(surverTypeId);
+	}
+
+	@GetMapping("selectBySurverTitle")
+	public Result selectBySurverTitle(String surverTitle) {
+		return surverService.selectBySurverTitle(surverTitle);
+	}
 }

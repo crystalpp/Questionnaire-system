@@ -10,4 +10,6 @@ public interface SurverTypeService {
 
 	Result getAll(String userId);
 
+	Result selectById(String id);
+
 }
