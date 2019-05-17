@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.code.questionnaireSystem.pojo.User;
 import com.code.questionnaireSystem.service.UserService;
 import com.code.questionnaireSystem.utils.Result;
 
@@ -33,5 +34,10 @@ public class UserController {
 	@GetMapping("/valiate")
 	public Result validate(String type, String value) {
 		return userService.valiate(type, value);
+	}
+
+	@PostMapping("/update")
+	public Result update(User user) {
+		return userService.update(user);
 	}
 }

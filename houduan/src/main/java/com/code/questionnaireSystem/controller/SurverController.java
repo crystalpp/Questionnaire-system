@@ -90,8 +90,7 @@ public class SurverController {
 
 	@GetMapping("/getQRimage")
 	public Result productcode(String url) {
-		String imagePath = QrCodeUtils.zxingCodeCreate("http://www.baidu.com",
-				"E:/CODE/Questionnaire-system/front/src/assets/img/QR/", 500,
+		String imagePath = QrCodeUtils.zxingCodeCreate(url, "E:/CODE/Questionnaire-system/front/static/img/QR/", 500,
 				"E:/CODE/Questionnaire-system/material/img/logo.jpg");
 		if (imagePath != null) {
 			return Result.success(imagePath);
@@ -107,13 +106,8 @@ public class SurverController {
 	 * @return
 	 */
 
-	@GetMapping("selectBySurverType")
-	public Result selectBySurverType(String surverTypeId) {
-		return surverService.selectBySurverType(surverTypeId);
-	}
-
-	@GetMapping("selectBySurverTitle")
-	public Result selectBySurverTitle(String surverTitle) {
-		return surverService.selectBySurverTitle(surverTitle);
+	@GetMapping("selectSurvers")
+	public Result selectSurvers(String surverTypeId, String surverTitle) {
+		return surverService.selectSurvers(surverTypeId, surverTitle);
 	}
 }

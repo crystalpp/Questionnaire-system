@@ -1,5 +1,6 @@
 package com.code.questionnaireSystem.service;
 
+import com.code.questionnaireSystem.pojo.User;
 import com.code.questionnaireSystem.utils.Result;
 
 public interface UserService {
@@ -9,4 +10,6 @@ public interface UserService {
 	Result addUser(String userName, String userPassword, String userPhone, String userEmail);
 
 	Result valiate(String type, String value);
+
+	Result update(User user);
 }

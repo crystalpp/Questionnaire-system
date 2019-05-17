@@ -64,14 +64,15 @@ public class QrCodeUtils {
 			BufferedImage image = getBufferedImage(content, size, logoPath);
 			// 获得随机数
 			Random random = new Random();
-			String imagePath = path + random.nextInt(1000) + ".jpg";
+			int imgId = random.nextInt(1000);
+			String imagePath = path + imgId + ".jpg";
 			// 生成二维码存放文件
 			File file = new File(imagePath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
 			ImageIO.write(image, imageType, file);
-			return imagePath;
+			return (imgId + ".jpg");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

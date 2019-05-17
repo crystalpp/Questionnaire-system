@@ -70,4 +70,15 @@ public class UserServiceImpl implements UserService {
 			return Result.failure(ResultCode.FAIL, "此" + typeText + "已被注册过，请重新输入");
 		}
 	}
+
+	@Override
+	public Result update(User user) {
+		// TODO Auto-generated method stub
+		int num = userMapper.updateByPrimaryKeySelective(user);
+		if (num < 1) {
+			return Result.failure(ResultCode.FAIL);
+		} else {
+			return Result.success();
+		}
+	}
 }
