@@ -8,6 +8,7 @@
 // import phonePreview from '../components/preview/phonePreview'
 import pcPreview from '../components/preview/pcPreview'
 import surverApi from '../client/bll/apis/surver'
+import participatenApi from '../client/bll/apis/participate'
 import questionApi from '../client/bll/apis/question'
 import commonFunc from '../client/bll/apis/common/common'
 export default {
@@ -28,8 +29,14 @@ export default {
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()
     await this.getSurverQuesions()
+    await this.getDeviceType()
   },
   methods: {
+    async getDeviceType () {
+      let res = await participatenApi.getDeviceType()
+      if (res.code === 0) {
+      }
+    },
     async getSurvers () {
       let surverId = this.$route.params.id
       let res = await surverApi.search(surverId)

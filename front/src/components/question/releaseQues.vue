@@ -8,8 +8,10 @@
       <div class="option">
         <div class="link">
           <p class="link-url">{{linkUrl + surverId}}</p>
-          <textarea id="input"></textarea>
-          <el-button plain size="smalll" @click="copyUrl">复制</el-button>
+          <el-button plain size="smalll"
+          v-clipboard:copy="linkUrl + surverId"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError">复制</el-button>
           <el-button plain size="smalll" @click="openNewTab">打开</el-button>
         </div>
         <div class="downloadQR">
@@ -25,28 +27,47 @@ import surverApi from '../../client/bll/apis/surver'
 export default {
   data () {
     return {
-      linkUrl: 'http://localhost:8082/#/fill/',
+      linkUrl: 'http://101.132.106.184/#/fill/123',
       surverId: '123',
       imageUrl: ''
     }
   },
   async mounted () {
-    await this.getQRcode()
     this.surverId = this.$route.query.surverId
+    await this.getQRcode()
+  },
+  async beforeRouteUpdate (to, from, next) {
+    debugger
+    await this.getQRcode()
+    next()
+    // next(async vm => {
+    //   await vm.getQRcode()
+    // })
   },
   methods: {
     async getQRcode () {
-      let res = await surverApi.getQRcodeImage()
+      // this.surverId = this.$route.query.surverId
+      let params = {
+        url: 'http://101.132.106.184/#/fill/' + this.surverId
+      }
+      let res = await surverApi.getQRcodeImage(params)
       if (res.code === 0) {
-        this.imageUrl = res.data
+        let url = '/static/img/QR/' + res.data
+        this.imageUrl = url
       }
     },
-    copyUrl () {
-      var input = document.getElementById('input')
-      input.value = (this.linkUrl + this.surverId) // 修改文本框的内容
-      input.select() // 选中文本
-      document.execCommand('copy') // 执行浏览器复制命令
+    // copyUrl () {
+    //   var input = document.getElementById('input')
+    //   input.value = (this.linkUrl + this.surverId) // 修改文本框的内容
+    //   input.select() // 选中文本
+    //   document.execCommand('copy') // 执行浏览器复制命令
+    //   commonFunc.showMessage('复制成功', 'success')
+    // },
+    onCopy () {
       commonFunc.showMessage('复制成功', 'success')
+    },
+    onError () {
+      commonFunc.showMessage('复制失败', 'error')
     },
     openNewTab () {
       // let url = this.linkUrl + this.surverId

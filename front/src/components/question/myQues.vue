@@ -3,7 +3,7 @@
     <div class="myQues-header">
       <i :class="'el-icon-menu '+cardIcon" @click="showCard"></i>
       <i :class="'el-icon-tickets '+ tableIcon" @click="showTable"></i>
-      <el-select class="select" v-model="surverType" placeholder="请选择" size="small" @change="selectSurverType">
+      <el-select class="select" v-model="surverType" placeholder="请选择" size="small" @change="selectSurvers">
         <el-option 
           v-for="item in dynamicTags"
           :key="item.survertypeId"
@@ -11,10 +11,9 @@
           :value="item.survertypeId">
         </el-option>
       </el-select>
-      <el-input class="input" v-model="searchData"  suffix-icon="el-icon-search" size="small" placeholder="问卷标题"></el-input>
+      <el-input class="input" v-model.trim="searchTitle"  isuffix-icon="el-icon-search" size="small" placeholder="问卷标题"></el-input>
       <el-button @click="resetSurverData" type="primary" size="small" style="background: #2672FF;margin-left:0.2rem;" >重置</el-button>
       <el-button @click="creatQues" type="primary" icon="el-icon-circle-plus" size="small" style="background: #2672FF;margin-left:0.2rem;" v-show="show2 === 'table'">新建问卷</el-button>
-      
     </div>
     <div class="myQues-body-card" v-show="show2 === 'card'">
       <div class="creatQues" @click="creatQues">
@@ -140,35 +139,16 @@ import surverTypeApi from '../../client/bll/apis/surverType.js'
 import surverApi from '../../client/bll/apis/surver.js'
 import commonFunc from '../../client/bll/apis/common/common.js'
 import questionApi from '../../client/bll/apis/question'
+const delay = (function () {
+  let timer = 0
+  return function (callback, ms) {
+    clearTimeout(timer)
+    timer = setTimeout(callback, ms)
+  }
+})()
 export default {
   data () {
     return {
-      // tableData: [
-      //   {
-      //     title: '网购消费者的行为调查',
-      //     status: '未发布',
-      //     dataNum: 0,
-      //     date: '2019-02-04'
-      //   },
-      //   {
-      //     title: '大学生在校消费调查表',
-      //     status: '未发布',
-      //     dataNum: 0,
-      //     date: '2019-02-04'
-      //   },
-      //   {
-      //     title: '计算机学院毕业设计要求调查表',
-      //     status: '未发布',
-      //     dataNum: 0,
-      //     date: '2019-02-04'
-      //   },
-      //   {
-      //     title: '大学生网络调查',
-      //     status: '未发布',
-      //     dataNum: 0,
-      //     date: '2019-02-04'
-      //   }
-      // ],
       surverTypeVisible: false,
       inputVisible: false,
       inputValue: '',
@@ -180,7 +160,7 @@ export default {
       indexitem: 0,
       show: 'status',
       show2: 'card', // 控制是列表还是卡片模式
-      searchData: '',
+      searchTitle: '',
       surverType: '',
       surversData: []
     }
@@ -194,20 +174,38 @@ export default {
     await this.getSurvers()
     await this.getAllSurverTypes()
   },
+  watch: {
+  // watch title change
+    searchTitle () {
+      delay(async () => {
+        await this.selectSurvers()
+      }, 1000)
+    }
+  },
   methods: {
+    // /**
+    //  * 根据问卷标题进行模糊搜索
+    //  */
+    // async searchByTtitle () {
+    //   let res = await surverApi.selectSuvers(this.searchTitle,this.surverType)
+    //   if (res.code === 0) {
+    //     this.surversData = res.data
+    //     await this.rederData()
+    //   }
+    // },
     /**
      * 重置搜索和筛选条件
      */
     async resetSurverData () {
       this.surverType = ''
+      this.searchTitle = ''
       await this.getSurvers()
     },
     /**
-     * 根据分类筛选问卷
+     * 根据分类和关键字筛选问卷
      */
-    async selectSurverType () {
-      debugger
-      let res = await surverApi.selectBySurverType(this.surverType)
+    async selectSurvers () {
+      let res = await surverApi.selectSuvers(this.searchTitle, this.surverType)
       if (res.code === 0) {
         this.surversData = res.data
         await this.rederData()

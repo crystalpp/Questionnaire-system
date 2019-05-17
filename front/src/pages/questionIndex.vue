@@ -21,7 +21,7 @@
         </el-menu>
       </div>
       <div class="ques-header-user">
-        <i class="iconfont icon-xxhdpiShape item1"></i> 
+        <i class="iconfont icon-xxhdpiShape item1" @click="editUser"></i> 
         <p class="item2" @click="editUser">{{userInfo.userName}}</p>
         <i class="iconfont icon-exit item3" @click="quit"></i> 
         <p class="item4" @click="quit">退出</p>
@@ -108,7 +108,8 @@ export default {
   },
   methods: {
     editUser () {
-      this.$router.push({name: 'user'})
+      let userId = JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
+      this.$router.push({name: 'user', query: {userId: userId}})
     },
     previewQues () {
       let surverId = this.$route.query.surverId
@@ -234,10 +235,12 @@ export default {
       display: flex;
       width: 20%;
       .item1{
+        cursor: pointer;
         margin-right: 0.1rem;
         // margin-top: 0.04rem;
       }
       .item2{
+        cursor: pointer;
         margin-right: 0.3rem;
       }
       .item3{

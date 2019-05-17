@@ -45,15 +45,16 @@ const surverApi = {
   },
   async getQRcodeImage (params) {
     let url = config.APISERVER.host + '/surver/getQRimage'
-    let res = await requestService.get(url, '123')
+    let res = await requestService.get(url, params)
     return res
   },
-  async selectBySurverType (params) {
-    let param = {
-      surverTypeId: params
+  async selectSuvers (title, surverTypeId) {
+    let parmas = {
+      surverTypeId: surverTypeId,
+      surverTitle: title
     }
-    let url = config.APISERVER.host + '/surver/selectBySurverType'
-    let res = await requestService.get(url, param)
+    let url = config.APISERVER.host + '/surver/selectSurvers'
+    let res = await requestService.get(url, parmas)
     return res
   }
 }

@@ -26,6 +26,11 @@ const userApi = {
     let url = config.APISERVER.host + '/user/valiate'
     let res = await requestService.get(url, param)
     return res
+  },
+  async update (params) {
+    let url = config.APISERVER.host + '/user//update'
+    let res = await requestService.get(url, params)
+    return res
   }
 }
 
