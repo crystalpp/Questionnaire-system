@@ -72,4 +72,13 @@ public class SurverTypeServiceImpl implements SurverTypeService {
 		return Result.success(surverTypes);
 	}
 
+	@Override
+	public Result selectTemplate() {
+		SurverTypeExample surverTypeExample = new SurverTypeExample();
+		SurverTypeExample.Criteria criteria = surverTypeExample.createCriteria();
+		criteria.andSurvertypeIstemplateEqualTo(1);
+		List<SurverType> surverTypes = surverTypeMapper.selectByExample(surverTypeExample);
+		return Result.success(surverTypes);
+	}
+
 }

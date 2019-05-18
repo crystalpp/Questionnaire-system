@@ -38,4 +38,9 @@ public class SurverTypeController {
 		return surverTypeService.selectById(id);
 	}
 
+	@GetMapping("/selectTemplate")
+	public Result selectTemplate() {
+		return surverTypeService.selectTemplate();
+	}
+
 }

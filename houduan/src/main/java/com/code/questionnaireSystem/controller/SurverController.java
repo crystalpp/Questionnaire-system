@@ -106,8 +106,19 @@ public class SurverController {
 	 * @return
 	 */
 
-	@GetMapping("selectSurvers")
+	@GetMapping("/selectSurvers")
 	public Result selectSurvers(String surverTypeId, String surverTitle) {
 		return surverService.selectSurvers(surverTypeId, surverTitle);
+	}
+
+	/**
+	 * 获取所有的模板问卷数据 可以传入
+	 * 
+	 * @param surverTypeId
+	 * @return
+	 */
+	@GetMapping("/getTemplate")
+	public Result getTemplate(String surverTypeId) {
+		return surverService.getTemplate(surverTypeId);
 	}
 }

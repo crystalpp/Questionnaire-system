@@ -9,6 +9,8 @@ public class SurverType implements Serializable {
 
     private Integer survertypeIsdelete;
 
+    private Integer survertypeIstemplate;
+
     private String userId;
 
     private static final long serialVersionUID = 1L;
@@ -35,6 +37,14 @@ public class SurverType implements Serializable {
 
     public void setSurvertypeIsdelete(Integer survertypeIsdelete) {
         this.survertypeIsdelete = survertypeIsdelete;
+    }
+
+    public Integer getSurvertypeIstemplate() {
+        return survertypeIstemplate;
+    }
+
+    public void setSurvertypeIstemplate(Integer survertypeIstemplate) {
+        this.survertypeIstemplate = survertypeIstemplate;
     }
 
     public String getUserId() {

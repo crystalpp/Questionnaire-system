@@ -18,4 +18,6 @@ public interface SurverService {
 
 	Result selectSurvers(String surverTypeId, String surverTitle);
 
+	Result getTemplate(String surverTypeId);
+
 }

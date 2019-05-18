@@ -12,4 +12,6 @@ public interface SurverTypeService {
 
 	Result selectById(String id);
 
+	Result selectTemplate();
+
 }

@@ -24,8 +24,8 @@
         <!--mysql数据库连接 -->
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/questionnaire" userId="root"
-                        password="">
+                        connectionURL="jdbc:mysql://101.132.106.184:3306/questionnaire" userId="root"
+                        password="123456">
         </jdbcConnection>
 
 
@@ -68,13 +68,13 @@
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/> -->
-        	<table tableName="surver" domainObjectName="Surver"
-               enableCountByExample="true" enableUpdateByExample="true"
-               enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true"/>
-               <!-- <table tableName="surverType" domainObjectName="SurverType"
+        	<!-- <table tableName="surver" domainObjectName="Surver"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/> -->
+               <table tableName="survertype" domainObjectName="SurverType"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/>
     </context>
 </generatorConfiguration>

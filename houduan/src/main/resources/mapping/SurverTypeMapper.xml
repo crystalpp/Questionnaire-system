@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.code.questionnaireSystem.mapper.SurverTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.code.questionnaireSystem.pojo.SurverType" >
+    <id column="surverType_id" property="survertypeId" jdbcType="VARCHAR" />
+    <result column="surverType_name" property="survertypeName" jdbcType="VARCHAR" />
+    <result column="surverType_isDelete" property="survertypeIsdelete" jdbcType="INTEGER" />
+    <result column="surverType_isTemplate" property="survertypeIstemplate" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    surverType_id, surverType_name, surverType_isDelete, surverType_isTemplate, user_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.SurverTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from survertype
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from survertype
+    where surverType_id = #{survertypeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from survertype
+    where surverType_id = #{survertypeId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.code.questionnaireSystem.pojo.SurverTypeExample" >
+    delete from survertype
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.SurverType" >
+    insert into survertype (surverType_id, surverType_name, surverType_isDelete, 
+      surverType_isTemplate, user_id)
+    values (#{survertypeId,jdbcType=VARCHAR}, #{survertypeName,jdbcType=VARCHAR}, #{survertypeIsdelete,jdbcType=INTEGER}, 
+      #{survertypeIstemplate,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.SurverType" >
+    insert into survertype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="survertypeId != null" >
+        surverType_id,
+      </if>
+      <if test="survertypeName != null" >
+        surverType_name,
+      </if>
+      <if test="survertypeIsdelete != null" >
+        surverType_isDelete,
+      </if>
+      <if test="survertypeIstemplate != null" >
+        surverType_isTemplate,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="survertypeId != null" >
+        #{survertypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="survertypeName != null" >
+        #{survertypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="survertypeIsdelete != null" >
+        #{survertypeIsdelete,jdbcType=INTEGER},
+      </if>
+      <if test="survertypeIstemplate != null" >
+        #{survertypeIstemplate,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.code.questionnaireSystem.pojo.SurverTypeExample" resultType="java.lang.Integer" >
+    select count(*) from survertype
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update survertype
+    <set >
+      <if test="record.survertypeId != null" >
+        surverType_id = #{record.survertypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.survertypeName != null" >
+        surverType_name = #{record.survertypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.survertypeIsdelete != null" >
+        surverType_isDelete = #{record.survertypeIsdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.survertypeIstemplate != null" >
+        surverType_isTemplate = #{record.survertypeIstemplate,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update survertype
+    set surverType_id = #{record.survertypeId,jdbcType=VARCHAR},
+      surverType_name = #{record.survertypeName,jdbcType=VARCHAR},
+      surverType_isDelete = #{record.survertypeIsdelete,jdbcType=INTEGER},
+      surverType_isTemplate = #{record.survertypeIstemplate,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.code.questionnaireSystem.pojo.SurverType" >
+    update survertype
+    <set >
+      <if test="survertypeName != null" >
+        surverType_name = #{survertypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="survertypeIsdelete != null" >
+        surverType_isDelete = #{survertypeIsdelete,jdbcType=INTEGER},
+      </if>
+      <if test="survertypeIstemplate != null" >
+        surverType_isTemplate = #{survertypeIstemplate,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where surverType_id = #{survertypeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.code.questionnaireSystem.pojo.SurverType" >
+    update survertype
+    set surverType_name = #{survertypeName,jdbcType=VARCHAR},
+      surverType_isDelete = #{survertypeIsdelete,jdbcType=INTEGER},
+      surverType_isTemplate = #{survertypeIstemplate,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR}
+    where surverType_id = #{survertypeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

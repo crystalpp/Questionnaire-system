@@ -304,6 +304,66 @@ public class SurverTypeExample {
             return (Criteria) this;
         }
 
+        public Criteria andSurvertypeIstemplateIsNull() {
+            addCriterion("surverType_isTemplate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateIsNotNull() {
+            addCriterion("surverType_isTemplate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateEqualTo(Integer value) {
+            addCriterion("surverType_isTemplate =", value, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateNotEqualTo(Integer value) {
+            addCriterion("surverType_isTemplate <>", value, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateGreaterThan(Integer value) {
+            addCriterion("surverType_isTemplate >", value, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("surverType_isTemplate >=", value, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateLessThan(Integer value) {
+            addCriterion("surverType_isTemplate <", value, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateLessThanOrEqualTo(Integer value) {
+            addCriterion("surverType_isTemplate <=", value, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateIn(List<Integer> values) {
+            addCriterion("surverType_isTemplate in", values, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateNotIn(List<Integer> values) {
+            addCriterion("surverType_isTemplate not in", values, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateBetween(Integer value1, Integer value2) {
+            addCriterion("surverType_isTemplate between", value1, value2, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurvertypeIstemplateNotBetween(Integer value1, Integer value2) {
+            addCriterion("surverType_isTemplate not between", value1, value2, "survertypeIstemplate");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;

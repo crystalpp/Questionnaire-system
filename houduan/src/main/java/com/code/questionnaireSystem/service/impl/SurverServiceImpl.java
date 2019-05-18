@@ -137,4 +137,18 @@ public class SurverServiceImpl implements SurverService {
 		return Result.success(survers);
 	}
 
+	@Override
+	public Result getTemplate(String surverTypeId) {
+		// TODO Auto-generated method stub
+		SurverExample surverExample = new SurverExample();
+		SurverExample.Criteria criteria = surverExample.createCriteria();
+		if (!surverTypeId.equals("")) {
+			criteria.andSurvertypeIdEqualTo(surverTypeId);
+		}
+		criteria.andSurverIstemplateEqualTo(1);
+		List<Surver> survers = surverMapper.selectByExample(surverExample);
+		return Result.success(survers);
+
+	}
+
 }
