@@ -1,14 +1,14 @@
 <template>
   <div class="matrixRadioChooseType">
-    <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
+    <el-form :model='tableData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="matrixRadio-title" >{{index+1}}、{{formData.title}}</p>
+        <p class="matrixRadio-title" >{{index+1}}、{{tableData.name}}</p>
       </el-form-item>
       <el-form-item>
-       <p class="matrixRadio-descri">{{formData.subdesc}}</p>
+       <p class="matrixRadio-descri">{{tableData.subdesc}}</p>
       </el-form-item>
       <el-form-item style="width:88%" >
-        <el-table
+        <!-- <el-table
           :data="formData.questions"
           style="width: 100%">
           <el-table-column
@@ -22,33 +22,41 @@
             :label="option.optionContent"
             >
             <template slot-scope="scope">
-             <!-- <el-radio-group v-model="radio2">
-              <el-radio :label="3">备选项</el-radio>
-              <el-radio :label="6">备选项</el-radio>
-              <el-radio :label="9">备选项</el-radio>
-            </el-radio-group> -->
              <el-radio v-model="formData.questions[scope.$index]"  @change="getCurrentColumn(scope.$index,scope.row)" v-if="formData.type === 'matrix-radio'"> </el-radio>
              <el-checkbox v-model="formData.questions[scope.$index]"  @change="getCurrentColumn(scope.$index,scope.row)" v-if="formData.type === 'matrix-multi'"> </el-checkbox>
             </template>
           </el-table-column>
-        </el-table>
-        <!-- <el-table
-          :data="tableData">
-          <el-table-column
-            prop="apperance">
-          </el-table-column>
-          <el-table-column
-            v-for="(item,index) in tableData"
-            :key="index"
-            :label="item.label">
-            <template slot-scope="scope">
-              <el-radio :label="''" v-model="tableData[scope.$index].checked[index]"
-              @change="getCurrentColumn(scope.$index,scope.row)"
-              >
-              </el-radio>
-            </template>
-          </el-table-column>
         </el-table> -->
+        <table class="matrixTable">
+          <tr>
+            <th></th>
+            <th v-for="(item,index) in tableData.options" :key="index">{{item.name}} </th>
+          </tr>
+          <tr v-for="(item1,index) in tableData.questions" :key="index">
+            <td>{{item1.name}}</td>
+            <td>
+                <el-radio v-model="item1.checked" :label="index+1">{{text}}</el-radio>
+            </td>
+             <td>
+                <el-radio v-model="item1.checked"  :label="index+2">{{text}}</el-radio>
+            </td>
+             <td>
+                <el-radio v-model="item1.checked"  :label="index+3">{{text}}</el-radio>
+            </td>
+          </tr>
+        </table>
+        <!-- <div class="table-header">
+          <p >123 </p>
+          <p v-for="(item,index) in tableData.questions" :key="index">{{item.name}} </p>
+        </div>
+        <div class="table-body">
+          <div class="table-body-item" v-for="(item,index) in tableData.options" :key="index">
+            <p class="item1">{{item.name}}</p>
+            <el-radio-group v-model="item.name" class="item2">
+              <el-radio :label="item1.name" v-for="(item1,index) in tableData.questions" :key="index" ></el-radio>
+            </el-radio-group>
+          </div>
+        </div> -->
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -66,31 +74,39 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
+      text: '',
       editOrPreview: '',
       // 参考数据
       radio: '',
-      tableData: [{
-        'apperance': 'google',
-        'chooseType': 'radio',
-        'label': 'one',
-        'value': '',
-        'checked': [false, false, false]
-      },
-      {
-        'apperance': 'baidu',
-        'chooseType': 'radio',
-        'label': 'two',
-        'value': '',
-        'checked': [false, false, false]
-      },
-      {
-        'apperance': 'souguo',
-        'chooseType': 'radio',
-        'label': 'three',
-        'value': '',
-        'checked': [false, false, false]
+      radio1: '',
+      tableData: {
+        name: '浏览器1',
+        subdesc: '单选',
+        options: [
+          {
+            name: 'like',
+            checked: ''
+          },
+          {
+            name: 'hate',
+            checked: ''
+          },
+          {
+            name: 'xixi',
+            checked: ''
+          }
+        ],
+        questions: [
+          {
+            name: 'baidu',
+            checked: ''
+          },
+          {
+            name: 'google',
+            checked: ''
+          }
+        ]
       }
-      ]
     }
   },
   mounted () {
@@ -130,7 +146,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.matrixTable{
+  width: 100%;
+  tr{
+    display: flex;
+    td{
+      flex:1;
+    }
+    th{
+      flex: 1;
+    }
+  }
+}
 .selectPart{
   flex: 15;
   width: 100%;
@@ -152,6 +179,22 @@ margin-bottom: 0;
   }
   .matrixRadio-title{
     font-size: 0.18rem;
+  }
+  .table-header{
+    display: flex;
+    p{
+      margin-left: 0.2rem;
+      flex: 1;
+    }
+  }
+  .table-body-item{
+    display: flex;
+    .item1{
+      flex:1;
+    }
+    .item2{
+      flex:2;
+    }
   }
 }
 </style>

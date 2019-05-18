@@ -73,11 +73,9 @@ export default {
     }
   },
   mounted () {
-    debugger
   },
   methods: {
     confirm (formName) {
-      debugger
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.selectForm.display = false

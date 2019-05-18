@@ -58,6 +58,8 @@ export default {
       console.log(this.valiteInfo + '1111')
       if (this.valiteInfo !== '') {
         callback(new Error(this.valiteInfo))
+      } else {
+        callback()
       }
     }
     var validatePass = (rule, value, callback) => {

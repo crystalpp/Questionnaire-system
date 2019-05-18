@@ -18,6 +18,7 @@ const questionApi = {
       typeCode = '6'
     }
     let questionsValue = []
+    debugger
     if (commonFunc.isDefine(params.questionsValue)) {
       questionsValue = params.questionsValue
     }

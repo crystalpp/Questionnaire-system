@@ -37,7 +37,6 @@ export default {
     await this.getQRcode()
   },
   async beforeRouteUpdate (to, from, next) {
-    debugger
     await this.getQRcode()
     next()
     // next(async vm => {

@@ -27,9 +27,10 @@ const userApi = {
     let res = await requestService.get(url, param)
     return res
   },
+  // 修改基本信息
   async update (params) {
-    let url = config.APISERVER.host + '/user//update'
-    let res = await requestService.get(url, params)
+    let url = config.APISERVER.host + '/user/update'
+    let res = await requestService.postJson(url, params)
     return res
   }
 }

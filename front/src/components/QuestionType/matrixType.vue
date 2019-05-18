@@ -74,15 +74,16 @@ export default {
           this.$emit('getSelectForm', this.selectForm)
           let newOptionsArr = []
           for (let i of this.selectForm.options) {
-            newOptionsArr.push(i.value)
+            newOptionsArr.push(i.optionContent)
           }
           this.selectForm.optionsValue = newOptionsArr
           let newQuestionsArr = []
           for (let j of this.selectForm.questions) {
-            newQuestionsArr.push(j.value)
+            newQuestionsArr.push(j.questionName)
           }
           this.selectForm.questionsValue = newQuestionsArr
           this.selectForm.surverId = this.$route.query.surverId
+          debugger
           let res = await questionApi.add(this.selectForm)
           if (res.code === 0) {
             commonFunc.showMessage('新增成功', 'success')

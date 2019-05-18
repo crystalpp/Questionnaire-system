@@ -45,7 +45,6 @@ export default {
     },
     // 根据选择不同的量表类型，评分时显示不同的文字
     changeText () {
-      debugger
       if (this.formData.options.length > 0) {
         let value1 = '非常不' + this.formData.options[0].optionContent
         let value2 = '不' + this.formData.options[0].optionContent
