@@ -7,45 +7,22 @@
           <div class="line"></div>
           <div class="classfiyList">
             <ul>
-              <li>全部</li>
-              <li>新生调查</li>
-              <li>毕业生调查</li>
-              <li>应届毕业生调查</li>
-              <li>计算机科学与技术系</li>
-              <li>软件工程系</li>
-              <li>物联网工程系</li>
+              <li :class="currentClass" @click="selectTemplate">全部</li>
+            </ul>
+            <ul v-for="(item,index) in templateSurverTypes" :key="item.survertypeId">
+              <!-- <li>全部</li> -->
+              <li @click="selectTemplateByType(index,item)" :class="currentIndex===index?'clickClass':'noClickClass'">{{item.survertypeName}}</li>
             </ul>
           </div>
         </div>
       </el-aside>
       <el-main>
         <div class="main-container">
-          <div class="oneItem">
+          <div class="oneItem" v-for="(item) in templateSurvers" :key="item.surverId">
             <div class="line"></div>
             <div class="text">
-              <div class="text1">计算机学院新生入学调查问卷</div>
-              <div class="text2"><i class="el-icon-view"></i> 预览</div>
-            </div>
-          </div>
-          <div class="oneItem">
-            <div class="line"></div>
-            <div class="text">
-              <div class="text1">计算机科学与技术专业毕业生问卷调查</div>
-              <div class="text2"><i class="el-icon-view"></i> 预览</div>
-            </div>
-          </div>
-          <div class="oneItem">
-            <div class="line"></div>
-            <div class="text">
-              <div class="text1">计算机学院应届毕业生调查</div>
-              <div class="text2"><i class="el-icon-view"></i> 预览</div>
-            </div>
-          </div>
-          <div class="oneItem">
-            <div class="line"></div>
-            <div class="text">
-              <div class="text1">计算机学院往届毕业生调查</div>
-              <div class="text2"><i class="el-icon-view"></i> 预览</div>
+              <div class="text1">{{item.surverTitle}}</div>
+              <div class="text2" @click="previewTemplate(item)"><i class="el-icon-view"></i> 预览</div>
             </div>
           </div>
         </div>
@@ -54,10 +31,66 @@
   </div>
 </template>
 <script>
+import surverTypeApi from '../../client/bll/apis/surverType'
+import surverApi from '../../client/bll/apis/surver'
 export default {
   data () {
     return {
+      templateSurverTypes: [],
+      currentIndex: '',
+      currentClass: 'clickClass',
+      templateSurvers: []
     }
+  },
+  async mounted () {
+    debugger
+    await this.selectTemplateType()
+    await this.selectTemplate()
+  },
+  methods: {
+    previewTemplate (item) {
+      this.$router.push({name: 'preview', query: {surverId: item.surverId}})
+    },
+    /**
+     * 查找不同分类的模板
+     */
+    async selectTemplateByType (index, item) {
+      this.currentIndex = index
+      this.currentClass = 'noClickClass'
+      let res = await surverApi.getTemplate(item.survertypeId)
+      if (res.code === 0) {
+        this.templateSurvers = res.data
+      }
+    },
+    /**
+     * 查找所有的模板问卷类型
+     */
+    async selectTemplateType () {
+      let res = await surverTypeApi.selectTemplateType()
+      if (res.code === 0) {
+        this.templateSurverTypes = res.data
+      }
+    },
+    /**
+     * 查找所有的模板问卷
+     */
+    async selectTemplate () {
+      this.currentClass = 'clickClass'
+      this.currentIndex = ''
+      let res = await surverApi.getTemplate('')
+      if (res.code === 0) {
+        this.templateSurvers = res.data
+      }
+    }
+    // async getAllSurverTypes () {
+    //   let params = {
+    //     userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
+    //   }
+    //   let res = await surverTypeApi.getAll(params)
+    //   if (res.code === 0) {
+    //     this.dynamicTags = res.data
+    //   }
+    // }
   }
 }
 </script>
@@ -117,6 +150,16 @@ export default {
           color: #222222;
         }
       }
+      .clickClass {
+        color: #409eff;
+        background: #ecf5ff;
+        border-color: #b3d8ff;
+      }
+      .noClickClass {
+        color: #222222;
+        background: white;
+        border: none;
+      }
       // text-align: center;
     }
   }
@@ -143,6 +186,7 @@ export default {
           text-align: left;
         }
         .text2{
+          cursor: pointer;
           text-align: center;
           flex:1;
         }

@@ -7,8 +7,8 @@
       <el-form-item>
        <p class="textSelect-descri">{{formData.subdesc}}</p>
       </el-form-item>
-      <el-form-item>
-        <el-input ></el-input>
+      <el-form-item style="width:60%">
+        <el-input type="textarea" autosize :rows="2" v-model="textAnswer"></el-input>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -26,6 +26,7 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
+      textAnswer: '',
       editOrPreview: ''
       // formData: {
       //   title: '问题1', // 题目

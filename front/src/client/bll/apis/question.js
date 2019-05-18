@@ -16,7 +16,10 @@ const questionApi = {
       typeCode = '5'
     } else if (params.type === 'matrix-radio') {
       typeCode = '6'
+    } else if (params.type === 'matrix-multi') {
+      typeCode = '7'
     }
+    debugger
     let questionsValue = []
     debugger
     if (commonFunc.isDefine(params.questionsValue)) {

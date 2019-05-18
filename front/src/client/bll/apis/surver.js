@@ -48,6 +48,7 @@ const surverApi = {
     let res = await requestService.get(url, params)
     return res
   },
+  // 根据问卷标题和问卷分类查询问卷
   async selectSuvers (title, surverTypeId) {
     let parmas = {
       surverTypeId: surverTypeId,
@@ -55,6 +56,15 @@ const surverApi = {
     }
     let url = config.APISERVER.host + '/surver/selectSurvers'
     let res = await requestService.get(url, parmas)
+    return res
+  },
+  // 根据问卷类别查询模板问卷
+  async getTemplate (params) {
+    let parma = {
+      surverTypeId: params
+    }
+    let url = config.APISERVER.host + '/surver/getTemplate'
+    let res = await requestService.get(url, parma)
     return res
   }
 }

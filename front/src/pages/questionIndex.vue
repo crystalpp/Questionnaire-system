@@ -29,7 +29,7 @@
     </div>
     <div class="isFixed" v-show="showQuesStep">
         <div class="part1">
-         {{surverTile }}
+         {{surverTile}}
         </div>
         <div class="part2">
         <el-menu :default-active="submenuActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelectQues">

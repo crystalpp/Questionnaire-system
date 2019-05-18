@@ -1,11 +1,11 @@
 <template>
   <div class="matrixRadioChooseType">
-    <el-form :model='tableData' label-width="0.1rem" label-position="left" class="selectPart">
+    <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="matrixRadio-title" >{{index+1}}、{{tableData.name}}</p>
+        <p class="matrixRadio-title" >{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
-       <p class="matrixRadio-descri">{{tableData.subdesc}}</p>
+       <p class="matrixRadio-descri">{{formData.subdesc}}</p>
       </el-form-item>
       <el-form-item style="width:88%" >
         <!-- <el-table
@@ -27,36 +27,37 @@
             </template>
           </el-table-column>
         </el-table> -->
-        <table class="matrixTable">
+        <table class="matrixTable-radio" v-if="formData.type === 'matrix-radio'">
           <tr>
             <th></th>
-            <th v-for="(item,index) in tableData.options" :key="index">{{item.name}} </th>
+            <th v-for="(item,index) in formData.options" :key="index">{{item.optionContent}} </th>
           </tr>
-          <tr v-for="(item1,index) in tableData.questions" :key="index">
-            <td>{{item1.name}}</td>
-            <td>
-                <el-radio v-model="item1.checked" :label="index+1">{{text}}</el-radio>
+          <tr v-for="(item1,index) in formData.questions" :key="index">
+            <td>{{item1.questionName}}</td>
+            <td v-for="(item2,index) in formData.options" :key="index">
+              <el-radio v-model="item1.questionId" :label="index+1">{{text}}</el-radio>
+            </td>
+             <!-- <td>
+                <el-radio v-model="item1.questionId"  :label="index+2">{{text}}</el-radio>
             </td>
              <td>
-                <el-radio v-model="item1.checked"  :label="index+2">{{text}}</el-radio>
-            </td>
-             <td>
-                <el-radio v-model="item1.checked"  :label="index+3">{{text}}</el-radio>
-            </td>
+                <el-radio v-model="item1.questionId"  :label="index+3">{{text}}</el-radio>
+            </td> -->
           </tr>
         </table>
-        <!-- <div class="table-header">
-          <p >123 </p>
-          <p v-for="(item,index) in tableData.questions" :key="index">{{item.name}} </p>
-        </div>
-        <div class="table-body">
-          <div class="table-body-item" v-for="(item,index) in tableData.options" :key="index">
-            <p class="item1">{{item.name}}</p>
-            <el-radio-group v-model="item.name" class="item2">
-              <el-radio :label="item1.name" v-for="(item1,index) in tableData.questions" :key="index" ></el-radio>
-            </el-radio-group>
-          </div>
-        </div> -->
+        <table class="matrixTable-mutil" v-if="formData.type === 'matrix-multi'">
+          <tr>
+            <th></th>
+            <th v-for="(item,index) in formData.options" :key="index">{{item.optionContent}} </th>
+          </tr>
+          <tr v-for="(item1,index) in formData.questions" :key="index">
+            <td>{{item1.questionName}}</td>
+            <!-- v-for="(item2,index) in formData.options" :key="index" -->
+              <td v-for="(item2,index) in formData.options" :key="index">
+                <el-checkbox :label="item2.optionContent" >{{text}}</el-checkbox>
+              </td>
+          </tr>
+        </table>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -78,6 +79,7 @@ export default {
       editOrPreview: '',
       // 参考数据
       radio: '',
+      checkList: [],
       radio1: '',
       tableData: {
         name: '浏览器1',
@@ -104,12 +106,18 @@ export default {
           {
             name: 'google',
             checked: ''
+          },
+          {
+            name: 'firefox',
+            checked: ''
           }
         ]
       }
     }
   },
   mounted () {
+    debugger
+    console.log(this.formData)
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
@@ -146,7 +154,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.matrixTable{
+.matrixTable-radio{
+  font-size: 0.12rem;
   width: 100%;
   tr{
     display: flex;
@@ -154,6 +163,21 @@ export default {
       flex:1;
     }
     th{
+      font-weight: normal;
+      flex: 1;
+    }
+  }
+}
+.matrixTable-mutil {
+  font-size: 0.12rem;
+  width: 100%;
+  tr{
+    display: flex;
+    td{
+      flex:1;
+    }
+    th{
+      font-weight: normal;
       flex: 1;
     }
   }

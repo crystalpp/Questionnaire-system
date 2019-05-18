@@ -23,6 +23,11 @@ const surverTypeApi = {
     let url = config.APISERVER.host + '/surverType/selectById'
     let res = await requestService.get(url, parm)
     return res
+  },
+  async selectTemplateType () {
+    let url = config.APISERVER.host + '/surverType/selectTemplate'
+    let res = await requestService.get(url, '')
+    return res
   }
 }
 export default surverTypeApi
