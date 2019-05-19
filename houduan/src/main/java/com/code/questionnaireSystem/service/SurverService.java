@@ -4,7 +4,7 @@ import com.code.questionnaireSystem.utils.Result;
 
 public interface SurverService {
 
-	Result insert(String userId);
+	Result insert(String userId, String surverTypeId);
 
 	Result update(String title, String description, String id);
 
@@ -19,5 +19,7 @@ public interface SurverService {
 	Result selectSurvers(String surverTypeId, String surverTitle);
 
 	Result getTemplate(String surverTypeId);
+
+	Result updateSurverType(String surverId, String surverTypeId);
 
 }

@@ -72,7 +72,11 @@
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/> -->
-               <table tableName="survertype" domainObjectName="SurverType"
+               <!-- <table tableName="survertype" domainObjectName="SurverType"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/> -->
+               <table tableName="answer" domainObjectName="Answer"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/>

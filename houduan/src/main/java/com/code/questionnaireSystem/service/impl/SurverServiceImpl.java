@@ -22,7 +22,7 @@ public class SurverServiceImpl implements SurverService {
 	private SurverMapper surverMapper;
 
 	@Override
-	public Result insert(String userId) {
+	public Result insert(String userId, String surverTypeId) {
 		// TODO Auto-generated method stub
 		String id = UUID.randomUUID().toString().substring(0, 10);
 		// SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -31,6 +31,7 @@ public class SurverServiceImpl implements SurverService {
 		surver.setSurverCreattime(createTime);
 		surver.setSurverId(id);
 		surver.setUserId(userId);
+		surver.setSurvertypeId(surverTypeId);
 		surver.setSurverTitle("问卷标题");
 		surver.setSurverDescription("感谢您能抽出几分钟时间来参加本次答题，现在我们就马上开始吧!");
 		int num = surverMapper.insertSelective(surver);
@@ -148,6 +149,21 @@ public class SurverServiceImpl implements SurverService {
 		criteria.andSurverIstemplateEqualTo(1);
 		List<Surver> survers = surverMapper.selectByExample(surverExample);
 		return Result.success(survers);
+
+	}
+
+	@Override
+	public Result updateSurverType(String surverId, String surverTypeId) {
+		// TODO Auto-generated method stub
+		Surver surver = new Surver();
+		surver.setSurverId(surverId);
+		surver.setSurvertypeId(surverTypeId);
+		int num = surverMapper.updateByPrimaryKeySelective(surver);
+		if (num < 1) {
+			return Result.failure(ResultCode.FAIL);
+		} else {
+			return Result.success();
+		}
 
 	}
 

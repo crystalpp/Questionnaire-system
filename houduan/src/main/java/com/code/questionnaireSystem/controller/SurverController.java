@@ -30,8 +30,8 @@ public class SurverController {
 	 * @return
 	 */
 	@PostMapping("/add")
-	public Result insert(String userId) {
-		return surverService.insert(userId);
+	public Result insert(String userId, String surverTypeId) {
+		return surverService.insert(userId, surverTypeId);
 	}
 
 	/**
@@ -120,5 +120,19 @@ public class SurverController {
 	@GetMapping("/getTemplate")
 	public Result getTemplate(String surverTypeId) {
 		return surverService.getTemplate(surverTypeId);
+	}
+
+	/**
+	 * 修改问卷的问卷类型
+	 * 
+	 * @param surverId
+	 *            问卷id
+	 * @param surverTypeId
+	 *            问卷类型id
+	 * @return
+	 */
+	@PostMapping("/updateSurverType")
+	public Result updateSurverType(String surverId, String surverTypeId) {
+		return surverService.updateSurverType(surverId, surverTypeId);
 	}
 }
