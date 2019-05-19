@@ -53,7 +53,8 @@
            <el-date-picker
             v-model="releaseLimitForm.endTime" 
             type="datetime"
-            placeholder="选择日期时间">
+            placeholder="选择日期时间"
+            :picker-options="pickerOptions">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="ip限制：" >
@@ -85,7 +86,12 @@ export default {
       userInfo: {},
       showQuesStep: false,
       menuActiveIndex: '',
-      submenuActiveIndex: 'creat'
+      submenuActiveIndex: 'creat',
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now()  // 这里就是设置当天前的日期不能被点击
+        }
+      }
     }
   },
   computed: {
@@ -101,6 +107,7 @@ export default {
     next()
   },
   async mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'creat')
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
     this.refreshLocalData()
     this.getUserInfo()
@@ -172,7 +179,7 @@ export default {
       if (key === 'release') {
         this.dialogReleaseVisible = true
       } else {
-        this.$router.push({name: key})
+        this.$router.push({name: key, query: this.$route.query})
       }
     },
     handleSelect (key) {

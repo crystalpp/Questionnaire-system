@@ -15,12 +15,16 @@
   </div>
 </template>
 <script>
+import commonFunc from '../client/bll/apis/common/common'
 export default {
   name: 'index',
   data () {
     return {
       title: '计算机学院学生问卷调查系统'
     }
+  },
+  mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'creat')
   },
   methods: {
     goToLogin () {

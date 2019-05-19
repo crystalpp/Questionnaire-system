@@ -19,9 +19,7 @@ const questionApi = {
     } else if (params.type === 'matrix-multi') {
       typeCode = '7'
     }
-    debugger
     let questionsValue = []
-    debugger
     if (commonFunc.isDefine(params.questionsValue)) {
       questionsValue = params.questionsValue
     }

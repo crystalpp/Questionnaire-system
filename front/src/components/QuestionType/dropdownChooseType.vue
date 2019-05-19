@@ -8,12 +8,12 @@
        <p class="dropdown-descri">{{formData.subdesc}}</p>
       </el-form-item>
       <el-form-item>
-         <el-select v-model="formData.dropdownValue" placeholder="请选择">
+         <el-select v-model="formData.dropdownValue" placeholder="请选择" @change="chooseAnswer">
           <el-option
             v-for="item in formData.options"
             :key="item.optionContent"
-            :label="item.label"
-            :value="item.optionContent">
+            :label="item.optionContent"
+            :value="item.optionId">
           </el-option>
          </el-select>
       </el-form-item>
@@ -40,6 +40,15 @@ export default {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
+    chooseAnswer (item) {
+      let answerData = {
+        questionId: '',
+        optionid: ''
+      }
+      answerData.questionId = this.formData.questionId
+      answerData.optionid = item
+      this.$emit('getAnswerData', answerData)
+    },
     edit () {
       this.formData.display = true
       let quesType = 'select'

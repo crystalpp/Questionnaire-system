@@ -8,26 +8,26 @@
     <div class="survey-container">
       <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
         <div v-if="item.type === 'radioselect'">
-          <radio-choose-type :formData = 'item' :index = 'index' ></radio-choose-type>
+          <radio-choose-type :formData = 'item' :index = 'index' @getAnswerData='getRadioAnswerData'></radio-choose-type>
         </div>
         <div v-if="item.type === 'Multiselect'">
-          <multiselect-choose-type :formData = 'item' :index = 'index' ></multiselect-choose-type>
+          <multiselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMultiAnswerData'></multiselect-choose-type>
         </div>
         <div v-if="item.type === 'Drop-down'">
-          <dropdown-choose-type :formData = 'item' :index = 'index' ></dropdown-choose-type>
+          <dropdown-choose-type :formData = 'item' :index = 'index' @getAnswerData='getDropAnswerData'></dropdown-choose-type>
         </div>
         <div v-if="item.type === 'textselect'"> 
-          <textselect-choose-type :formData = 'item' :index = 'index' ></textselect-choose-type>
+          <textselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getTextAnswerData'></textselect-choose-type>
         </div>
         <div v-if="item.type === 'measure'">
-          <measure-choose-type :formData = 'item' :index = 'index' ></measure-choose-type>
+          <measure-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMeasureAnswerData'></measure-choose-type>
         </div>
         <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
-          <matrix-choose-type :formData = 'item' :index = 'index' ></matrix-choose-type>
+          <matrix-choose-type :formData = 'item' :index = 'index'  @getAnswerData='getMatrixAnswerData' @getAnswerDataMulti='getMatrixAnswerDataMulti'></matrix-choose-type>
         </div>
       </div>
        <div class="submit">
-        <el-button type="primary" >提交</el-button>
+        <el-button type="primary" @click="getAnswerData">提交</el-button>
       </div>
     </div>
    <div class="footer">
@@ -53,12 +53,133 @@ export default {
   },
   data () {
     return {
+      answers: [],
+      radioAnswer: '',
+      multiAnswer: '',
+      dropAnswer: '',
+      textAnswer: '',
+      measureAnswer: '',
+      matrixRadioAnswer: '',
+      matrixMultiAnswer: ''
     }
   },
   mounted () {
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
   },
   methods: {
+    // 判断当前的问题答案中是否有要被插入的问题
+    isSameQuestion (currentId) {
+      let flag = false
+      if (this.answers) {
+        for (let item of this.answers) {
+          if (item.questionId === currentId) {
+            flag = true
+          }
+        }
+      }
+      return flag
+    },
+    findSameQuestion (currentId) {
+      let index = 0
+      for (let i in this.answers) {
+        if (this.answers[i].questionId === currentId) {
+          index = i
+        }
+      }
+      return index
+    },
+    isSameQuestionSub (currentId) {
+      let flag = false
+      if (this.answers) {
+        for (let item of this.answers) {
+          if (item.subQuestionId === currentId) {
+            flag = true
+          }
+        }
+      }
+      return flag
+    },
+    findSameQuestionSub (currentId) {
+      let index = 0
+      for (let i in this.answers) {
+        if (this.answers[i].subQuestionId === currentId) {
+          index = i
+        }
+      }
+      return index
+    },
+    getRadioAnswerData (data) {
+      debugger
+      let flag = this.isSameQuestion(data.questionId)
+      if (!flag) {
+        this.answers.push(data)
+      } else {
+        this.answers[this.findSameQuestion(data.questionId)] = data
+      }
+    },
+    getMultiAnswerData (data) {
+      debugger
+      let flag = this.isSameQuestion(data.questionId)
+      if (!flag) {
+        this.answers.push(data)
+      } else {
+        this.answers[this.findSameQuestion(data.questionId)] = data
+      }
+    },
+    getDropAnswerData (data) {
+      debugger
+      let flag = this.isSameQuestion(data.questionId)
+      if (!flag) {
+        this.answers.push(data)
+      } else {
+        this.answers[this.findSameQuestion(data.questionId)] = data
+      }
+    },
+    getTextAnswerData (data) {
+      debugger
+      let flag = this.isSameQuestion(data.questionId)
+      if (!flag) {
+        this.answers.push(data)
+      } else {
+        this.answers[this.findSameQuestion(data.questionId)] = data
+      }
+    },
+    getMeasureAnswerData (data) {
+      debugger
+      let flag = this.isSameQuestion(data.questionId)
+      if (!flag) {
+        this.answers.push(data)
+      } else {
+        this.answers[this.findSameQuestion(data.questionId)] = data
+      }
+    },
+    getMatrixAnswerData (data) {
+      debugger
+      for (let i in data) {
+        let flag = this.isSameQuestionSub(data[i].subQuestionId)
+        if (!flag) {
+          this.answers.push(data[i])
+        } else {
+          this.answers[this.findSameQuestionSub(data[i].subQuestionId)] = data[i]
+        }
+      }
+    },
+    getMatrixAnswerDataMulti (data) {
+      debugger
+      for (let i in data) {
+        let flag = this.isSameQuestionSub(data[i].subQuestionId)
+        if (!flag) {
+          this.answers.push(data[i])
+        } else {
+          this.answers[this.findSameQuestionSub(data[i].subQuestionId)] = data[i]
+        }
+      }
+    },
+    getAnswerData (data) {
+      debugger
+      this.answers
+      console.log(this.answers)
+    }
   }
 }
 </script>

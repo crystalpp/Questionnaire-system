@@ -12,7 +12,7 @@
         <div>123</div>
       </div> -->
     </div>
-    <div class="footer">
+    <div class="footer" v-if="fillOrCreat === 'creat'">
         <span>计算机学院学生问卷调查系统</span>
         <span>&nbsp &nbsp &nbsp 让调查变得更简单</span>
     </div>
@@ -20,8 +20,18 @@
 </template>
 
 <script>
+import commonFunc from './client/bll/apis/common/common'
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      fillOrCreat: 'creat'
+    }
+  },
+  mounted () {
+    // commonFunc.setLocalStorage('fillOrCreat', 'creat')
+    this.fillOrCreat = commonFunc.getLocalStorage('fillOrCreat')
+  }
 }
 </script>
 

@@ -34,9 +34,11 @@
           </tr>
           <tr v-for="(item1,index) in formData.questions" :key="index">
             <td>{{item1.questionName}}</td>
-            <td v-for="(item2,index) in formData.options" :key="index">
-              <el-radio v-model="item1.questionId" :label="index+1">{{text}}</el-radio>
-            </td>
+            <el-radio-group  v-model="radioCheckList[index]" v-for="(item2,index1) in formData.options" :key="index1" @change="chooseAnswer(item1,item2)" style="flex:1">
+              <td >
+                <el-radio :label="item2" >{{text}}</el-radio>
+              </td>
+            </el-radio-group>
              <!-- <td>
                 <el-radio v-model="item1.questionId"  :label="index+2">{{text}}</el-radio>
             </td>
@@ -53,9 +55,11 @@
           <tr v-for="(item1,index) in formData.questions" :key="index">
             <td>{{item1.questionName}}</td>
             <!-- v-for="(item2,index) in formData.options" :key="index" -->
-              <td v-for="(item2,index) in formData.options" :key="index">
-                <el-checkbox :label="item2.optionContent" >{{text}}</el-checkbox>
+             <el-checkbox-group v-model="checkList[index]" v-for="(item2,index1) in formData.options" :key="index1" style="flex:1" @change="chooseAnswerMulti()">
+              <td>
+                <el-checkbox :label="item2" >{{text}}</el-checkbox>
               </td>
+             </el-checkbox-group>
           </tr>
         </table>
       </el-form-item>
@@ -80,6 +84,7 @@ export default {
       // 参考数据
       radio: '',
       checkList: [],
+      radioCheckList: [],
       radio1: '',
       tableData: {
         name: '浏览器1',
@@ -112,15 +117,84 @@ export default {
             checked: ''
           }
         ]
+      },
+      answerData: {
       }
     }
   },
   mounted () {
-    debugger
+    this.initCheckList()
     console.log(this.formData)
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
+    initCheckList () {
+      this.checkList = []
+      // eslint-disable-next-line
+      for (let i of this.formData.questions) {
+        let item = []
+        let radioItem = ''
+        // console.log(i)
+        this.radioCheckList.push(radioItem)
+        this.checkList.push(item)
+      }
+    },
+    chooseAnswerMulti () {
+      var answerData = []
+      var answerDataItem = {
+        checkOptions: [],
+        checkQuestions: []
+      }
+      for (let i in this.checkList) {
+        answerDataItem.checkOptions = this.checkList[i]
+        answerDataItem.checkQuestions = this.formData.questions[i]
+        answerData.push(JSON.parse(JSON.stringify(answerDataItem)))
+      }
+       // 重新组装数据成后端需要的格式
+      let oneItem = {
+        questionId: '',
+        subQuestionId: '',
+        optionId: ''
+      }
+      var realAnswers = []
+      for (let item of answerData) {
+        oneItem.questionId = this.formData.questionId
+        oneItem.subQuestionId = item.checkQuestions.questionId
+        oneItem.optionId = ''
+        for (let item1 of item.checkOptions) {
+          oneItem.optionId += item1.optionId
+          oneItem.optionId += ','
+        }
+        realAnswers.push(JSON.parse(JSON.stringify(oneItem)))
+      }
+      this.$emit('getAnswerDataMulti', realAnswers)
+    },
+    chooseAnswer () {
+      var answerData = []
+      var answerDataItem = {
+        checkOptions: '',
+        checkQuestions: ''
+      }
+      for (let i in this.radioCheckList) {
+        answerDataItem.checkOptions = this.radioCheckList[i]
+        answerDataItem.checkQuestions = this.formData.questions[i]
+        answerData.push(JSON.parse(JSON.stringify(answerDataItem)))
+      }
+      // 重新组装数据成后端需要的格式
+      let oneItem = {
+        questionId: '',
+        subQuestionId: '',
+        optionId: ''
+      }
+      var realAnswers = []
+      for (let item of answerData) {
+        oneItem.questionId = this.formData.questionId
+        oneItem.optionId = item.checkOptions.optionId
+        oneItem.subQuestionId = item.checkQuestions.questionId
+        realAnswers.push(JSON.parse(JSON.stringify(oneItem)))
+      }
+      this.$emit('getAnswerData', realAnswers)
+    },
     edit () {
       this.formData.display = true
       let quesType = 'matrix'
@@ -158,6 +232,7 @@ export default {
   font-size: 0.12rem;
   width: 100%;
   tr{
+    align-items: center;
     display: flex;
     td{
       flex:1;

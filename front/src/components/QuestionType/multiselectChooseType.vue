@@ -7,8 +7,10 @@
       <el-form-item>
        <p class="multi-descri">{{formData.subdesc}}</p>
       </el-form-item>
-      <el-form-item v-for="(item) in formData.options"  v-model="formData.selected" :key="item.key">
-        <el-checkbox :label="item.optionContent" ></el-checkbox>
+      <el-form-item >
+        <el-checkbox-group v-model="checkList" v-for="(item) in formData.options" :key="item.key" @change="chooseAnswer()">
+          <el-checkbox :label="item" >{{item.optionContent}}</el-checkbox>
+        </el-checkbox-group>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -26,13 +28,29 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
-      editOrPreview: ''
+      editOrPreview: '',
+      answerData: {
+        questionId: '',
+        optionid: ''
+      },
+      checkList: []
     }
   },
   mounted () {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
+    chooseAnswer () {
+      var answers = []
+      this.answerData.optionid = ''
+      this.answerData.questionId = this.formData.questionId
+      for (let item of this.checkList) {
+        this.answerData.optionid += item.optionId
+        this.answerData.optionid += ','
+      }
+      answers.push(this.answerData)
+      this.$emit('getAnswerData', answers)
+    },
     edit () {
       this.formData.display = true
       let quesType = 'select'

@@ -26,6 +26,7 @@ export default {
     }
   },
   async mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()
     await this.getSurverQuesions()
@@ -69,6 +70,8 @@ export default {
           item.quesType = 'measure'
         } else if (item.quetypeId === '6') {
           item.quesType = 'matrix-radio'
+        } else if (item.quetypeId === '7') {
+          item.quesType = 'matrix-multi'
         }
         oneitem.type = item.quesType
         oneitem.title = item.questionName

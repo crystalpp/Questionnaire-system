@@ -27,7 +27,7 @@ import surverApi from '../../client/bll/apis/surver'
 export default {
   data () {
     return {
-      linkUrl: 'http://101.132.106.184/#/fill/123',
+      linkUrl: 'http://101.132.106.184/#/fill/',
       surverId: '123',
       imageUrl: ''
     }

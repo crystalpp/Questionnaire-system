@@ -48,6 +48,7 @@ export default {
     }
   },
   async mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'creat')
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()

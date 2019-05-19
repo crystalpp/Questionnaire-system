@@ -43,7 +43,6 @@ export default {
     }
   },
   async mounted () {
-    debugger
     await this.selectTemplateType()
     await this.selectTemplate()
   },

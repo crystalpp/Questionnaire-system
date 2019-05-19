@@ -2,13 +2,13 @@
   <div class="textSelectType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
       <el-form-item   :label="' '" required:true>
-        <p class="textSelect-descri">{{index+1}}、{{formData.title}}</p>
+        <p class="textSelect-title">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
        <p class="textSelect-descri">{{formData.subdesc}}</p>
       </el-form-item>
       <el-form-item style="width:60%">
-        <el-input type="textarea" autosize :rows="2" v-model="textAnswer"></el-input>
+        <el-input type="textarea" autosize :rows="2" v-model="textAnswer" @blur='chooseAnswer'></el-input>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -27,7 +27,8 @@ export default {
   data () {
     return {
       textAnswer: '',
-      editOrPreview: ''
+      editOrPreview: '',
+      answerData: []
       // formData: {
       //   title: '问题1', // 题目
       //   subdesc: '描述', // 备注
@@ -49,6 +50,11 @@ export default {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
+    chooseAnswer () {
+      this.answerData.questionId = this.formData.questionId
+      this.answerData.answerText = this.textAnswer
+      this.$emit('getAnswerData', this.answerData)
+    },
     edit () {
       this.formData.display = true
       let quesType = 'select'
@@ -83,6 +89,9 @@ margin-bottom: 0;
   margin-bottom: 0.2rem;
   .textSelect-descri{
     font-size: 0.12rem;
+  }
+  .textSelect-title{
+    font-size: 0.18rem;
   }
 }
 </style>

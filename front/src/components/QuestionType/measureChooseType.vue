@@ -8,7 +8,7 @@
        <p class="measure-descri">{{formData.subdesc}}</p>
       </el-form-item>
       <el-form-item>
-        <el-rate v-model="score" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" show-text :texts="showText"> </el-rate>
+        <el-rate v-model="score" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" show-text :texts="showText" @change="chooseAnswer"> </el-rate>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -28,7 +28,11 @@ export default {
     return {
       score: 0,
       showText: [],
-      editOrPreview: ''
+      editOrPreview: '',
+      answerData: {
+        questionId: '',
+        answerText: ''
+      }
     }
   },
   mounted () {
@@ -36,6 +40,11 @@ export default {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
+    chooseAnswer (item) {
+      this.answerData.questionId = this.formData.questionId
+      this.answerData.answerText = item
+      this.$emit('getAnswerData', this.answerData)
+    },
     edit () {
       this.formData.display = true
       let quesType = 'measure'

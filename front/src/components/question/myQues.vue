@@ -24,12 +24,12 @@
       </div>
       <div class=" questions" @mouseover="showOption(index)" @mouseout="showStatus(index)" v-for="(item, index) in surversData" :key="item.key">
           <div class="card-container">
-            <div class="card-icon">{{item.surverTypeName}}</div>
+            <div class="card-icon" @click="editType(item)">{{item.surverTypeName}}</div>
             <div class="card-title">{{item.surverTitle}}</div>
             <div class="card-time">{{item.surverCreattime}}</div>
             <div class="card-footer" v-show="show === 'status' || indexitem !== index ">
               <div class="card-num">{{item.surverRecovernum}}份数据</div>
-              <div class="card-status">{{item.surverPulishstarttime}}</div>
+              <div :class="(item.surverPulishstarttime)==='已发布'?'card-status':'card-status-notPublish'">{{item.surverPulishstarttime}}</div>
             </div>
             <div class="card-footer-Option" v-show="show === 'option' && indexitem === index ">
               <div class="item" @click="editSurver(item.surverId)"><i class="el-icon-edit-outline"></i><br/>编辑</div>
@@ -108,12 +108,13 @@
       :visible.sync="surverTypeVisible"
       width="50%"
       >
-      <el-tag
+      <el-tag :class="tagIndex===index?'chooseClass': 'noChooseClass'"
         :key="tag.survertypeId"
-        v-for="tag in dynamicTags"
+        v-for="(tag,index) in dynamicTags"
         closable
         :disable-transitions="false"
-        @close="handleClose(tag)">
+        @close="handleClose(tag)"
+        @click="chooseTag(tag,index)">
         {{tag.survertypeName}}
       </el-tag>
       <el-input
@@ -129,7 +130,7 @@
       <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
       <span slot="footer" class="dialog-footer">
         <el-button @click="surverTypeVisible = false">取 消</el-button>
-        <el-button type="primary" >确 定</el-button>
+        <el-button type="primary" @click="confirmChoose" >确 定</el-button>
       </span>
   </el-dialog>
   </div>
@@ -162,7 +163,11 @@ export default {
       show2: 'card', // 控制是列表还是卡片模式
       searchTitle: '',
       surverType: '',
-      surversData: []
+      surversData: [],
+      tagIndex: '',
+      currentSurverId: '', // 当选被选中的问卷id
+      currentSurverTypeId: '', // 当前被选中的问卷类型的id
+      currentSurverOption: '' // 当前操作类型，是新增还是修改 （用于问卷类型的确认按钮）
     }
   },
   async beforeRouteUpdate (to, from, next) {
@@ -183,16 +188,45 @@ export default {
     }
   },
   methods: {
-    // /**
-    //  * 根据问卷标题进行模糊搜索
-    //  */
-    // async searchByTtitle () {
-    //   let res = await surverApi.selectSuvers(this.searchTitle,this.surverType)
-    //   if (res.code === 0) {
-    //     this.surversData = res.data
-    //     await this.rederData()
-    //   }
-    // },
+    async confirmChoose () {
+      if (this.currentSurverOption === 'edit') {
+        let params = {
+          surverId: this.currentSurverId,
+          surverTypeId: this.currentSurverTypeId
+        }
+        let res = await surverApi.updateSurverType(params)
+        if (res.code === 0) {
+          this.surverTypeVisible = false
+          await this.getSurvers()
+        }
+      } else if (this.currentSurverOption === 'add') {
+        await this.getAllSurverTypes()
+        let userInfor = JSON.parse(commonFunc.getLocalStorage('userInfo'))
+        let param = {
+          userId: userInfor.userId,
+          surverTypeId: this.currentSurverTypeId
+        }
+        let res = await surverApi.add(param)
+        if (res.code === 0) {
+          commonFunc.setLocalStorage('contentClass', 'ques-content')
+          commonFunc.setLocalStorage('showQuesStep', true)
+          commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+          commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+          this.$router.push({name: 'creat', query: {surverId: res.data.surverId}})
+        }
+      }
+    },
+    async chooseTag (item, index) {
+      this.tagIndex = index
+      this.currentSurverTypeId = item.survertypeId
+      console.log('choose')
+    },
+    editType (item) {
+      this.currentSurverOption = 'edit'
+      this.surverTypeVisible = true
+      this.currentSurverId = item.surverId
+      console.log('edit')
+    },
     /**
      * 重置搜索和筛选条件
      */
@@ -315,17 +349,8 @@ export default {
     },
     // 新建问卷
     async creatQues () {
+      this.currentSurverOption = 'add'
       this.surverTypeVisible = true
-      await this.getAllSurverTypes()
-      // let userInfor = JSON.parse(commonFunc.getLocalStorage('userInfo'))
-      // let res = await surverApi.add(userInfor.userId)
-      // if (res.code === 0) {
-      //   commonFunc.setLocalStorage('contentClass', 'ques-content')
-      //   commonFunc.setLocalStorage('showQuesStep', true)
-      //   commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
-      //   commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
-      //   this.$router.push({name: 'creat', query: {surverId: res.data.surverId}})
-      // }
     },
     showOption (index) {
       this.indexitem = index
@@ -350,6 +375,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .chooseClass {
+    cursor: pointer;
+    background-color: #2672ff;
+    color: white;
+  }
+  .noChooseClass {
+    cursor: pointer;
+    background-color: rgba(64,158,255,.1);
+    color: #409EFF;
+  }
  .el-tag + .el-tag {
     margin-left: 10px;
   }
@@ -467,6 +502,7 @@ export default {
       width: 90%;
       margin: 0 auto;
       .card-icon {
+        cursor: pointer;
         // width: 0.4rem;
         height: 0.2rem;
         line-height: 0.2rem;
@@ -504,12 +540,19 @@ export default {
           width: 50%;
           text-align: right;
         }
+        .card-status-notPublish{
+          color: #9CD77E;
+          font-size:0.14rem;
+          width: 50%;
+          text-align: right;
+        }
       }
       .card-footer-Option{
         display: flex;
         margin-top:0.7rem;
         font-size: 0.16rem;
         .item{
+          cursor: pointer;
           flex: 1;
           font-size: 0.14rem;
         }

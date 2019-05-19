@@ -83,7 +83,6 @@ export default {
           }
           this.selectForm.questionsValue = newQuestionsArr
           this.selectForm.surverId = this.$route.query.surverId
-          debugger
           let res = await questionApi.add(this.selectForm)
           if (res.code === 0) {
             commonFunc.showMessage('新增成功', 'success')

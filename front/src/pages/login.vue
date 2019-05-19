@@ -55,6 +55,9 @@ export default {
       }
     }
   },
+  mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'creat')
+  },
   methods: {
     back () {
       this.$router.push(

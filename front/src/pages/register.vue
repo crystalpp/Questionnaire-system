@@ -117,6 +117,9 @@ export default {
       }
     }
   },
+  mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'creat')
+  },
   methods: {
     submitForm (formName) {
       this.$refs[formName].validate(async (valid) => {

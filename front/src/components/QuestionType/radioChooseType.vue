@@ -8,7 +8,7 @@
        <p class="radio-descri">{{formData.subdesc}}</p>
       </el-form-item>
       <el-form-item v-for="(item) in formData.options" :key="item.key">
-        <el-radio :label="item.optionContent" v-model="formData.selected"></el-radio>
+        <el-radio :label="item.optionContent" v-model="formData.selected" @change="chooseAnswer(item)"></el-radio>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -26,13 +26,22 @@ export default {
   props: ['formData', 'index'],
   data () {
     return {
-      editOrPreview: ''
+      editOrPreview: '',
+      answerData: {
+        questionId: '',
+        optionid: ''
+      }
     }
   },
   mounted () {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
+    chooseAnswer (item) {
+      this.answerData.questionId = this.formData.questionId
+      this.answerData.optionid = item.optionId
+      this.$emit('getAnswerData', this.answerData)
+    },
     async edit () {
       this.formData.display = true
       // this.formData.quesType = 'select'

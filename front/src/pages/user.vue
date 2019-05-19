@@ -132,6 +132,7 @@ export default {
     }
   },
   mounted () {
+    commonFunc.setLocalStorage('fillOrCreat', 'creat')
     this.getUserInfo()
   },
   methods: {
