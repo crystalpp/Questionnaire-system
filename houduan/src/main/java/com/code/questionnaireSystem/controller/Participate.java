@@ -27,4 +27,14 @@ public class Participate {
 		return participateService.getDeviceType(request);
 
 	}
+
+	@GetMapping("/getIp")
+	public Result getIp(HttpServletRequest request) {
+		return participateService.getIp(request);
+	}
+
+	@GetMapping("/getAddress")
+	public Result getAddress(HttpServletRequest request) {
+		return participateService.getAddress(request);
+	}
 }

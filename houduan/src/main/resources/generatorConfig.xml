@@ -76,7 +76,11 @@
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/> -->
-               <table tableName="answer" domainObjectName="Answer"
+               <!-- <table tableName="answer" domainObjectName="Answer"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true"/> -->
+               <table tableName="participate" domainObjectName="Participate"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true"/>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.code.questionnaireSystem.mapper.ParticipateMapper" >
+  <resultMap id="BaseResultMap" type="com.code.questionnaireSystem.pojo.Participate" >
+    <id column="participate _id" property="participateId" jdbcType="VARCHAR" />
+    <result column="participate _ip" property="participateIp" jdbcType="VARCHAR" />
+    <result column="participate _device" property="participateDevice" jdbcType="VARCHAR" />
+    <result column="participate _area" property="participateArea" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    "participate _id", "participate _ip", "participate _device", "participate _area"
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.ParticipateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from participate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from participate
+    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from participate
+    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.code.questionnaireSystem.pojo.ParticipateExample" >
+    delete from participate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.Participate" >
+    insert into participate ("participate _id", "participate _ip", "participate _device", 
+      "participate _area")
+    values (#{participateId,jdbcType=VARCHAR}, #{participateIp,jdbcType=VARCHAR}, #{participateDevice,jdbcType=VARCHAR}, 
+      #{participateArea,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.Participate" >
+    insert into participate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="participateId != null" >
+        "participate _id",
+      </if>
+      <if test="participateIp != null" >
+        "participate _ip",
+      </if>
+      <if test="participateDevice != null" >
+        "participate _device",
+      </if>
+      <if test="participateArea != null" >
+        "participate _area",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="participateId != null" >
+        #{participateId,jdbcType=VARCHAR},
+      </if>
+      <if test="participateIp != null" >
+        #{participateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="participateDevice != null" >
+        #{participateDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="participateArea != null" >
+        #{participateArea,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.code.questionnaireSystem.pojo.ParticipateExample" resultType="java.lang.Integer" >
+    select count(*) from participate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update participate
+    <set >
+      <if test="record.participateId != null" >
+        "participate _id" = #{record.participateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.participateIp != null" >
+        "participate _ip" = #{record.participateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.participateDevice != null" >
+        "participate _device" = #{record.participateDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.participateArea != null" >
+        "participate _area" = #{record.participateArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update participate
+    set "participate _id" = #{record.participateId,jdbcType=VARCHAR},
+      "participate _ip" = #{record.participateIp,jdbcType=VARCHAR},
+      "participate _device" = #{record.participateDevice,jdbcType=VARCHAR},
+      "participate _area" = #{record.participateArea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.code.questionnaireSystem.pojo.Participate" >
+    update participate
+    <set >
+      <if test="participateIp != null" >
+        "participate _ip" = #{participateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="participateDevice != null" >
+        "participate _device" = #{participateDevice,jdbcType=VARCHAR},
+      </if>
+      <if test="participateArea != null" >
+        "participate _area" = #{participateArea,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.code.questionnaireSystem.pojo.Participate" >
+    update participate
+    set "participate _ip" = #{participateIp,jdbcType=VARCHAR},
+      "participate _device" = #{participateDevice,jdbcType=VARCHAR},
+      "participate _area" = #{participateArea,jdbcType=VARCHAR}
+    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+  </update>
+</mapper>
