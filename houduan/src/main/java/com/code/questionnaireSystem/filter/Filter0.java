@@ -25,7 +25,7 @@ public class Filter0 implements Filter {
 	private Logger logger = LoggerFactory.getLogger(Filter0.class);
 
 	private List<String> origins = Arrays.asList(new String[] { "http://101.132.106.184", "http://localhost:8083",
-			"http://localhost:8082", "http://192.168.1.102:8083", null });
+			"http://localhost:8082", "http://127.0.0.1:8082", "http://192.168.1.102:8083", null });
 
 	public Filter0() {
 	}

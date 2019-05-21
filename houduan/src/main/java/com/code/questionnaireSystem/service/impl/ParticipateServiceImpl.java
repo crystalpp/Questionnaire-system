@@ -28,8 +28,8 @@ public class ParticipateServiceImpl implements ParticipateService {
 
 	@Override
 	public Result getAddress(HttpServletRequest request) throws Exception {
-		// String ip = IpUtils.getIpAddr(request);
-		CityResponse respons = GeoUtil.getResponse("106.91.20.144");
+		String ip = IpUtils.getIpAddr(request);
+		CityResponse respons = GeoUtil.getResponse(ip);
 		String province = GeoUtil.Geoprovince(respons).getNames().get("zh-CN");
 		return Result.success(province);
 
