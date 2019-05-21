@@ -124,7 +124,7 @@ export default {
   },
   mounted () {
     this.initCheckList()
-    console.log(this.formData)
+    // console.log(this.formData)
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {

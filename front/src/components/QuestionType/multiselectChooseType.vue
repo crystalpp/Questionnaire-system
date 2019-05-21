@@ -41,15 +41,15 @@ export default {
   },
   methods: {
     chooseAnswer () {
-      var answers = []
+      // var answers = {}
       this.answerData.optionid = ''
       this.answerData.questionId = this.formData.questionId
       for (let item of this.checkList) {
         this.answerData.optionid += item.optionId
         this.answerData.optionid += ','
       }
-      answers.push(this.answerData)
-      this.$emit('getAnswerData', answers)
+      // answers.push(this.answerData)
+      this.$emit('getAnswerData', this.answerData)
     },
     edit () {
       this.formData.display = true

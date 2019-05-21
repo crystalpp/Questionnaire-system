@@ -176,8 +176,6 @@ export default {
       }
     },
     getAnswerData (data) {
-      debugger
-      this.answers
       console.log(this.answers)
     }
   }

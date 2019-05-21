@@ -21,18 +21,39 @@ export default {
       survey: {
         title: '',
         descr: '',
-        surverQuestions: []
+        surverQuestions: [],
+        participatIp: '',
+        particiAddress: ''
       }
     }
   },
   async mounted () {
+    debugger
+    await this.getAddress()
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()
     await this.getSurverQuesions()
     await this.getDeviceType()
+    await this.getIp()
+    
   },
   methods: {
+    async getAddress () {
+      let res = await participatenApi.getAddress()
+      if (res.code === 0) {
+        this.particiAddress = res.data
+        console.log(this.particiAddress)
+      }
+    },
+    async getIp () {
+      debugger
+      let res = await participatenApi.getIp()
+      if (res.code === 0) {
+        this.participatIp = res.data
+        console.log(this.participatIp)
+      }
+    },
     async getDeviceType () {
       let res = await participatenApi.getDeviceType()
       if (res.code === 0) {
