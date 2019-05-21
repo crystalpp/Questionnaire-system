@@ -34,7 +34,7 @@ public class Participate {
 	}
 
 	@GetMapping("/getAddress")
-	public Result getAddress(HttpServletRequest request) {
+	public Result getAddress(HttpServletRequest request) throws Exception {
 		return participateService.getAddress(request);
 	}
 }

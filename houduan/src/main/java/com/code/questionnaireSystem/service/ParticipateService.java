@@ -10,6 +10,6 @@ public interface ParticipateService {
 
 	Result getIp(HttpServletRequest request);
 
-	Result getAddress(HttpServletRequest request);
+	Result getAddress(HttpServletRequest request) throws Exception;
 
 }
