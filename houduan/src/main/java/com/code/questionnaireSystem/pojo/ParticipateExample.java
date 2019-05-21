@@ -1,6 +1,7 @@
 package com.code.questionnaireSystem.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ParticipateExample {
@@ -105,282 +106,472 @@ public class ParticipateExample {
         }
 
         public Criteria andParticipateIdIsNull() {
-            addCriterion("\"participate _id\" is null");
+            addCriterion("participate_id is null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdIsNotNull() {
-            addCriterion("\"participate _id\" is not null");
+            addCriterion("participate_id is not null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdEqualTo(String value) {
-            addCriterion("\"participate _id\" =", value, "participateId");
+            addCriterion("participate_id =", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdNotEqualTo(String value) {
-            addCriterion("\"participate _id\" <>", value, "participateId");
+            addCriterion("participate_id <>", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdGreaterThan(String value) {
-            addCriterion("\"participate _id\" >", value, "participateId");
+            addCriterion("participate_id >", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdGreaterThanOrEqualTo(String value) {
-            addCriterion("\"participate _id\" >=", value, "participateId");
+            addCriterion("participate_id >=", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdLessThan(String value) {
-            addCriterion("\"participate _id\" <", value, "participateId");
+            addCriterion("participate_id <", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdLessThanOrEqualTo(String value) {
-            addCriterion("\"participate _id\" <=", value, "participateId");
+            addCriterion("participate_id <=", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdLike(String value) {
-            addCriterion("\"participate _id\" like", value, "participateId");
+            addCriterion("participate_id like", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdNotLike(String value) {
-            addCriterion("\"participate _id\" not like", value, "participateId");
+            addCriterion("participate_id not like", value, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdIn(List<String> values) {
-            addCriterion("\"participate _id\" in", values, "participateId");
+            addCriterion("participate_id in", values, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdNotIn(List<String> values) {
-            addCriterion("\"participate _id\" not in", values, "participateId");
+            addCriterion("participate_id not in", values, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdBetween(String value1, String value2) {
-            addCriterion("\"participate _id\" between", value1, value2, "participateId");
+            addCriterion("participate_id between", value1, value2, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIdNotBetween(String value1, String value2) {
-            addCriterion("\"participate _id\" not between", value1, value2, "participateId");
+            addCriterion("participate_id not between", value1, value2, "participateId");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpIsNull() {
-            addCriterion("\"participate _ip\" is null");
+            addCriterion("participate_ip is null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpIsNotNull() {
-            addCriterion("\"participate _ip\" is not null");
+            addCriterion("participate_ip is not null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpEqualTo(String value) {
-            addCriterion("\"participate _ip\" =", value, "participateIp");
+            addCriterion("participate_ip =", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpNotEqualTo(String value) {
-            addCriterion("\"participate _ip\" <>", value, "participateIp");
+            addCriterion("participate_ip <>", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpGreaterThan(String value) {
-            addCriterion("\"participate _ip\" >", value, "participateIp");
+            addCriterion("participate_ip >", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpGreaterThanOrEqualTo(String value) {
-            addCriterion("\"participate _ip\" >=", value, "participateIp");
+            addCriterion("participate_ip >=", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpLessThan(String value) {
-            addCriterion("\"participate _ip\" <", value, "participateIp");
+            addCriterion("participate_ip <", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpLessThanOrEqualTo(String value) {
-            addCriterion("\"participate _ip\" <=", value, "participateIp");
+            addCriterion("participate_ip <=", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpLike(String value) {
-            addCriterion("\"participate _ip\" like", value, "participateIp");
+            addCriterion("participate_ip like", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpNotLike(String value) {
-            addCriterion("\"participate _ip\" not like", value, "participateIp");
+            addCriterion("participate_ip not like", value, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpIn(List<String> values) {
-            addCriterion("\"participate _ip\" in", values, "participateIp");
+            addCriterion("participate_ip in", values, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpNotIn(List<String> values) {
-            addCriterion("\"participate _ip\" not in", values, "participateIp");
+            addCriterion("participate_ip not in", values, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpBetween(String value1, String value2) {
-            addCriterion("\"participate _ip\" between", value1, value2, "participateIp");
+            addCriterion("participate_ip between", value1, value2, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateIpNotBetween(String value1, String value2) {
-            addCriterion("\"participate _ip\" not between", value1, value2, "participateIp");
+            addCriterion("participate_ip not between", value1, value2, "participateIp");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceIsNull() {
-            addCriterion("\"participate _device\" is null");
+            addCriterion("participate_device is null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceIsNotNull() {
-            addCriterion("\"participate _device\" is not null");
+            addCriterion("participate_device is not null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceEqualTo(String value) {
-            addCriterion("\"participate _device\" =", value, "participateDevice");
+            addCriterion("participate_device =", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceNotEqualTo(String value) {
-            addCriterion("\"participate _device\" <>", value, "participateDevice");
+            addCriterion("participate_device <>", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceGreaterThan(String value) {
-            addCriterion("\"participate _device\" >", value, "participateDevice");
+            addCriterion("participate_device >", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceGreaterThanOrEqualTo(String value) {
-            addCriterion("\"participate _device\" >=", value, "participateDevice");
+            addCriterion("participate_device >=", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceLessThan(String value) {
-            addCriterion("\"participate _device\" <", value, "participateDevice");
+            addCriterion("participate_device <", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceLessThanOrEqualTo(String value) {
-            addCriterion("\"participate _device\" <=", value, "participateDevice");
+            addCriterion("participate_device <=", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceLike(String value) {
-            addCriterion("\"participate _device\" like", value, "participateDevice");
+            addCriterion("participate_device like", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceNotLike(String value) {
-            addCriterion("\"participate _device\" not like", value, "participateDevice");
+            addCriterion("participate_device not like", value, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceIn(List<String> values) {
-            addCriterion("\"participate _device\" in", values, "participateDevice");
+            addCriterion("participate_device in", values, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceNotIn(List<String> values) {
-            addCriterion("\"participate _device\" not in", values, "participateDevice");
+            addCriterion("participate_device not in", values, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceBetween(String value1, String value2) {
-            addCriterion("\"participate _device\" between", value1, value2, "participateDevice");
+            addCriterion("participate_device between", value1, value2, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateDeviceNotBetween(String value1, String value2) {
-            addCriterion("\"participate _device\" not between", value1, value2, "participateDevice");
+            addCriterion("participate_device not between", value1, value2, "participateDevice");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaIsNull() {
-            addCriterion("\"participate _area\" is null");
+            addCriterion("participate_area is null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaIsNotNull() {
-            addCriterion("\"participate _area\" is not null");
+            addCriterion("participate_area is not null");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaEqualTo(String value) {
-            addCriterion("\"participate _area\" =", value, "participateArea");
+            addCriterion("participate_area =", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaNotEqualTo(String value) {
-            addCriterion("\"participate _area\" <>", value, "participateArea");
+            addCriterion("participate_area <>", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaGreaterThan(String value) {
-            addCriterion("\"participate _area\" >", value, "participateArea");
+            addCriterion("participate_area >", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaGreaterThanOrEqualTo(String value) {
-            addCriterion("\"participate _area\" >=", value, "participateArea");
+            addCriterion("participate_area >=", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaLessThan(String value) {
-            addCriterion("\"participate _area\" <", value, "participateArea");
+            addCriterion("participate_area <", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaLessThanOrEqualTo(String value) {
-            addCriterion("\"participate _area\" <=", value, "participateArea");
+            addCriterion("participate_area <=", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaLike(String value) {
-            addCriterion("\"participate _area\" like", value, "participateArea");
+            addCriterion("participate_area like", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaNotLike(String value) {
-            addCriterion("\"participate _area\" not like", value, "participateArea");
+            addCriterion("participate_area not like", value, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaIn(List<String> values) {
-            addCriterion("\"participate _area\" in", values, "participateArea");
+            addCriterion("participate_area in", values, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaNotIn(List<String> values) {
-            addCriterion("\"participate _area\" not in", values, "participateArea");
+            addCriterion("participate_area not in", values, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaBetween(String value1, String value2) {
-            addCriterion("\"participate _area\" between", value1, value2, "participateArea");
+            addCriterion("participate_area between", value1, value2, "participateArea");
             return (Criteria) this;
         }
 
         public Criteria andParticipateAreaNotBetween(String value1, String value2) {
-            addCriterion("\"participate _area\" not between", value1, value2, "participateArea");
+            addCriterion("participate_area not between", value1, value2, "participateArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridIsNull() {
+            addCriterion("participate_surverId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridIsNotNull() {
+            addCriterion("participate_surverId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridEqualTo(String value) {
+            addCriterion("participate_surverId =", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridNotEqualTo(String value) {
+            addCriterion("participate_surverId <>", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridGreaterThan(String value) {
+            addCriterion("participate_surverId >", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridGreaterThanOrEqualTo(String value) {
+            addCriterion("participate_surverId >=", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridLessThan(String value) {
+            addCriterion("participate_surverId <", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridLessThanOrEqualTo(String value) {
+            addCriterion("participate_surverId <=", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridLike(String value) {
+            addCriterion("participate_surverId like", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridNotLike(String value) {
+            addCriterion("participate_surverId not like", value, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridIn(List<String> values) {
+            addCriterion("participate_surverId in", values, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridNotIn(List<String> values) {
+            addCriterion("participate_surverId not in", values, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridBetween(String value1, String value2) {
+            addCriterion("participate_surverId between", value1, value2, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateSurveridNotBetween(String value1, String value2) {
+            addCriterion("participate_surverId not between", value1, value2, "participateSurverid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeIsNull() {
+            addCriterion("participate_startTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeIsNotNull() {
+            addCriterion("participate_startTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeEqualTo(Date value) {
+            addCriterion("participate_startTime =", value, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeNotEqualTo(Date value) {
+            addCriterion("participate_startTime <>", value, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeGreaterThan(Date value) {
+            addCriterion("participate_startTime >", value, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("participate_startTime >=", value, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeLessThan(Date value) {
+            addCriterion("participate_startTime <", value, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeLessThanOrEqualTo(Date value) {
+            addCriterion("participate_startTime <=", value, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeIn(List<Date> values) {
+            addCriterion("participate_startTime in", values, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeNotIn(List<Date> values) {
+            addCriterion("participate_startTime not in", values, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeBetween(Date value1, Date value2) {
+            addCriterion("participate_startTime between", value1, value2, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateStarttimeNotBetween(Date value1, Date value2) {
+            addCriterion("participate_startTime not between", value1, value2, "participateStarttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeIsNull() {
+            addCriterion("participate_endTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeIsNotNull() {
+            addCriterion("participate_endTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeEqualTo(Date value) {
+            addCriterion("participate_endTime =", value, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeNotEqualTo(Date value) {
+            addCriterion("participate_endTime <>", value, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeGreaterThan(Date value) {
+            addCriterion("participate_endTime >", value, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("participate_endTime >=", value, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeLessThan(Date value) {
+            addCriterion("participate_endTime <", value, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeLessThanOrEqualTo(Date value) {
+            addCriterion("participate_endTime <=", value, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeIn(List<Date> values) {
+            addCriterion("participate_endTime in", values, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeNotIn(List<Date> values) {
+            addCriterion("participate_endTime not in", values, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeBetween(Date value1, Date value2) {
+            addCriterion("participate_endTime between", value1, value2, "participateEndtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipateEndtimeNotBetween(Date value1, Date value2) {
+            addCriterion("participate_endTime not between", value1, value2, "participateEndtime");
             return (Criteria) this;
         }
     }

@@ -2,10 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.code.questionnaireSystem.mapper.ParticipateMapper" >
   <resultMap id="BaseResultMap" type="com.code.questionnaireSystem.pojo.Participate" >
-    <id column="participate _id" property="participateId" jdbcType="VARCHAR" />
-    <result column="participate _ip" property="participateIp" jdbcType="VARCHAR" />
-    <result column="participate _device" property="participateDevice" jdbcType="VARCHAR" />
-    <result column="participate _area" property="participateArea" jdbcType="VARCHAR" />
+    <id column="participate_id" property="participateId" jdbcType="VARCHAR" />
+    <result column="participate_ip" property="participateIp" jdbcType="VARCHAR" />
+    <result column="participate_device" property="participateDevice" jdbcType="VARCHAR" />
+    <result column="participate_area" property="participateArea" jdbcType="VARCHAR" />
+    <result column="participate_surverId" property="participateSurverid" jdbcType="VARCHAR" />
+    <result column="participate_startTime" property="participateStarttime" jdbcType="TIMESTAMP" />
+    <result column="participate_endTime" property="participateEndtime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    "participate _id", "participate _ip", "participate _device", "participate _area"
+    participate_id, participate_ip, participate_device, participate_area, participate_surverId, 
+    participate_startTime, participate_endTime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.code.questionnaireSystem.pojo.ParticipateExample" >
     select
@@ -87,11 +91,11 @@
     select 
     <include refid="Base_Column_List" />
     from participate
-    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+    where participate_id = #{participateId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from participate
-    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+    where participate_id = #{participateId,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.code.questionnaireSystem.pojo.ParticipateExample" >
     delete from participate
@@ -100,25 +104,36 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.code.questionnaireSystem.pojo.Participate" >
-    insert into participate ("participate _id", "participate _ip", "participate _device", 
-      "participate _area")
+    insert into participate (participate_id, participate_ip, participate_device, 
+      participate_area, participate_surverId, participate_startTime, 
+      participate_endTime)
     values (#{participateId,jdbcType=VARCHAR}, #{participateIp,jdbcType=VARCHAR}, #{participateDevice,jdbcType=VARCHAR}, 
-      #{participateArea,jdbcType=VARCHAR})
+      #{participateArea,jdbcType=VARCHAR}, #{participateSurverid,jdbcType=VARCHAR}, #{participateStarttime,jdbcType=TIMESTAMP}, 
+      #{participateEndtime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.code.questionnaireSystem.pojo.Participate" >
     insert into participate
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="participateId != null" >
-        "participate _id",
+        participate_id,
       </if>
       <if test="participateIp != null" >
-        "participate _ip",
+        participate_ip,
       </if>
       <if test="participateDevice != null" >
-        "participate _device",
+        participate_device,
       </if>
       <if test="participateArea != null" >
-        "participate _area",
+        participate_area,
+      </if>
+      <if test="participateSurverid != null" >
+        participate_surverId,
+      </if>
+      <if test="participateStarttime != null" >
+        participate_startTime,
+      </if>
+      <if test="participateEndtime != null" >
+        participate_endTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -134,6 +149,15 @@
       <if test="participateArea != null" >
         #{participateArea,jdbcType=VARCHAR},
       </if>
+      <if test="participateSurverid != null" >
+        #{participateSurverid,jdbcType=VARCHAR},
+      </if>
+      <if test="participateStarttime != null" >
+        #{participateStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="participateEndtime != null" >
+        #{participateEndtime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.code.questionnaireSystem.pojo.ParticipateExample" resultType="java.lang.Integer" >
@@ -146,16 +170,25 @@
     update participate
     <set >
       <if test="record.participateId != null" >
-        "participate _id" = #{record.participateId,jdbcType=VARCHAR},
+        participate_id = #{record.participateId,jdbcType=VARCHAR},
       </if>
       <if test="record.participateIp != null" >
-        "participate _ip" = #{record.participateIp,jdbcType=VARCHAR},
+        participate_ip = #{record.participateIp,jdbcType=VARCHAR},
       </if>
       <if test="record.participateDevice != null" >
-        "participate _device" = #{record.participateDevice,jdbcType=VARCHAR},
+        participate_device = #{record.participateDevice,jdbcType=VARCHAR},
       </if>
       <if test="record.participateArea != null" >
-        "participate _area" = #{record.participateArea,jdbcType=VARCHAR},
+        participate_area = #{record.participateArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.participateSurverid != null" >
+        participate_surverId = #{record.participateSurverid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.participateStarttime != null" >
+        participate_startTime = #{record.participateStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.participateEndtime != null" >
+        participate_endTime = #{record.participateEndtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -164,10 +197,13 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update participate
-    set "participate _id" = #{record.participateId,jdbcType=VARCHAR},
-      "participate _ip" = #{record.participateIp,jdbcType=VARCHAR},
-      "participate _device" = #{record.participateDevice,jdbcType=VARCHAR},
-      "participate _area" = #{record.participateArea,jdbcType=VARCHAR}
+    set participate_id = #{record.participateId,jdbcType=VARCHAR},
+      participate_ip = #{record.participateIp,jdbcType=VARCHAR},
+      participate_device = #{record.participateDevice,jdbcType=VARCHAR},
+      participate_area = #{record.participateArea,jdbcType=VARCHAR},
+      participate_surverId = #{record.participateSurverid,jdbcType=VARCHAR},
+      participate_startTime = #{record.participateStarttime,jdbcType=TIMESTAMP},
+      participate_endTime = #{record.participateEndtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -176,22 +212,34 @@
     update participate
     <set >
       <if test="participateIp != null" >
-        "participate _ip" = #{participateIp,jdbcType=VARCHAR},
+        participate_ip = #{participateIp,jdbcType=VARCHAR},
       </if>
       <if test="participateDevice != null" >
-        "participate _device" = #{participateDevice,jdbcType=VARCHAR},
+        participate_device = #{participateDevice,jdbcType=VARCHAR},
       </if>
       <if test="participateArea != null" >
-        "participate _area" = #{participateArea,jdbcType=VARCHAR},
+        participate_area = #{participateArea,jdbcType=VARCHAR},
+      </if>
+      <if test="participateSurverid != null" >
+        participate_surverId = #{participateSurverid,jdbcType=VARCHAR},
+      </if>
+      <if test="participateStarttime != null" >
+        participate_startTime = #{participateStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="participateEndtime != null" >
+        participate_endTime = #{participateEndtime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+    where participate_id = #{participateId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.code.questionnaireSystem.pojo.Participate" >
     update participate
-    set "participate _ip" = #{participateIp,jdbcType=VARCHAR},
-      "participate _device" = #{participateDevice,jdbcType=VARCHAR},
-      "participate _area" = #{participateArea,jdbcType=VARCHAR}
-    where "participate _id" = #{participateId,jdbcType=VARCHAR}
+    set participate_ip = #{participateIp,jdbcType=VARCHAR},
+      participate_device = #{participateDevice,jdbcType=VARCHAR},
+      participate_area = #{participateArea,jdbcType=VARCHAR},
+      participate_surverId = #{participateSurverid,jdbcType=VARCHAR},
+      participate_startTime = #{participateStarttime,jdbcType=TIMESTAMP},
+      participate_endTime = #{participateEndtime,jdbcType=TIMESTAMP}
+    where participate_id = #{participateId,jdbcType=VARCHAR}
   </update>
 </mapper>

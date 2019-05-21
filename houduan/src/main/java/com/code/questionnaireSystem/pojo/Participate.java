@@ -1,6 +1,7 @@
 package com.code.questionnaireSystem.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Participate implements Serializable {
     private String participateId;
@@ -10,6 +11,12 @@ public class Participate implements Serializable {
     private String participateDevice;
 
     private String participateArea;
+
+    private String participateSurverid;
+
+    private Date participateStarttime;
+
+    private Date participateEndtime;
 
     private static final long serialVersionUID = 1L;
 
@@ -43,5 +50,29 @@ public class Participate implements Serializable {
 
     public void setParticipateArea(String participateArea) {
         this.participateArea = participateArea == null ? null : participateArea.trim();
+    }
+
+    public String getParticipateSurverid() {
+        return participateSurverid;
+    }
+
+    public void setParticipateSurverid(String participateSurverid) {
+        this.participateSurverid = participateSurverid == null ? null : participateSurverid.trim();
+    }
+
+    public Date getParticipateStarttime() {
+        return participateStarttime;
+    }
+
+    public void setParticipateStarttime(Date participateStarttime) {
+        this.participateStarttime = participateStarttime;
+    }
+
+    public Date getParticipateEndtime() {
+        return participateEndtime;
+    }
+
+    public void setParticipateEndtime(Date participateEndtime) {
+        this.participateEndtime = participateEndtime;
     }
 }
