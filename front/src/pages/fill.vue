@@ -28,7 +28,6 @@ export default {
     }
   },
   async mounted () {
-    debugger
     await this.getAddress()
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
@@ -46,7 +45,6 @@ export default {
       }
     },
     async getIp () {
-      debugger
       let res = await participatenApi.getIp()
       if (res.code === 0) {
         this.participatIp = res.data

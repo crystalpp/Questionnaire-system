@@ -109,7 +109,6 @@ export default {
       return index
     },
     getRadioAnswerData (data) {
-      debugger
       let flag = this.isSameQuestion(data.questionId)
       if (!flag) {
         this.answers.push(data)
@@ -118,7 +117,6 @@ export default {
       }
     },
     getMultiAnswerData (data) {
-      debugger
       let flag = this.isSameQuestion(data.questionId)
       if (!flag) {
         this.answers.push(data)
@@ -127,7 +125,6 @@ export default {
       }
     },
     getDropAnswerData (data) {
-      debugger
       let flag = this.isSameQuestion(data.questionId)
       if (!flag) {
         this.answers.push(data)
@@ -136,7 +133,6 @@ export default {
       }
     },
     getTextAnswerData (data) {
-      debugger
       let flag = this.isSameQuestion(data.questionId)
       if (!flag) {
         this.answers.push(data)
@@ -145,7 +141,6 @@ export default {
       }
     },
     getMeasureAnswerData (data) {
-      debugger
       let flag = this.isSameQuestion(data.questionId)
       if (!flag) {
         this.answers.push(data)
@@ -154,7 +149,6 @@ export default {
       }
     },
     getMatrixAnswerData (data) {
-      debugger
       for (let i in data) {
         let flag = this.isSameQuestionSub(data[i].subQuestionId)
         if (!flag) {
@@ -165,7 +159,6 @@ export default {
       }
     },
     getMatrixAnswerDataMulti (data) {
-      debugger
       for (let i in data) {
         let flag = this.isSameQuestionSub(data[i].subQuestionId)
         if (!flag) {
