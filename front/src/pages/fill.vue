@@ -36,7 +36,6 @@ export default {
     await this.getSurverQuesions()
     await this.getDeviceType()
     await this.getIp()
-    
   },
   methods: {
     async getAddress () {
