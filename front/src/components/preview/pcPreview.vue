@@ -41,8 +41,10 @@ import dropdownType from '../QuestionType/dropdownChooseType'
 import textselectType from '../QuestionType/textselectChooseType'
 import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
+import participatenApi from '../../client/bll/apis/participate'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
-  props: ['survey'],
+  props: ['survey', 'currentParticPateId'],
   components: {
     'radio-choose-type': radioType,
     'multiselect-choose-type': multiselect,
@@ -168,8 +170,23 @@ export default {
         }
       }
     },
-    getAnswerData (data) {
+    /**
+     * 点击提交，添加用户已经填写的数据，以及更新用户完成时间
+     */
+    async getAnswerData (data) {
       console.log(this.answers)
+      await this.updateEndTime()
+    },
+    // 更新用户完成时间
+    async updateEndTime () {
+      debugger
+      let params = {
+        participateId: this.currentParticPateId
+      }
+      let res = participatenApi.updateEndTime(params)
+      if (res.code === 0) {
+        commonFunc.showMessage('恭喜你，填写问卷成功', 'success')
+      }
     }
   }
 }

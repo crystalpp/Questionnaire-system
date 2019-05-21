@@ -16,6 +16,26 @@ const participatenApi = {
     let url = config.APISERVER.host + '/participate/getAddress'
     let res = await requestService.get(url, '')
     return res
+  },
+  async addNewParticipate (params) {
+    let url = config.APISERVER.host + '/participate/addNewParticipate'
+    let res = await requestService.post(url, params)
+    return res
+  },
+  async getAll (params) {
+    let url = config.APISERVER.host + '/participate/getAll'
+    let res = await requestService.get(url, params)
+    return res
+  },
+  async updateEndTime (params) {
+    let url = config.APISERVER.host + '/participate/updateEndTime'
+    let res = await requestService.post(url, params)
+    return res
+  },
+  async selectParticiByTime (params) {
+    let url = config.APISERVER.host + '/participate/selectParticiByTime'
+    let res = await requestService.get(url, params)
+    return res
   }
 }
 export default participatenApi

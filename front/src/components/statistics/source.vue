@@ -4,19 +4,19 @@
     <div class="dataScreening">
       <div class="item">
         <p class="title">有效回收量</p>
-        <p class="num">10</p>
+        <p class="num">{{effectiveDataNum}}</p>
       </div>
       <div class="item">
         <p class="title">浏览量</p>
-        <p class="num">12</p>
+        <p class="num">{{browseDataNum}}</p>
       </div>
       <div class="item">
         <p class="title">平均答题时间</p>
-        <p class="num">20秒</p>
+        <p class="num">{{averageAnswerTime}}</p>
       </div>
       <div class="item">
         <p class="title">回收率</p>
-        <p class="num">83.3%</p>
+        <p class="num">{{(effectiveDataNum/browseDataNum*100).toFixed(1)}}%</p>
       </div>
     </div>
     <!-- 每日回答情况（散点图）和回答者地域（中国地图）分布 -->
@@ -94,7 +94,9 @@
 // 引入china的json文件
 import china from '../../../node_modules/echarts/map/json/china.json'
 import chinaDataJSON from '../../assets/chinaData.json'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
+  props: ['surverStaticData'],
   data () {
     return {
       anserTimeRange: '', // 查看答题人数的时间范围
@@ -142,14 +144,50 @@ export default {
         {'name': '四川', 'value': 2},
         {'name': '重庆', 'value': 5}
       ],
-      chinaData: chinaDataJSON.data
+      chinaData: chinaDataJSON.data,
+      effectiveDataNum: 0, // 有效回收数据数量
+      browseDataNum: 0, // 浏览数据数量
+      averageAnswerTime: '', // 平均答题时间
+      effectiveData: [] // 有效数据
     }
   },
   mounted () {
     this.raderAreaData()
     this.drawChart()
+    this.computeData()
   },
   methods: {
+    randerEffectiveData (data) {
+      for (let item of this.surverStaticData) {
+        if (item.participateEndtime !== null) {
+          this.effectiveData.push(item)
+        }
+      }
+    },
+    /**
+     * 根据回收的数据计算回收量，浏览量，答题时间等
+     */
+    computeData () {
+      let sum = 0
+      for (let item of this.surverStaticData) {
+        if (item.participateEndtime === null) {
+          this.browseDataNum ++
+        } else {
+          sum += (item.participateEndtime - item.participateStarttime)
+          this.effectiveDataNum ++
+          this.browseDataNum ++
+        }
+      }
+      console.log(this.averageAnswerTime)
+      this.averageAnswerTime = commonFunc.computedTime(sum / this.effectiveDataNum)
+      // let unixTimestamp = new Date(this.averageAnswerTime)
+      // let commonTime = unixTimestamp.toLocaleString()
+      // console.log(commonTime)
+      // // eslint-disable-next-line
+      // Date.prototype.toLocaleString = function () {
+      //   return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + '-' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds()
+      // }
+    },
     raderAreaData () {
       for (let i of this.chinaData) {
         for (let j of this.areaData) {

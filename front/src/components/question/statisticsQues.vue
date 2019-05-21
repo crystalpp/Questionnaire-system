@@ -21,20 +21,48 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <router-view></router-view>
+        <chart v-if="currentPage==='chart'"></chart>
+        <answerDetail v-if="currentPage==='answerDetail'"></answerDetail>
+        <source-data v-if="currentPage==='source'&& surverStaticData" :surverStaticData='surverStaticData'></source-data>
       </el-main>
     </el-container>
   </div>
 </template>
 <script>
+import chart from '../statistics/chart'
+import answerDetail from '../statistics/answerDetail'
+import source from '../statistics/source'
+import participatenApi from '../../client/bll/apis/participate'
 export default {
   data () {
     return {
+      currentPage: 'source',
+      surverStaticData: ''
     }
   },
+  components: {
+    'chart': chart,
+    'answerDetail': answerDetail,
+    'source-data': source
+  },
+  async mounted () {
+    await this.getAll()
+  },
   methods: {
+    async getAll () {
+      debugger
+      let params = {
+        surverId: this.$route.query.surverId
+      }
+      let res = await participatenApi.getAll(params)
+      if (res.code === 0) {
+        console.log(res.data)
+        this.surverStaticData = res.data
+      }
+    },
     handleSelect (key) {
-      this.$router.push({name: key})
+      this.currentPage = key
+      // this.$router.push({name: key})
     }
   }
 }

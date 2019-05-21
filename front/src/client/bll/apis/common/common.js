@@ -92,6 +92,20 @@ const commonFunc = {
 //  删除本地的数据
   removeLocalStorage (key) {
     return window.localStorage.removeItem(key)
+  },
+  computedTime (time) {
+    let second = time / 1000
+    let minute = 0
+    if (second < 60) {
+      return second + '秒'
+    } else {
+      minute = second / 60
+      if (minute < 24) {
+        return minute + '分'
+      } else {
+        return (minute / 24) + '小时'
+      }
+    }
   }
 }
 

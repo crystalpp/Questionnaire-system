@@ -1,6 +1,6 @@
 <template>
   <div class="fill-container">
-     <pc-preview :survey='survey' ></pc-preview>
+     <pc-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId"></pc-preview>
      <!-- <phone-preview :survey='survey' v-if="pcOrPhone === 'phone'"></phone-preview> -->
   </div>
 </template>
@@ -23,20 +23,67 @@ export default {
         descr: '',
         surverQuestions: [],
         participatIp: '',
-        particiAddress: ''
-      }
+        particiAddress: '',
+        particiDevice: '',
+        ipFlag: false,
+        partcipateInfo: ''
+      },
+      currentParticPateId: ''
     }
   },
   async mounted () {
-    await this.getAddress()
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
-    await this.getSurvers()
-    await this.getSurverQuesions()
-    await this.getDeviceType()
     await this.getIp()
+    await this.getAddress()
+    await this.getDeviceType()
+    await this.getAll()
+    if (!this.ipFlag) {
+      await this.addNewParticipate()
+      await this.getSurvers()
+      await this.getSurverQuesions()
+    } else {
+      // commonFunc.showMessage('你已经填写过该问卷，请勿重新填写', 'error')
+      await this.addNewParticipate()
+      await this.getSurvers()
+      await this.getSurverQuesions()
+      // this.$router.push({name: 'error'})
+    }
   },
   methods: {
+    isLimitIp (data) {
+      if (data.length !== 0) {
+        for (let item of data) {
+          if (item.participateIp === this.participatIp) {
+            this.ipFlag = true
+            return
+          }
+        }
+      }
+    },
+    async getAll () {
+      let params = {
+        surverId: this.$route.params.id
+      }
+      let res = await participatenApi.getAll(params)
+      if (res.code === 0) {
+        console.log(res.data)
+        this.isLimitIp(res.data)
+      }
+    },
+    async addNewParticipate () {
+      debugger
+      let params = {
+        ip: this.participatIp,
+        address: this.particiAddress,
+        device: this.particiDevice,
+        surverId: this.$route.params.id
+      }
+      let res = await participatenApi.addNewParticipate(params)
+      if (res.code === 0) {
+        this.currentParticPateId = res.data
+      }
+    },
     async getAddress () {
       let res = await participatenApi.getAddress()
       if (res.code === 0) {
@@ -54,6 +101,7 @@ export default {
     async getDeviceType () {
       let res = await participatenApi.getDeviceType()
       if (res.code === 0) {
+        this.particiDevice = res.data
       }
     },
     async getSurvers () {
