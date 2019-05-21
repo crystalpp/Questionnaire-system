@@ -10,8 +10,16 @@ import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Subdivision;
 
 public class GeoUtil {
+	public static void main(String[] args) throws Exception {
+
+		System.out.println(GeoUtil.Geoprovince(GeoUtil.getResponse("106.91.20.144")).getNames().get("zh-CN"));
+
+	}
+
 	public static CityResponse getResponse(String ip) throws Exception {
-		File database = new File("E:/CODE/Questionnaire-system/material/GeoLite2-City.mmdb");
+		String devFile = "E:/CODE/Questionnaire-system/material/GeoLite2-City.mmdb";
+		String prodFile = "/home/www/GeoLite2-City.mmdb";
+		File database = new File(prodFile);
 		// 读取数据库内容
 		DatabaseReader reader = new DatabaseReader.Builder(database).build();
 		InetAddress ipAddress = InetAddress.getByName(ip);
