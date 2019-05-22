@@ -22,7 +22,7 @@
       </el-aside>
       <el-main>
         <chart v-if="currentPage==='chart'"></chart>
-        <answerDetail v-if="currentPage==='answerDetail'"></answerDetail>
+        <answerDetail v-if="currentPage==='answerDetail'&& surverStaticData" :surverStaticData='surverStaticData'></answerDetail>
         <source-data v-if="currentPage==='source'&& surverStaticData" :surverStaticData='surverStaticData'></source-data>
       </el-main>
     </el-container>
@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     async getAll () {
-      debugger
       let params = {
         surverId: this.$route.query.surverId
       }

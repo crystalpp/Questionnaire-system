@@ -27,7 +27,7 @@
         </div>
       </div>
        <div class="submit">
-        <el-button type="primary" @click="getAnswerData">提交</el-button>
+        <el-button type="primary" @click="setAnswerData">提交</el-button>
       </div>
     </div>
    <div class="footer">
@@ -42,6 +42,7 @@ import textselectType from '../QuestionType/textselectChooseType'
 import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
 import participatenApi from '../../client/bll/apis/participate'
+import answerApi from '../../client/bll/apis/answer'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['survey', 'currentParticPateId'],
@@ -173,13 +174,27 @@ export default {
     /**
      * 点击提交，添加用户已经填写的数据，以及更新用户完成时间
      */
-    async getAnswerData (data) {
+    async setAnswerData () {
+      debugger
+      for (let item of this.answers) {
+        let params = {
+          surverId: this.$route.params.id,
+          questionId: item.questionId,
+          subQuestionId: item.subQuestionId,
+          optionId: item.optionId,
+          answerText: item.answerText,
+          participateId: this.currentParticPateId
+        }
+        let res = await answerApi.add(params)
+        if (res.code === 0) {
+          console.log(res.data)
+        }
+      }
       console.log(this.answers)
       await this.updateEndTime()
     },
     // 更新用户完成时间
     async updateEndTime () {
-      debugger
       let params = {
         participateId: this.currentParticPateId
       }

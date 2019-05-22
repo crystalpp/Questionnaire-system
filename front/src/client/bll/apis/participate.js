@@ -36,6 +36,11 @@ const participatenApi = {
     let url = config.APISERVER.host + '/participate/selectParticiByTime'
     let res = await requestService.get(url, params)
     return res
+  },
+  async getAllByPage (params) {
+    let url = config.APISERVER.host + '/participate/getAllByPage'
+    let res = await requestService.get(url, params)
+    return res
   }
 }
 export default participatenApi

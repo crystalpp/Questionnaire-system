@@ -7,7 +7,7 @@
         style="width: 100%">
         <el-table-column
           align="center"
-          prop="id"
+          prop="index"
           label="编号"
           width="200">
         </el-table-column>
@@ -41,89 +41,72 @@
         style="text-align:right;margin-top:0.1rem;"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[5, 10]"
+        :current-page="pageNum"
+        :page-sizes="[5, 10 ,20]"
         :page-size="5"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="10">
+        :total="surverStaticData.length">
       </el-pagination>
     </div>
   </div>
 </template>
 <script>
+import commonFunc from '../../client/bll/apis/common/common'
+import participatenApi from '../../client/bll/apis/participate'
 export default {
+  props: ['surverStaticData'],
   data () {
     return {
-      answerData: [
-        {
-          id: 1,
-          startTime: '2019-05-11 12:39:59',
-          endTime: '2019-03-30 12:40:21',
-          time: '0分22秒'
-        },
-        {
-          id: 2,
-          startTime: '2019-05-11 15:11:20',
-          endTime: '2019-05-11 15:11:42',
-          time: '0分22秒'
-        },
-        {
-          id: 3,
-          startTime: '2019-05-11 21:19:59',
-          endTime: '2019-05-11 21:20:18',
-          time: '0分19秒'
-        },
-        {
-          id: 4,
-          startTime: '2019-05-11 22:05:01',
-          endTime: '2019-05-11 22:05:21',
-          time: '0分20秒'
-        },
-        {
-          id: 5,
-          startTime: '2019-05-12 8:05:05',
-          endTime: '2019-05-12 8:05:23',
-          time: '0分18秒'
-        },
-        {
-          id: 6,
-          startTime: '2019-05-12 13:16:23',
-          endTime: '2019-05-12 13:16:44',
-          time: '0分21秒'
-        },
-        {
-          id: 7,
-          startTime: '2019-03-30 21:39:59',
-          endTime: '2019-03-30 21:40:21',
-          time: '0分49秒'
-        },
-        {
-          id: 8,
-          startTime: '2019-03-30 21:39:59',
-          endTime: '2019-03-30 21:40:21',
-          time: '0分49秒'
-        },
-        {
-          id: 9,
-          startTime: '2019-03-30 21:39:59',
-          endTime: '2019-03-30 21:40:21',
-          time: '0分49秒'
-        },
-        {
-          id: 10,
-          startTime: '2019-03-30 21:39:59',
-          endTime: '2019-03-30 21:40:21',
-          time: '0分49秒'
-        }
-      ],
-      currentPage: 1
+      answerData: [],
+      pageNum: 1,
+      pageSize: 5,
+      pageData: ''
     }
   },
+  async mounted () {
+    await this.getAllByPage()
+  },
   methods: {
-    handleSizeChange (val) {
+    async getAllByPage () {
+      let params = {
+        surverId: this.$route.query.surverId,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      }
+      let res = await participatenApi.getAllByPage(params)
+      if (res.code === 0) {
+        this.pageData = res.data.list
+        this.randerTableData()
+      }
+    },
+    randerTableData () {
+      this.answerData = []
+      let i = 1
+      for (let item of this.pageData) {
+        let part = {
+          index: 0,
+          startTime: '',
+          endTime: '',
+          time: '',
+          id: ''
+        }
+        part.index = i
+        part.startTime = commonFunc.formateDate(item.participateStarttime)
+        part.endTime = commonFunc.formateDate(item.participateEndtime)
+        part.time = commonFunc.computedTime(item.participateEndtime - item.participateStarttime)
+        part.id = item.participateId
+        i++
+        this.answerData.push(JSON.parse(JSON.stringify(part)))
+      }
+    },
+    async handleSizeChange (val) {
+      this.pageSize = val
+      await this.getAllByPage()
       console.log(`每页 ${val} 条`)
     },
-    handleCurrentChange (val) {
+    async handleCurrentChange (val) {
+      this.pageNum = val
+      await this.getAllByPage()
       console.log(`当前页: ${val}`)
     }
   }

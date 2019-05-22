@@ -72,7 +72,6 @@ export default {
       }
     },
     async addNewParticipate () {
-      debugger
       let params = {
         ip: this.participatIp,
         address: this.particiAddress,

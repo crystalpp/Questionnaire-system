@@ -29,7 +29,7 @@ export default {
       editOrPreview: '',
       answerData: {
         questionId: '',
-        optionid: ''
+        optionId: ''
       }
     }
   },
@@ -39,7 +39,7 @@ export default {
   methods: {
     chooseAnswer (item) {
       this.answerData.questionId = this.formData.questionId
-      this.answerData.optionid = item.optionId
+      this.answerData.optionId = item.optionId
       this.$emit('getAnswerData', this.answerData)
     },
     async edit () {

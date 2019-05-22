@@ -93,19 +93,29 @@ const commonFunc = {
   removeLocalStorage (key) {
     return window.localStorage.removeItem(key)
   },
-  computedTime (time) {
-    let second = time / 1000
-    let minute = 0
-    if (second < 60) {
+  computedTime (timeDiff) {
+    var hour = Math.floor(timeDiff / 3600000)
+    timeDiff = timeDiff % 3600000
+    var minute = Math.floor(timeDiff / 60000)
+    timeDiff = timeDiff % 60000
+    var second = timeDiff / 1000
+    if (hour === 0) {
+      return minute + '分' + second + '秒'
+    } else if (minute === 0) {
       return second + '秒'
     } else {
-      minute = second / 60
-      if (minute < 24) {
-        return minute + '分'
-      } else {
-        return (minute / 24) + '小时'
-      }
+      return hour + '时' + minute + '分' + second + '秒'
     }
+  },
+  formateDate (time) {
+    let unixTimestamp = new Date(time)
+    let commonTime = unixTimestamp.toLocaleString()
+    // console.log(commonTime)
+    // eslint-disable-next-line
+    Date.prototype.toLocaleString = function () {
+      return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + ' ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds()
+    }
+    return commonTime
   }
 }
 

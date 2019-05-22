@@ -27,21 +27,21 @@
             <div class="title">
               <p class="text">回答情况</p>
               <div class="dateChoose">
-                <el-date-picker style="width: 2rem"
+                <el-date-picker style="width: 3rem" @change="timeChoose"
                   v-model="anserTimeRange"
                   type="daterange"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期">
                 </el-date-picker>
-                <el-select v-model="timeType" placeholder="请选择" style="width: 1rem">
+                <!-- <el-select v-model="timeType" placeholder="请选择" style="width: 1rem">
                   <el-option
                     v-for="item in timeOption"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
-                </el-select>
+                </el-select> -->
               </div>
               
             </div>
@@ -95,6 +95,7 @@
 import china from '../../../node_modules/echarts/map/json/china.json'
 import chinaDataJSON from '../../assets/chinaData.json'
 import commonFunc from '../../client/bll/apis/common/common'
+import participatenApi from '../../client/bll/apis/participate'
 export default {
   props: ['surverStaticData'],
   data () {
@@ -115,16 +116,10 @@ export default {
           label: '按月'
         }
       ],
-      browerLegendData: ['chrome', 'firefox', 'oprea', 'IE', '其他'],
-      operateLegendData: ['IOS', 'Windows', 'MacOS', 'Android', '其他'],
+      browerLegendData: ['chrome', 'firefox', 'oprea', 'ie', '其他'],
+      operateLegendData: ['IOS', 'windows', 'MacOS', 'Android', '其他'],
       deviceLegendData: ['计算机', '移动设备', '其他'],
-      browerData: [
-        {value: 5, name: 'chrome'},
-        {value: 2, name: 'firefox'},
-        {value: 3, name: 'oprea'},
-        {value: 0, name: 'IE'},
-        {value: 0, name: '其他'}
-      ],
+      browerData: [],
       operateData: [
         {value: 2, name: 'IOS'},
         {value: 0, name: 'Windows'},
@@ -137,26 +132,135 @@ export default {
         {value: 5, name: '移动设备'},
         {value: 0, name: '其他'}
       ],
-      areaData: [
-        {'name': '北京', 'value': 1},
-        {'name': '上海', 'value': 1},
-        {'name': '湖北', 'value': 1},
-        {'name': '四川', 'value': 2},
-        {'name': '重庆', 'value': 5}
-      ],
       chinaData: chinaDataJSON.data,
       effectiveDataNum: 0, // 有效回收数据数量
       browseDataNum: 0, // 浏览数据数量
       averageAnswerTime: '', // 平均答题时间
-      effectiveData: [] // 有效数据
+      effectiveData: [], // 有效数据
+      rangeData: [], // 一定时间范围内的统计数据
+      lineChartData: {
+        times: [],
+        values: []
+      } //  折线图需要的数据
     }
   },
   mounted () {
-    this.raderAreaData()
-    this.drawChart()
     this.computeData()
+    this.raderAreaData()
+    this.randerPieData()
+    this.drawChart()
   },
   methods: {
+    /**
+     * 统计每个元素出现的次数
+     */
+    countItemAndValue (data) {
+      var obj = {}
+      for (var i = 0, l = data.length; i < l; i++) {
+        var item = data[i]
+        obj[item] = (obj[item] + 1) || 1
+      }
+      return obj
+    },
+    /**
+     * 组装饼图所需要的数据
+     */
+    randerPieData () {
+      let browers = []
+      for (let item of this.surverStaticData) {
+        browers.push(item.participateDevice)
+      }
+      let browersCount = this.countItemAndValue(browers)
+      console.log(browersCount)
+      for (let item of this.browerLegendData) {
+        let part = {
+          name: '',
+          value: ''
+        }
+        part.value = browersCount[item.toUpperCase()]
+        if (commonFunc.isDefine(browersCount[item.toUpperCase()])) {
+          part.name = item
+        } else {
+          part.value = 0
+        }
+        this.browerData.push(part)
+      }
+    },
+    /**
+     * 组装地图所需要的数据
+     */
+    raderAreaData () {
+      let citys = []
+      for (let item of this.surverStaticData) {
+        citys.push(item.participateArea)
+      }
+      let citysCount = this.countItemAndValue(citys)
+      console.log(citysCount)
+      for (let i of this.chinaData) {
+        if (commonFunc.isDefine(citysCount[i.name])) {
+          i.value = citysCount[i.name]
+        }
+      }
+      // console.log(this.chinaData)
+    },
+    /**
+     * 组装折线图所需要的数据
+     */
+    randerLineChartData (startTimeDateValueMs, endTimeDateValueMs) {
+      let times = []
+      for (let item of this.rangeData) {
+        let time = (commonFunc.formateDate(item.participateEndtime).split(' '))[0]
+        times.push(new Date(time).getTime())
+      }
+      let countTimes = this.countItemAndValue(times)
+      for (let i = startTimeDateValueMs; i <= endTimeDateValueMs; i += 86400000) {
+        let item = {
+          time: '',
+          value: ''
+        }
+        item.time = (commonFunc.formateDate(i).split(' '))[0]
+        if (commonFunc.isDefine(countTimes[i])) {
+          item.value = countTimes[i]
+        } else {
+          item.value = 0
+        }
+        this.lineChartData.times.push(JSON.parse(JSON.stringify(item.time)))
+        this.lineChartData.values.push(JSON.parse(JSON.stringify(item.value)))
+      }
+    },
+    formateDateFromMs (time) {
+      return time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()
+    },
+    /**
+     * 选择不同时间范围内，显示不同的数据
+     */
+    async timeChoose () {
+      let startTime = this.anserTimeRange[0]
+      let startTimeDateValue = this.formateDateFromMs(startTime)
+      let startTimeDateValueMs = new Date(startTimeDateValue).getTime()
+      let endTime = this.anserTimeRange[1]
+      let endTimeDateValue = this.formateDateFromMs(endTime)
+      let endTimeDateValueMs = new Date(endTimeDateValue).getTime()
+      let params = {
+        startTime: startTime,
+        endTime: endTime,
+        surverId: this.$route.query.surverId
+      }
+      let res = await participatenApi.selectParticiByTime(params)
+      if (res.code === 0) {
+        this.lineChartData = {
+          times: [],
+          values: []
+        }
+        this.rangeData = res.data
+        this.randerLineChartData(startTimeDateValueMs, endTimeDateValueMs)
+        this.drawLineChart()
+        console.log(this.lineChartData)
+      }
+    },
+    /**
+     * 统计有效数据
+     */
     randerEffectiveData (data) {
       for (let item of this.surverStaticData) {
         if (item.participateEndtime !== null) {
@@ -180,23 +284,6 @@ export default {
       }
       console.log(this.averageAnswerTime)
       this.averageAnswerTime = commonFunc.computedTime(sum / this.effectiveDataNum)
-      // let unixTimestamp = new Date(this.averageAnswerTime)
-      // let commonTime = unixTimestamp.toLocaleString()
-      // console.log(commonTime)
-      // // eslint-disable-next-line
-      // Date.prototype.toLocaleString = function () {
-      //   return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + '-' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds()
-      // }
-    },
-    raderAreaData () {
-      for (let i of this.chinaData) {
-        for (let j of this.areaData) {
-          if (i.name === j.name) {
-            i.value = j.value
-          }
-        }
-      }
-      console.log(this.chinaData)
     },
     drawChart () {
       this.drawLineChart()
@@ -211,13 +298,14 @@ export default {
         color: ['#0078C8'],
         xAxis: {
           type: 'category',
-          data: ['5-11', '5-12', '5-13', '5-14']
+          data: this.lineChartData.times
         },
         yAxis: {
+          name: '人',
           type: 'value'
         },
         series: [{
-          data: [4, 3, 1, 2],
+          data: this.lineChartData.values,
           type: 'line'
         }]
       }
@@ -236,7 +324,7 @@ export default {
         },
         visualMap: {
           min: 0,
-          max: 5,
+          max: this.surverStaticData.length,
           text: ['高', '低'],
           realtime: false,
           calculable: true,
@@ -371,7 +459,7 @@ export default {
           text-align: left;
         }
         .dateChoose{
-          flex: 3;
+          flex: 2;
           // justify-content: flex-end;
           text-align: right;
         }
