@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Answer implements Serializable {
     private String answerId;
 
+    private String surverId;
+
     private String questionId;
 
     private String subquestionId;
@@ -12,6 +14,8 @@ public class Answer implements Serializable {
     private String optionId;
 
     private String participateId;
+
+    private String answertext;
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +25,14 @@ public class Answer implements Serializable {
 
     public void setAnswerId(String answerId) {
         this.answerId = answerId == null ? null : answerId.trim();
+    }
+
+    public String getSurverId() {
+        return surverId;
+    }
+
+    public void setSurverId(String surverId) {
+        this.surverId = surverId == null ? null : surverId.trim();
     }
 
     public String getQuestionId() {
@@ -53,5 +65,13 @@ public class Answer implements Serializable {
 
     public void setParticipateId(String participateId) {
         this.participateId = participateId == null ? null : participateId.trim();
+    }
+
+    public String getAnswertext() {
+        return answertext;
+    }
+
+    public void setAnswertext(String answertext) {
+        this.answertext = answertext == null ? null : answertext.trim();
     }
 }

@@ -1,5 +1,7 @@
 package com.code.questionnaireSystem.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +19,8 @@ import com.code.questionnaireSystem.utils.GeoUtil;
 import com.code.questionnaireSystem.utils.IpUtils;
 import com.code.questionnaireSystem.utils.Result;
 import com.code.questionnaireSystem.utils.ResultCode;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.maxmind.geoip2.model.CityResponse;
 
 import eu.bitwalker.useragentutils.UserAgent;
@@ -91,13 +95,42 @@ public class ParticipateServiceImpl implements ParticipateService {
 	}
 
 	@Override
-	public Result selectParticiByTime(Date startTime, Date endTime, String surverId) {
+	public Result selectParticiByTime(String startTime, String endTime, String surverId) {
 		// TODO Auto-generated method stub
 		ParticipateExample example = new ParticipateExample();
 		ParticipateExample.Criteria criteria = example.createCriteria();
-		criteria.andParticipateEndtimeBetween(startTime, endTime);
+		Date startDate = null;
+		Date endDate = null;
+		startTime = startTime.replace("Z", " UTC");// 注意是空格+UTC
+		endTime = endTime.replace("Z", " UTC");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");// 注意格式化的表达式
+		try {
+			startDate = format.parse(startTime);
+			endDate = format.parse(endTime);
+			// 多加一天
+			endDate.setDate(endDate.getDate() + 1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		criteria.andParticipateEndtimeGreaterThanOrEqualTo(startDate);
+		criteria.andParticipateEndtimeLessThanOrEqualTo(endDate);
+		// criteria.andParticipateEndtimeBetween(startDate, endDate);
 		criteria.andParticipateSurveridEqualTo(surverId);
 		List<Participate> participates = participateMapper.selectByExample(example);
 		return Result.success(participates);
+	}
+
+	@Override
+	public Result getAllByPage(String surverId, Integer pageNum, Integer pageSize) {
+		ParticipateExample participateExample = new ParticipateExample();
+		ParticipateExample.Criteria criteria = participateExample.createCriteria();
+		criteria.andParticipateSurveridEqualTo(surverId);
+		PageHelper.startPage(pageNum, pageSize);
+		List<Participate> participates = participateMapper.selectByExample(participateExample);
+		PageInfo<Participate> participatePageInfo = new PageInfo<>(participates);
+		// 得到分页中的person条目对象
+		// List<Participate> pageList = participatePageInfo.getList();
+		return Result.success(participatePageInfo);
 	}
 }

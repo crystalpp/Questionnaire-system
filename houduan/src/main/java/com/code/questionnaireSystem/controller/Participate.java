@@ -1,7 +1,5 @@
 package com.code.questionnaireSystem.controller;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +55,22 @@ public class Participate {
 	}
 
 	@GetMapping("/selectParticiByTime")
-	public Result selectParticiByTime(Date startTime, Date endTime, String surverId) {
+	public Result selectParticiByTime(String startTime, String endTime, String surverId) {
 		return participateService.selectParticiByTime(startTime, endTime, surverId);
+	}
+
+	/**
+	 * 
+	 * @param surverId
+	 * @param pageNum
+	 *            页码
+	 * @param pageSize
+	 *            每页显示的数量
+	 * @return
+	 */
+	@GetMapping("getAllByPage")
+	public Result getAllByPage(String surverId, Integer pageNum, Integer pageSize) {
+		return participateService.getAllByPage(surverId, pageNum, pageSize);
 	}
 
 }

@@ -174,6 +174,76 @@ public class AnswerExample {
             return (Criteria) this;
         }
 
+        public Criteria andSurverIdIsNull() {
+            addCriterion("surver_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdIsNotNull() {
+            addCriterion("surver_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdEqualTo(String value) {
+            addCriterion("surver_id =", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdNotEqualTo(String value) {
+            addCriterion("surver_id <>", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdGreaterThan(String value) {
+            addCriterion("surver_id >", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdGreaterThanOrEqualTo(String value) {
+            addCriterion("surver_id >=", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdLessThan(String value) {
+            addCriterion("surver_id <", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdLessThanOrEqualTo(String value) {
+            addCriterion("surver_id <=", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdLike(String value) {
+            addCriterion("surver_id like", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdNotLike(String value) {
+            addCriterion("surver_id not like", value, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdIn(List<String> values) {
+            addCriterion("surver_id in", values, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdNotIn(List<String> values) {
+            addCriterion("surver_id not in", values, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdBetween(String value1, String value2) {
+            addCriterion("surver_id between", value1, value2, "surverId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverIdNotBetween(String value1, String value2) {
+            addCriterion("surver_id not between", value1, value2, "surverId");
+            return (Criteria) this;
+        }
+
         public Criteria andQuestionIdIsNull() {
             addCriterion("question_id is null");
             return (Criteria) this;

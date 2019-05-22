@@ -1,7 +1,5 @@
 package com.code.questionnaireSystem.service;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.code.questionnaireSystem.utils.Result;
@@ -20,6 +18,8 @@ public interface ParticipateService {
 
 	Result updateEndTime(String participateId);
 
-	Result selectParticiByTime(Date startTime, Date endTime, String surverId);
+	Result selectParticiByTime(String startTime, String endTime, String surverId);
+
+	Result getAllByPage(String surverId, Integer pageNum, Integer pageSize);
 
 }
