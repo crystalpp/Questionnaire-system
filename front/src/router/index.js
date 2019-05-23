@@ -12,6 +12,7 @@ import release from '@/components/question/releaseQues'
 import statistics from '@/components/question/statisticsQues'
 import preview from '@/pages/preview'
 import fill from '@/pages/fill'
+import result from '@/pages/result'
 import error from '@/pages/error'
 import source from '@/components/statistics/source'
 import chart from '@/components/statistics/chart'
@@ -56,6 +57,14 @@ export default new Router({
       component: fill,
       meta: {
         title: '问卷填写'
+      }
+    },
+    {
+      path: 'result',
+      name: 'result',
+      component: result,
+      meta: {
+        title: '统计结果'
       }
     },
     {

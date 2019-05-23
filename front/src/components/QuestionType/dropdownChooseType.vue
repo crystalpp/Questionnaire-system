@@ -43,10 +43,10 @@ export default {
     chooseAnswer (item) {
       let answerData = {
         questionId: '',
-        optionid: ''
+        optionId: ''
       }
       answerData.questionId = this.formData.questionId
-      answerData.optionid = item
+      answerData.optionId = item
       this.$emit('getAnswerData', answerData)
     },
     edit () {

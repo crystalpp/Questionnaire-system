@@ -176,16 +176,36 @@ export default {
      */
     async setAnswerData () {
       debugger
+      let res = ''
       for (let item of this.answers) {
-        let params = {
-          surverId: this.$route.params.id,
-          questionId: item.questionId,
-          subQuestionId: item.subQuestionId,
-          optionId: item.optionId,
-          answerText: item.answerText,
-          participateId: this.currentParticPateId
+        debugger
+        if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
+          debugger
+          let optionIds = item.optionId.split(',')
+          for (let item1 of optionIds) {
+            if (item1 !== '') {
+              let params = {
+                surverId: this.$route.params.id,
+                questionId: item.questionId,
+                subQuestionId: item.subQuestionId,
+                optionId: item1,
+                answerText: item.answerText,
+                participateId: this.currentParticPateId
+              }
+              res = await answerApi.add(params)
+            }
+          }
+        } else {
+          let params = {
+            surverId: this.$route.params.id,
+            questionId: item.questionId,
+            subQuestionId: item.subQuestionId,
+            optionId: item.optionId,
+            answerText: item.answerText,
+            participateId: this.currentParticPateId
+          }
+          res = await answerApi.add(params)
         }
-        let res = await answerApi.add(params)
         if (res.code === 0) {
           console.log(res.data)
         }

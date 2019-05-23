@@ -45,7 +45,7 @@
         :page-sizes="[5, 10 ,20]"
         :page-size="5"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="surverStaticData.length">
+        :total="total">
       </el-pagination>
     </div>
   </div>
@@ -60,7 +60,8 @@ export default {
       answerData: [],
       pageNum: 1,
       pageSize: 5,
-      pageData: ''
+      pageData: '',
+      total: 0
     }
   },
   async mounted () {
@@ -76,6 +77,7 @@ export default {
       let res = await participatenApi.getAllByPage(params)
       if (res.code === 0) {
         this.pageData = res.data.list
+        this.total = res.data.total
         this.randerTableData()
       }
     },

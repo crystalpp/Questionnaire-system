@@ -8,7 +8,7 @@
        <p class="radio-descri">{{formData.subdesc}}</p>
       </el-form-item>
       <el-form-item v-for="(item) in formData.options" :key="item.key">
-        <el-radio :label="item.optionContent" v-model="formData.selected" @change="chooseAnswer(item)"></el-radio>
+        <el-radio :label="item.optionId" v-model="selectOptionId" @change="chooseAnswer(item)">{{item.optionContent}}</el-radio>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -30,7 +30,8 @@ export default {
       answerData: {
         questionId: '',
         optionId: ''
-      }
+      },
+      selectOptionId: ''
     }
   },
   mounted () {

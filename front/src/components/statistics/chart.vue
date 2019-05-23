@@ -1,16 +1,16 @@
 <template>
   <div class="answerChart">
-    <div class="oneQues" v-for="(item) in answers">
+    <div class="oneQues" v-for="(item,index) in answers" :key ="index">
       <div class="titleArea">
         {{item.title}}
       </div>
       <div class="tableArea">
         <el-table
-        :data="item.quesionData"
+        :data="item.options"
         show-summary
         style="width: 100%">
         <el-table-column
-          prop="name"
+          prop="optionContent"
           label="选项"
           width="700">
         </el-table-column>
@@ -39,6 +39,9 @@
   </div>
 </template>
 <script>
+import surverApi from '../../client/bll/apis/surver'
+import questionApi from '../../client/bll/apis/question'
+import answerApi from '../../client/bll/apis/answer'
 export default {
   data () {
     return {
@@ -61,14 +64,50 @@ export default {
           ]
         }
       ],
-      currentChart: 'bar'
+      currentChart: 'bar',
+      survey: {
+        title: '',
+        descr: ''
+      },
+      surverQuestionsData: []
     }
   },
-  mounted () {
+  async mounted () {
+    // await this.getSurvers()
+    // await this.getSurverQuesions()
+    await this.staticAnswerText()
     this.drawBarChart('quesBarChart', this.getLengendData(), this.getValueData())
     this.drawPieChart('quesPieChart', this.getLengendData(), this.answers[0].quesionData)
   },
   methods: {
+    async staticAnswerText () {
+      let params = {
+        surverId: this.$route.query.surverId
+      }
+      let res = await answerApi.staticAnswerText(params)
+      if (res.code === 0) {
+      }
+    },
+    async getAnswersBySurverId () {
+    },
+    async getSurvers () {
+      let surverId = this.$route.query.surverId
+      let res = await surverApi.search(surverId)
+      if (res.code === 0) {
+        this.survey.title = res.data[0].surverTitle
+        this.survey.descr = res.data[0].surverDescription
+      }
+    },
+    async getSurverQuesions () {
+      let surverId = this.$route.query.surverId
+      let res = await questionApi.searchBySueverId(surverId)
+      console.log(res)
+      if (res.code === 0) {
+        this.surverQuestionsData = res.data
+        console.log(this.surverQuestionsData)
+        // this.transTypeCode(res.data)
+      }
+    },
     changeChart (key) {
       this.currentChart = key
     },

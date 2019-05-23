@@ -31,7 +31,7 @@ export default {
       editOrPreview: '',
       answerData: {
         questionId: '',
-        optionid: ''
+        optionId: ''
       },
       checkList: []
     }
@@ -42,11 +42,11 @@ export default {
   methods: {
     chooseAnswer () {
       // var answers = {}
-      this.answerData.optionid = ''
+      this.answerData.optionId = ''
       this.answerData.questionId = this.formData.questionId
       for (let item of this.checkList) {
-        this.answerData.optionid += item.optionId
-        this.answerData.optionid += ','
+        this.answerData.optionId += item.optionId
+        this.answerData.optionId += ','
       }
       // answers.push(this.answerData)
       this.$emit('getAnswerData', this.answerData)
