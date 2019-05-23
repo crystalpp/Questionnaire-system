@@ -1,30 +1,55 @@
 package com.code.questionnaireSystem.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.code.questionnaireSystem.mapper.AnswerMapper;
+import com.code.questionnaireSystem.mapper.CustomAnswerMapper;
+import com.code.questionnaireSystem.mapper.QuestionMapper;
 import com.code.questionnaireSystem.pojo.Answer;
+import com.code.questionnaireSystem.pojo.AnswerExample;
+import com.code.questionnaireSystem.pojo.AnswerStatic;
+import com.code.questionnaireSystem.pojo.AnswerStaticAll;
+import com.code.questionnaireSystem.pojo.Question;
+import com.code.questionnaireSystem.pojo.QuestionExample;
 import com.code.questionnaireSystem.service.AnswerService;
 import com.code.questionnaireSystem.utils.Result;
 import com.code.questionnaireSystem.utils.ResultCode;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
-
+	@Autowired
 	private AnswerMapper answerMapper;
+	@Autowired
+	private CustomAnswerMapper customAnswerMapper;
+	@Autowired
+	private QuestionMapper questionMapper;
 
 	@Override
-	public Result add(String surverId, String questionId, String subQuestionId, String optionId, String participateId) {
+	public Result add(String surverId, String questionId, String subQuestionId, String optionId, String answerText,
+			String participateId) {
 		Answer answer = new Answer();
 		String id = UUID.randomUUID().toString().substring(0, 10);
 		answer.setAnswerId(id);
 		answer.setSurverId(surverId);
 		answer.setQuestionId(questionId);
-		answer.setSubquestionId(subQuestionId);
-		answer.setOptionId(optionId);
+		if (subQuestionId != null) {
+			answer.setSubquestionId(subQuestionId);
+		}
+		if (optionId != null) {
+			answer.setOptionId(optionId);
+		}
 		answer.setParticipateId(participateId);
+		if (answerText != null) {
+			answer.setAnswertext(answerText);
+		}
+
 		int num = answerMapper.insertSelective(answer);
 		if (num < 1) {
 			return Result.failure(ResultCode.FAIL);
@@ -32,6 +57,60 @@ public class AnswerServiceImpl implements AnswerService {
 			return Result.success();
 		}
 
+	}
+
+	@Override
+	public Result getAnswersBySurverId(String surverId) {
+		// TODO Auto-generated method stub
+		AnswerExample answerExample = new AnswerExample();
+		AnswerExample.Criteria criteria = answerExample.createCriteria();
+		criteria.andSurverIdEqualTo(surverId);
+		List<Answer> answers = answerMapper.selectByExample(answerExample);
+		return Result.success(answers);
+	}
+
+	@Override
+	public Result staticAnswerText(String surverId) {
+		// TODO Auto-generated method stub
+		List<AnswerStatic> answerStatics = new ArrayList<>();
+		List<AnswerStatic> answerStatics2 = new ArrayList<>();
+		List<AnswerStaticAll> answerStatics3 = new ArrayList<>();
+		QuestionExample questionExample = new QuestionExample();
+		QuestionExample.Criteria criteria = questionExample.createCriteria();
+		criteria.andSurverIdEqualTo(surverId);
+		List<Question> questions = questionMapper.selectByExample(questionExample);
+		for (Question q : questions) {
+			if (q.getSubquestionId().equals("")) {
+				answerStatics = customAnswerMapper.getAnswerText(surverId);
+				answerStatics2 = customAnswerMapper.getQuestionOption(surverId);
+			} else {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("surverId", surverId);
+				map.put("questionId", q.getQuestionId());
+				AnswerStaticAll aStaticAll = new AnswerStaticAll();
+				aStaticAll.setQuestionId(q.getQuestionId());
+				aStaticAll.setQuestionName(q.getQuestionName());
+				aStaticAll.setAnswerStatics(customAnswerMapper.getSubQuestionOption(map));
+				answerStatics3.add(aStaticAll);
+			}
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("type1", answerStatics);
+		resultMap.put("type2", answerStatics2);
+		resultMap.put("type3", answerStatics3);
+		// answerStatics.addAll(answerStatics2);
+		// answerStatics.addAll(answerStatics3);
+		return Result.success(resultMap);
+	}
+
+	@Override
+	public Result getAnswersByParticipateId(String participateId) {
+		// TODO Auto-generated method stub
+		AnswerExample answerExample = new AnswerExample();
+		AnswerExample.Criteria criteria = answerExample.createCriteria();
+		criteria.andParticipateIdEqualTo(participateId);
+		List<Answer> answers = answerMapper.selectByExample(answerExample);
+		return Result.success(answers);
 	}
 
 }

@@ -126,6 +126,7 @@ public class ParticipateServiceImpl implements ParticipateService {
 		ParticipateExample participateExample = new ParticipateExample();
 		ParticipateExample.Criteria criteria = participateExample.createCriteria();
 		criteria.andParticipateSurveridEqualTo(surverId);
+		criteria.andParticipateEndtimeIsNotNull();
 		PageHelper.startPage(pageNum, pageSize);
 		List<Participate> participates = participateMapper.selectByExample(participateExample);
 		PageInfo<Participate> participatePageInfo = new PageInfo<>(participates);

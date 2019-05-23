@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.code.questionnaireSystem.mapper.CustomAnswerMapper" >
+<resultMap id="BaseResultMap" type="com.code.questionnaireSystem.pojo.AnswerStatic">
+<result column="question_id" property="questionId" jdbcType="VARCHAR" />
+<result column="question_name" property="questionName" jdbcType="VARCHAR" />
+<collection property="listAnswer" javaType="ArrayList" ofType="com.code.questionnaireSystem.pojo.AnswerStaticItem">
+<result column="subQuestion_id" property="subQuestionId" jdbcType="VARCHAR" />
+<result column="subQuestion_name" property="subQuestionName" jdbcType="VARCHAR" />
+<result column="option_id" property="optionId" jdbcType="VARCHAR" />
+<result column="option_content" property="optionContent" jdbcType="VARCHAR" />
+<result column="answerText" property="answerText" jdbcType="VARCHAR" />
+<result column="num" property="num" jdbcType="INTEGER" />
+</collection>
+</resultMap>
+<select id="getAnswerText" parameterType="java.lang.String" resultMap="BaseResultMap">
+select a.question_id,q.question_name,answerText,count(answerText) as num from answer a 
+LEFT JOIN question q on q.question_id= a.question_id
+where a.subQuestion_id is null and option_id is null
+and a.surver_id=#{surverId}
+GROUP BY question_id,q.question_name,answerText
+</select>
+
+<select id="getQuestionOption" parameterType="java.lang.String" resultMap="BaseResultMap">
+select a.question_id,q.question_name,a.option_id,qo.option_content,count(a.option_id) as num from answer a 
+LEFT JOIN question q on q.question_id= a.question_id
+LEFT JOIN questionoption qo on a.option_id=qo.option_id
+where ISNULL(a.subQuestion_id) and a.option_id IS NOT NULL
+and a.surver_id=#{surverId}
+GROUP BY question_id,q.question_name,a.option_id,qo.option_content
+</select>
+<select id="getSubQuestionOption" parameterType="java.util.Map" resultMap="BaseResultMap">
+select  a.question_id,q.question_name,a.subQuestion_id,a.option_id,qo.option_content,count(a.option_id) as num from answer a
+LEFT JOIN question q on q.question_id= a.subQuestion_id
+LEFT JOIN questionoption qo on a.option_id=qo.option_id
+where a.subQuestion_id is not null and a.option_id is not null and a.question_id=#{questionId}
+and a.surver_id=#{surverId}
+GROUP BY a.question_id,a.subQuestion_id,a.option_id
+</select>
+
+</mapper>
