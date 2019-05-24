@@ -7,6 +7,7 @@
 // import phonePreview from '../components/preview/phonePreview'
 import pcPreview from '../components/preview/pcPreview'
 import surverApi from '../client/bll/apis/surver'
+import answerApi from '../client/bll/apis/answer'
 import questionApi from '../client/bll/apis/question'
 import commonFunc from '../client/bll/apis/common/common'
 export default {
@@ -26,6 +27,7 @@ export default {
         ipFlag: false,
         partcipateInfo: ''
       },
+      answerData: [],
       currentParticPateId: ''
     }
   },
@@ -36,8 +38,17 @@ export default {
     await this.getSurverQuesions()
   },
   methods: {
+    async getAnswersByParticipateId () {
+      let params = {
+        participateId: this.$route.participateId
+      }
+      let res = await answerApi.getAnswersByParticipateId(params)
+      if (res.code === 0) {
+        this.answerData = res.data
+      }
+    },
     async getSurvers () {
-      let surverId = this.$route.params.id
+      let surverId = this.$route.query.surverId
       let res = await surverApi.search(surverId)
       if (res.code === 0) {
         this.survey.title = res.data[0].surverTitle
@@ -45,7 +56,7 @@ export default {
       }
     },
     async getSurverQuesions () {
-      let surverId = this.$route.params.id
+      let surverId = this.$route.query.surverId
       let res = await questionApi.searchBySueverId(surverId)
       console.log(res)
       if (res.code === 0) {

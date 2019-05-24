@@ -69,7 +69,8 @@ export default {
         title: '',
         descr: ''
       },
-      surverQuestionsData: []
+      surverQuestionsData: [],
+      answerData: []
     }
   },
   async mounted () {
@@ -86,6 +87,8 @@ export default {
       }
       let res = await answerApi.staticAnswerText(params)
       if (res.code === 0) {
+        this.answerData = res.data
+        console.log(this.answerData)
       }
     },
     async getAnswersBySurverId () {

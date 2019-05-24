@@ -293,24 +293,24 @@ export default {
         this.selectForm.measureValue = ''
       } else if (type === 'measure') {
         this.quesType = 'measure'
-        this.selectForm.options = [
-          {
-            value: '满意',
-            label: '满意度'
-          },
-          {
-            value: '认同',
-            label: '认同度'
-          },
-          {
-            value: '重要',
-            label: '重要度'
-          },
-          {
-            value: '符合',
-            label: '符合度'
-          }
-        ]
+        // this.selectForm.options = [
+        //   {
+        //     value: '满意',
+        //     label: '满意度'
+        //   },
+        //   {
+        //     value: '认同',
+        //     label: '认同度'
+        //   },
+        //   {
+        //     value: '重要',
+        //     label: '重要度'
+        //   },
+        //   {
+        //     value: '符合',
+        //     label: '符合度'
+        //   }
+        // ]
       } else if (type === 'text') {
         this.quesType = 'text'
       }

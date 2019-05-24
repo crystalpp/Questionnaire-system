@@ -68,6 +68,18 @@ export default {
     await this.getAllByPage()
   },
   methods: {
+    handleClick (data) {
+      debugger
+      this.$router.push(
+        {
+          name: 'result',
+          query: {
+            ...this.$route.query,
+            participateId: data.id
+          }
+        }
+      )
+    },
     async getAllByPage () {
       let params = {
         surverId: this.$route.query.surverId,

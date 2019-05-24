@@ -14,14 +14,14 @@
       <el-form-item label="量表类型" :rules="{
           required: true, message: '量表类型不能为空', trigger: 'blur'
         }">
-        <el-select  v-model="selectForm.options[0].optionContent"  placeholder="请选择量表类型">
+        <!-- <el-select  v-model="selectForm.options[0].optionContent"  placeholder="请选择量表类型">
           <el-option
             v-for="item in selectForm.options"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
-      </el-select>
+      </el-select> -->
       </el-form-item>
       <el-form-item>
         <div class="line"></div>
@@ -76,6 +76,7 @@ export default {
   },
   methods: {
     confirm (formName) {
+      debugger
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.selectForm.display = false
