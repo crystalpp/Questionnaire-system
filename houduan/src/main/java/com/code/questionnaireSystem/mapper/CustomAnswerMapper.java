@@ -12,4 +12,6 @@ public interface CustomAnswerMapper {
 
 	List<AnswerStatic> getSubQuestionOption(Map<String, Object> map);
 
+	Integer countSubQuestionOption(Map<String, Object> map);
+
 }

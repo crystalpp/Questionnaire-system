@@ -22,12 +22,14 @@ GROUP BY question_id,q.question_name,answerText
 </select>
 
 <select id="getQuestionOption" parameterType="java.lang.String" resultMap="BaseResultMap">
-select a.question_id,q.question_name,a.option_id,qo.option_content,count(a.option_id) as num from answer a 
-LEFT JOIN question q on q.question_id= a.question_id
-LEFT JOIN questionoption qo on a.option_id=qo.option_id
-where ISNULL(a.subQuestion_id) and a.option_id IS NOT NULL
-and a.surver_id=#{surverId}
-GROUP BY question_id,q.question_name,a.option_id,qo.option_content
+select qo.question_id,q.question_name,qo.option_id,qo.option_content,IFNULL(t1.num, 0) as num
+ from questionoption qo
+LEFT JOIN 
+(select a.option_id,count(a.option_id) as num from answer a 
+GROUP BY a.option_id) t1 on qo.option_id=t1.option_id
+LEFT JOIN question q on q.question_id=qo.question_id
+where qo.subQuestion_id='' and q.surver_id=#{surverId}
+order by qo.question_id
 </select>
 <select id="getSubQuestionOption" parameterType="java.util.Map" resultMap="BaseResultMap">
 select  a.question_id,q.question_name,a.subQuestion_id,a.option_id,qo.option_content,count(a.option_id) as num from answer a
@@ -37,5 +39,7 @@ where a.subQuestion_id is not null and a.option_id is not null and a.question_id
 and a.surver_id=#{surverId}
 GROUP BY a.question_id,a.subQuestion_id,a.option_id
 </select>
-
+<select id="countSubQuestionOption" parameterType="java.util.Map" resultType="java.lang.Integer">
+select count(option_id) as num from answer where option_id=#{optionId} and subQuestion_id=#{subQuestion_id}
+</select>
 </mapper>
