@@ -1,12 +1,54 @@
 <template>
   <div class="answerChart">
-    <div class="oneQues" v-for="(item,index) in answers" :key ="index">
+    <div class="oneQues-answerText" v-for="(item, index) in answerData.type1" :key="index">
+       <div class="titleArea">
+        {{item.questionName}}
+      </div>
+      <div class="tableArea" v-if="item.questionType === 4">
+        <el-table
+          :data="answerTextData"
+          style="width: 100%">
+          <el-table-column
+            prop="id"
+            label="编号"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="text"
+            label="文本答案"
+            width="580">
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="tableArea" v-if="item.questionType === 5">
+        <el-table
+          :data="answerMeasureData"
+          style="width: 100%">
+          <el-table-column
+            prop="id"
+            label="编号"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="score"
+            label="分值"
+            width="280">
+          </el-table-column>
+          <el-table-column
+            prop="num"
+            label="小计"
+            width="280">
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+    <div class="oneQues" v-for="(item,index) in answerData.type2" :key ="index">
       <div class="titleArea">
-        {{item.title}}
+        {{item.questionName}}
       </div>
       <div class="tableArea">
         <el-table
-        :data="item.options"
+        :data="item.listAnswer"
         show-summary
         style="width: 100%">
         <el-table-column
@@ -15,7 +57,7 @@
           width="700">
         </el-table-column>
         <el-table-column
-          prop="value"
+          prop="num"
           label="小计"
           width="180">
         </el-table-column>
@@ -29,12 +71,28 @@
           </el-button-group>
         </div>
         <div class="chart" v-show="currentChart === 'pie'">
-          <div id="quesPieChart" style="width:9rem;height:4rem;"></div>
+          <div id='quesPieChart'  style="width:9rem;height:4rem;"></div>
         </div>
         <div class="chart" v-show="currentChart === 'bar'">
-          <div id="quesBarChart" style="width:9rem;height:4rem;"></div>      
+          <div id='quesBarChart' style="width:9rem;height:4rem;"></div>      
         </div>
       </div>
+    </div>
+    <div class="oneQues-sub" v-for="(item,index) in answerData.type3" :key="index">
+      <div class="titleArea">
+        {{item.questionName}}
+      </div>
+      <table class="matrixTable-radio">
+        <tr>
+          <th></th>
+          <th v-for="(item1,index1) in item.subList[0].optionNums" :key="index1">{{item1.qoption.optionContent}} </th>
+        </tr>
+        <tr v-for="(item2,index2) in item.subList" :key="index2">
+          <td>{{item2.sub_QuestionName}}</td>
+          <td v-for="(item3,index3) in item2.optionNums" :key="index3">{{item3.num}}</td>
+          <!-- <td>{{item2.optionNums[1].num}}</td> -->
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -45,6 +103,28 @@ import answerApi from '../../client/bll/apis/answer'
 export default {
   data () {
     return {
+      answerTextData: [
+        {
+          id: 1,
+          text: '非常满意'
+        },
+        {
+          id: 2,
+          text: '不满意'
+        }
+      ],
+      answerMeasureData: [
+        {
+          id: 1,
+          score: 5,
+          num: 2
+        },
+        {
+          id: 2,
+          score: 2,
+          num: 1
+        }
+      ],
       answers: [
         {
           title: '你对所学的专业是否满意',
@@ -188,6 +268,46 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.matrixTable-radio{
+  font-size: 0.12rem;
+  width: 100%;
+  tr{
+    height: 0.4rem;
+    align-items: center;
+    display: flex;
+    td{
+      flex:1;
+    }
+    th{
+      font-weight: normal;
+      flex: 1;
+    }
+  }
+}
+.oneQues-answerText {
+   width: 80%;
+    // height: 8rem;
+    margin: 0 auto;
+    border: 1px solid #DBDBDB;
+    background: #ffffff;
+    .titleArea{
+      color: #333333;
+      text-align: left;
+      padding: 0.2rem;
+    }
+}
+.oneQues-sub {
+  width: 80%;
+    // height: 8rem;
+    margin: 0 auto;
+    border: 1px solid #DBDBDB;
+    background: #ffffff;
+    .titleArea{
+      color: #333333;
+      text-align: left;
+      padding: 0.2rem;
+    }
+}
 .answerChart{
   width: 100%;
   height: 100%;
