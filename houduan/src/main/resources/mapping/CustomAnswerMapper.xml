@@ -4,6 +4,7 @@
 <resultMap id="BaseResultMap" type="com.code.questionnaireSystem.pojo.AnswerStatic">
 <result column="question_id" property="questionId" jdbcType="VARCHAR" />
 <result column="question_name" property="questionName" jdbcType="VARCHAR" />
+<result column="queType_id" property="questionType" jdbcType="INTEGER"/>
 <collection property="listAnswer" javaType="ArrayList" ofType="com.code.questionnaireSystem.pojo.AnswerStaticItem">
 <result column="subQuestion_id" property="subQuestionId" jdbcType="VARCHAR" />
 <result column="subQuestion_name" property="subQuestionName" jdbcType="VARCHAR" />
@@ -14,7 +15,7 @@
 </collection>
 </resultMap>
 <select id="getAnswerText" parameterType="java.lang.String" resultMap="BaseResultMap">
-select a.question_id,q.question_name,answerText,count(answerText) as num from answer a 
+select a.question_id,q.question_name,q.queType_id,answerText,count(answerText) as num from answer a 
 LEFT JOIN question q on q.question_id= a.question_id
 where a.subQuestion_id is null and option_id is null
 and a.surver_id=#{surverId}

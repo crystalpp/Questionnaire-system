@@ -8,6 +8,6 @@ import lombok.Data;
 public class AnswerStaticAll {
 	private String questionId;
 	private String questionName;
-	private List<AnswerStatic> answerStatics;
+	private List<SubQuestionAnswer> subQuestionAnswers;
 
 }

@@ -86,13 +86,14 @@ public class AnswerServiceImpl implements AnswerService {
 		QuestionExample questionExample = new QuestionExample();
 		QuestionExample.Criteria criteria = questionExample.createCriteria();
 		criteria.andSurverIdEqualTo(surverId);
-		List<SubQuestion> subQuestionsAnswer = new ArrayList<>();
+		List<SubQuestionAnswer> subQuestionAnswerList = new ArrayList<>();
 		List<Question> questions = questionMapper.selectByExample(questionExample);
 		for (Question q : questions) {
 			if (q.getSubquestionId().equals("")) {
 				answerStatics = customAnswerMapper.getAnswerText(surverId);
 				answerStatics2 = customAnswerMapper.getQuestionOption(surverId);
 			} else {
+				List<SubQuestion> subQuestionList = new ArrayList<>();
 				SubQuestionAnswer subQuestionAnswer = new SubQuestionAnswer();
 				subQuestionAnswer.setQuestionId(q.getQuestionId());
 				subQuestionAnswer.setQuestionName(q.getQuestionName());
@@ -107,9 +108,7 @@ public class AnswerServiceImpl implements AnswerService {
 
 				for (String sbQuestion : sbQuestionsList) {
 					Question subQuestions = questionMapper.selectByPrimaryKey(sbQuestion);
-
 					SubQuestion subQuestion = new SubQuestion();
-
 					List<OptionNum> optionNums = new ArrayList<>();
 					for (QuestionOption qo : options) {
 						Map<String, Object> map = new HashMap<String, Object>();
@@ -124,10 +123,11 @@ public class AnswerServiceImpl implements AnswerService {
 					subQuestion.setOptionNums(optionNums);
 					subQuestion.setSubQuestion_id(subQuestions.getQuestionId());
 					subQuestion.setSub_QuestionName(subQuestions.getQuestionName());
-					subQuestionsAnswer.add(subQuestion);
+					subQuestionList.add(subQuestion);
 
 				}
-
+				subQuestionAnswer.setSubList(subQuestionList);
+				subQuestionAnswerList.add(subQuestionAnswer);
 				// Map<String, Object> map = new HashMap<String, Object>();
 				// map.put("surverId", surverId);
 				// map.put("questionId", q.getQuestionId());
@@ -142,7 +142,7 @@ public class AnswerServiceImpl implements AnswerService {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("type1", answerStatics);
 		resultMap.put("type2", answerStatics2);
-		resultMap.put("type3", subQuestionsAnswer);
+		resultMap.put("type3", subQuestionAnswerList);
 		// answerStatics.addAll(answerStatics2);
 		// answerStatics.addAll(answerStatics3);
 		return Result.success(resultMap);
