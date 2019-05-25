@@ -6,15 +6,15 @@
       </div>
       <div class="tableArea" v-if="item.questionType === 4">
         <el-table
-          :data="answerTextData"
+          :data="item.listAnswer"
           style="width: 100%">
-          <el-table-column
+          <!-- <el-table-column
             prop="id"
             label="编号"
             width="100">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
-            prop="text"
+            prop="answerText"
             label="文本答案"
             width="580">
           </el-table-column>
@@ -22,15 +22,15 @@
       </div>
       <div class="tableArea" v-if="item.questionType === 5">
         <el-table
-          :data="answerMeasureData"
+          :data="item.listAnswer"
           style="width: 100%">
-          <el-table-column
+          <!-- <el-table-column
             prop="id"
             label="编号"
             width="100">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
-            prop="score"
+            prop="answerText"
             label="分值"
             width="280">
           </el-table-column>

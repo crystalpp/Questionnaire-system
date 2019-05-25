@@ -68,6 +68,11 @@ const questionApi = {
     let url = config.APISERVER.host + '/question/updateByQuestionId'
     let res = await requestService.postJson(url, params)
     return res
+  },
+  async getOption (params) {
+    let url = config.APISERVER.host + '/question/getOption'
+    let res = await requestService.get(url, params)
+    return res
   }
 }
 export default questionApi

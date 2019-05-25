@@ -34,7 +34,7 @@
           </tr>
           <tr v-for="(item1,index) in formData.questions" :key="index">
             <td>{{item1.questionName}}</td>
-            <el-radio-group  v-model="radioCheckList[index]" v-for="(item2,index1) in formData.options" :key="index1" @change="chooseAnswer(item1,item2)" style="flex:1">
+            <el-radio-group  v-model="radioCheckList[index]" v-for="(item2,index1) in formData.options" :key="index1" @change="chooseAnswer(item2)" style="flex:1">
               <td >
                 <el-radio :label="item2.optionId" >{{text}}</el-radio>
               </td>
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-// import questionApi from '../../client/bll/apis/question'
+import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
@@ -119,7 +119,8 @@ export default {
         ]
       },
       answerData: {
-      }
+      },
+      optionInfo: ''
     }
   },
   mounted () {
@@ -128,7 +129,18 @@ export default {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
   },
   methods: {
-    initCheckList () {
+    async getOption (id) {
+      let params = {
+        optionId: id
+      }
+      let result = []
+      let res = await questionApi.getOption(params)
+      if (res.code === 0) {
+        result = res.data
+      }
+      return result
+    },
+    async initCheckList () {
       debugger
       this.checkList = []
       // eslint-disable-next-line
@@ -136,21 +148,32 @@ export default {
         let item = []
         let radioItem = ''
         if (commonFunc.isDefine(this.formData.subChoose)) {
-          if (this.formData.subChoose[i.questionId].length === 1) {
+          if (this.formData.type === 'matrix-radio') {
+            // let res = await this.getOption(this.formData.subChoose[i.questionId][0])
+            // radioItem = res
             radioItem = this.formData.subChoose[i.questionId][0]
-          } else {
-            item = radioItem = this.formData.subChoose[i.questionId]
+          } else if (this.formData.type === 'matrix-multi') {
+            // for (let j of this.formData.subChoose[i.questionId]) {
+            //   this.optionInfo = ''
+            //   let res1 = await this.getOption(j)
+            //   item.push(res1)
+            // }
+            item = this.formData.subChoose[i.questionId]
           }
         } else {
           item = []
           radioItem = ''
         }
+        debugger
         // console.log(i)
         this.radioCheckList.push(radioItem)
         this.checkList.push(item)
       }
+      console.log(this.radioCheckList)
+      console.log(this.checkList)
     },
     chooseAnswerMulti () {
+      debugger
       var answerData = []
       var answerDataItem = {
         checkOptions: [],
@@ -173,14 +196,16 @@ export default {
         oneItem.subQuestionId = item.checkQuestions.questionId
         oneItem.optionId = ''
         for (let item1 of item.checkOptions) {
-          oneItem.optionId += item1.optionId
+          oneItem.optionId += item1
           oneItem.optionId += ','
         }
         realAnswers.push(JSON.parse(JSON.stringify(oneItem)))
       }
+      console.log(realAnswers)
       this.$emit('getAnswerDataMulti', realAnswers)
     },
-    chooseAnswer () {
+    chooseAnswer (data) {
+      debugger
       var answerData = []
       var answerDataItem = {
         checkOptions: '',
@@ -200,25 +225,25 @@ export default {
       var realAnswers = []
       for (let item of answerData) {
         oneItem.questionId = this.formData.questionId
-        oneItem.optionId = item.checkOptions.optionId
+        oneItem.optionId = item.checkOptions
         oneItem.subQuestionId = item.checkQuestions.questionId
         realAnswers.push(JSON.parse(JSON.stringify(oneItem)))
       }
       this.$emit('getAnswerData', realAnswers)
+    },
+    edit () {
+      this.formData.display = true
+      let quesType = 'matrix'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
+      this.$emit('editSelectForm', this.formData)
+    },
+    async deleteQues (id) {
+      let res = await questionApi.deleteByQuestionId(id)
+      if (res.code === 0) {
+        commonFunc.showMessage('删除成功', 'success')
+      }
     }
-    // edit () {
-    //   this.formData.display = true
-    //   let quesType = 'matrix'
-    //   this.formData.optionMethod = 'edit'
-    //   this.formData.quesType = quesType
-    //   this.$emit('editSelectForm', this.formData)
-    // },
-    // async deleteQues (id) {
-    //   let res = await questionApi.deleteByQuestionId(id)
-    //   if (res.code === 0) {
-    //     commonFunc.showMessage('删除成功', 'success')
-    //   }
-    // },
   }
 }
 </script>

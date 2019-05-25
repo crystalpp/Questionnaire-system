@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-// import questionApi from '../../client/bll/apis/question'
+import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
@@ -52,25 +52,25 @@ export default {
       this.answerData.optionId = ''
       this.answerData.questionId = this.formData.questionId
       for (let item of this.checkList) {
-        this.answerData.optionId += item.optionId
+        this.answerData.optionId += item
         this.answerData.optionId += ','
       }
       // answers.push(this.answerData)
       this.$emit('getAnswerData', this.answerData)
+    },
+    edit () {
+      this.formData.display = true
+      let quesType = 'select'
+      this.formData.optionMethod = 'edit'
+      this.formData.quesType = quesType
+      this.$emit('editSelectForm', this.formData)
+    },
+    async deleteQues (id) {
+      let res = await questionApi.deleteByQuestionId(id)
+      if (res.code === 0) {
+        commonFunc.showMessage('删除成功', 'success')
+      }
     }
-    // edit () {
-    //   this.formData.display = true
-    //   let quesType = 'select'
-    //   this.formData.optionMethod = 'edit'
-    //   this.formData.quesType = quesType
-    //   this.$emit('editSelectForm', this.formData)
-    // },
-    // async deleteQues (id) {
-    //   let res = await questionApi.deleteByQuestionId(id)
-    //   if (res.code === 0) {
-    //     commonFunc.showMessage('删除成功', 'success')
-    //   }
-    // }
   }
 }
 </script>
