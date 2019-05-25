@@ -11,6 +11,6 @@ public interface AnswerService {
 
 	Result staticAnswerText(String surverId);
 
-	Result getAnswersByParticipateId(String participateId);
+	Result getAnswersByParticipateId(String participateId, String surverId);
 
 }

@@ -2,6 +2,7 @@ package com.code.questionnaireSystem.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.code.questionnaireSystem.mapper.AnswerMapper;
 import com.code.questionnaireSystem.mapper.CustomAnswerMapper;
+import com.code.questionnaireSystem.mapper.CustomParticipateAnswerMapper;
 import com.code.questionnaireSystem.mapper.QuestionMapper;
 import com.code.questionnaireSystem.mapper.QuestionOptionMapper;
 import com.code.questionnaireSystem.pojo.Answer;
@@ -18,6 +20,8 @@ import com.code.questionnaireSystem.pojo.AnswerExample;
 import com.code.questionnaireSystem.pojo.AnswerStatic;
 import com.code.questionnaireSystem.pojo.AnswerStaticAll;
 import com.code.questionnaireSystem.pojo.OptionNum;
+import com.code.questionnaireSystem.pojo.ParticipateAnswer;
+import com.code.questionnaireSystem.pojo.ParticipateSubAnswer;
 import com.code.questionnaireSystem.pojo.Question;
 import com.code.questionnaireSystem.pojo.QuestionExample;
 import com.code.questionnaireSystem.pojo.QuestionOption;
@@ -38,6 +42,8 @@ public class AnswerServiceImpl implements AnswerService {
 	private QuestionMapper questionMapper;
 	@Autowired
 	private QuestionOptionMapper questionOptionMapper;
+	@Autowired
+	private CustomParticipateAnswerMapper customParticipateAnswerMapper;
 
 	@Override
 	public Result add(String surverId, String questionId, String subQuestionId, String optionId, String answerText,
@@ -149,13 +155,37 @@ public class AnswerServiceImpl implements AnswerService {
 	}
 
 	@Override
-	public Result getAnswersByParticipateId(String participateId) {
+	public Result getAnswersByParticipateId(String participateId, String surverId) {
 		// TODO Auto-generated method stub
-		AnswerExample answerExample = new AnswerExample();
-		AnswerExample.Criteria criteria = answerExample.createCriteria();
-		criteria.andParticipateIdEqualTo(participateId);
-		List<Answer> answers = answerMapper.selectByExample(answerExample);
-		return Result.success(answers);
+		Map<String, Object> map = new HashMap<>();
+		map.put("participateId", participateId);
+		map.put("surverId", surverId);
+		List<ParticipateAnswer> participateAnswers = customParticipateAnswerMapper.getParticiPateAnswer(map);
+		for (ParticipateAnswer participateAnswer : participateAnswers) {
+			participateAnswer.setSubQuestIds(new HashSet<>());
+			for (ParticipateSubAnswer p : participateAnswer.getParticipateSubAnswers()) {
+				if (null != p.getSubQuestionId()) {
+					participateAnswer.getSubQuestIds().add(p.getSubQuestionId());
+				}
+			}
+		}
+		for (ParticipateAnswer participateAnswer : participateAnswers) {
+			if (!participateAnswer.getSubQuestIds().isEmpty()) {
+				participateAnswer.setOptionMap(new HashMap<>());
+				for (String str : participateAnswer.getSubQuestIds()) {
+					participateAnswer.getOptionMap().put(str, new ArrayList<String>());
+				}
+			}
+		}
+		for (ParticipateAnswer participateAnswer : participateAnswers) {
+			for (ParticipateSubAnswer p : participateAnswer.getParticipateSubAnswers()) {
+				if (null != p.getSubQuestionId()) {
+					participateAnswer.getOptionMap().get(p.getSubQuestionId()).add(p.getOptionId());
+				}
+			}
+		}
+
+		return Result.success(participateAnswers);
 	}
 
 }

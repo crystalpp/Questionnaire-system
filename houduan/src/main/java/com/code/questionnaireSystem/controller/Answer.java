@@ -30,14 +30,15 @@ public class Answer {
 	}
 
 	/**
-	 * 根据参与者id,查询答题情况，得到每个答题者的情况
+	 * 根据参与者id,和问卷id查询答题情况，得到每个答题者的情况
 	 * 
 	 * @param participateId
+	 * @param surverId
 	 * @return
 	 */
 	@GetMapping("/getAnswersByParticipateId")
-	public Result getAnswersByParticipateId(String participateId) {
-		return answerService.getAnswersByParticipateId(participateId);
+	public Result getAnswersByParticipateId(String participateId, String surverId) {
+		return answerService.getAnswersByParticipateId(participateId, surverId);
 	}
 
 	/**

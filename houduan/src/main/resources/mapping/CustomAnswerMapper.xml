@@ -23,7 +23,7 @@ GROUP BY question_id,q.question_name,answerText
 </select>
 
 <select id="getQuestionOption" parameterType="java.lang.String" resultMap="BaseResultMap">
-select qo.question_id,q.question_name,qo.option_id,qo.option_content,IFNULL(t1.num, 0) as num
+select qo.question_id,q.question_name,q.queType_id,qo.option_id,qo.option_content,IFNULL(t1.num, 0) as num
  from questionoption qo
 LEFT JOIN 
 (select a.option_id,count(a.option_id) as num from answer a 
