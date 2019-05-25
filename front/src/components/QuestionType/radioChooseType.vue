@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import questionApi from '../../client/bll/apis/question'
+// import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
@@ -36,29 +36,36 @@ export default {
   },
   mounted () {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+    this.initChooseOption()
   },
   methods: {
+    initChooseOption () {
+      debugger
+      if (commonFunc.isDefine(this.formData.currChoose)) {
+        this.selectOptionId = this.formData.currChoose[0]
+      }
+    },
     chooseAnswer (item) {
       this.answerData.questionId = this.formData.questionId
       this.answerData.optionId = item.optionId
       this.$emit('getAnswerData', this.answerData)
-    },
-    async edit () {
-      this.formData.display = true
-      // this.formData.quesType = 'select'
-      let quesType = 'select'
-      this.formData.optionMethod = 'edit'
-      this.formData.quesType = quesType
-      // this.$emit('editQuesType', quesType)
-      this.$emit('editSelectForm', this.formData)
-      // let res = await questionApi.updateByQuestionId(this.formData)
-    },
-    async deleteQues (id) {
-      let res = await questionApi.deleteByQuestionId(id)
-      if (res.code === 0) {
-        commonFunc.showMessage('删除成功', 'success')
-      }
     }
+    // async edit () {
+    //   this.formData.display = true
+    //   // this.formData.quesType = 'select'
+    //   let quesType = 'select'
+    //   this.formData.optionMethod = 'edit'
+    //   this.formData.quesType = quesType
+    //   // this.$emit('editQuesType', quesType)
+    //   this.$emit('editSelectForm', this.formData)
+    //   // let res = await questionApi.updateByQuestionId(this.formData)
+    // },
+    // async deleteQues (id) {
+    //   let res = await questionApi.deleteByQuestionId(id)
+    //   if (res.code === 0) {
+    //     commonFunc.showMessage('删除成功', 'success')
+    //   }
+    // }
   }
 }
 </script>

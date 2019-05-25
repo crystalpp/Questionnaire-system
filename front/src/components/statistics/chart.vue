@@ -1,6 +1,6 @@
 <template>
   <div class="answerChart">
-    <div class="oneQues-answerText" v-for="(item, index) in answerData.type1" :key="index">
+    <div class="oneQues-answerText" v-for="(item) in answerData.type1" :key="item.questionId">
        <div class="titleArea">
         {{item.questionName}}
       </div>
@@ -42,7 +42,7 @@
         </el-table>
       </div>
     </div>
-    <div class="oneQues" v-for="(item,index) in answerData.type2" :key ="index">
+    <div class="oneQues" v-for="(item) in answerData.type2" :key ="item.questionId">
       <div class="titleArea">
         {{item.questionName}}
       </div>
@@ -71,14 +71,14 @@
           </el-button-group>
         </div>
         <div class="chart" v-show="currentChart === 'pie'">
-          <div id='quesPieChart'  style="width:9rem;height:4rem;"></div>
+          <div :id="'quesPieChart'+item.questionId"  style="width:8rem;height:3rem;"></div>
         </div>
         <div class="chart" v-show="currentChart === 'bar'">
-          <div id='quesBarChart' style="width:9rem;height:4rem;"></div>      
+          <div :id="'quesBarChart'+item.questionId" style="width:8rem;height:3rem;"></div>      
         </div>
       </div>
     </div>
-    <div class="oneQues-sub" v-for="(item,index) in answerData.type3" :key="index">
+    <div class="oneQues-sub" v-for="(item) in answerData.type3" :key="item.questionId">
       <div class="titleArea">
         {{item.questionName}}
       </div>
@@ -87,18 +87,25 @@
           <th></th>
           <th v-for="(item1,index1) in item.subList[0].optionNums" :key="index1">{{item1.qoption.optionContent}} </th>
         </tr>
-        <tr v-for="(item2,index2) in item.subList" :key="index2">
+        <tr v-for="(item2) in item.subList" :key="item2.subQuestion_id">
           <td>{{item2.sub_QuestionName}}</td>
-          <td v-for="(item3,index3) in item2.optionNums" :key="index3">{{item3.num}}</td>
-          <!-- <td>{{item2.optionNums[1].num}}</td> -->
+          <td v-for="(item3) in item2.optionNums" :key="item3.qoption.optionId">{{item3.num}}</td>
         </tr>
       </table>
+      <div class="chartArea" >
+        <div class="title">
+          <el-button-group>
+            <el-button type="primary">折线图</el-button>
+          </el-button-group>
+        </div>
+        <div class="chart">
+          <div :id="'quesLineChart'+item.questionId"  style="width:8rem;height:3rem;"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import surverApi from '../../client/bll/apis/surver'
-import questionApi from '../../client/bll/apis/question'
 import answerApi from '../../client/bll/apis/answer'
 export default {
   data () {
@@ -154,13 +161,19 @@ export default {
     }
   },
   async mounted () {
-    // await this.getSurvers()
-    // await this.getSurverQuesions()
     await this.staticAnswerText()
-    this.drawBarChart('quesBarChart', this.getLengendData(), this.getValueData())
-    this.drawPieChart('quesPieChart', this.getLengendData(), this.answers[0].quesionData)
+    this.drawChart()
   },
   methods: {
+    drawChart () {
+      for (let item of this.answerData.type2) {
+        this.drawBarChart('quesBarChart' + item.questionId, this.getLengendData(item), this.getValueData(item))
+        this.drawPieChart('quesPieChart' + item.questionId, this.getLengendData(item), this.getPieValueData(item))
+      }
+      for (let item of this.answerData.type3) {
+        this.drawLineChart('quesLineChart' + item.questionId, this.getLineChartLegendData(item), this.getLineChartXdata(item), this.getLineChartSeriseData(item))
+      }
+    },
     async staticAnswerText () {
       let params = {
         surverId: this.$route.query.surverId
@@ -171,42 +184,108 @@ export default {
         console.log(this.answerData)
       }
     },
-    async getAnswersBySurverId () {
-    },
-    async getSurvers () {
-      let surverId = this.$route.query.surverId
-      let res = await surverApi.search(surverId)
-      if (res.code === 0) {
-        this.survey.title = res.data[0].surverTitle
-        this.survey.descr = res.data[0].surverDescription
-      }
-    },
-    async getSurverQuesions () {
-      let surverId = this.$route.query.surverId
-      let res = await questionApi.searchBySueverId(surverId)
-      console.log(res)
-      if (res.code === 0) {
-        this.surverQuestionsData = res.data
-        console.log(this.surverQuestionsData)
-        // this.transTypeCode(res.data)
-      }
-    },
     changeChart (key) {
       this.currentChart = key
     },
-    getValueData () {
+    getLineChartLegendData (data) {
       let res = []
-      for (let item of this.answers[0].quesionData) {
-        res.push(item.value)
+      for (let item of data.subList[0].optionNums) {
+        res.push(item.qoption.optionContent)
       }
       return res
     },
-    getLengendData () {
+    getLineChartXdata (data) {
       let res = []
-      for (let item of this.answers[0].quesionData) {
-        res.push(item.name)
+      for (let item of data.subList) {
+        res.push(item.sub_QuestionName)
       }
       return res
+    },
+    getLineChartSeriseData (data) {
+      let result = []
+      let res = this.getLineChartLegendData(data)
+      let i = 0
+      for (let resItem of res) {
+        let part = {
+          name: '',
+          type: 'line',
+          label: {
+            show: true
+          },
+          data: []
+        }
+        part.name = resItem
+        for (let item of data.subList) {
+          part.data.push(item.optionNums[i].num)
+        }
+        i++
+        result.push(JSON.parse(JSON.stringify(part)))
+      }
+      return result
+    },
+    /**
+     * 组装饼图的数据
+     */
+    getPieValueData (data) {
+      let res = []
+      for (let item of data.listAnswer) {
+        let part = {
+          name: '',
+          value: 0
+        }
+        part.name = item.optionContent
+        part.value = item.num
+        res.push(part)
+      }
+      return res
+    },
+    getValueData (data) {
+      let res = []
+      for (let item of data.listAnswer) {
+        res.push(item.num)
+      }
+      return res
+    },
+    getLengendData (data) {
+      let res = []
+      for (let item of data.listAnswer) {
+        res.push(item.optionContent)
+      }
+      return res
+    },
+    drawLineChart (id, legendData, XData, seriseData) {
+      var initChart = this.$echarts.init(document.getElementById(id))
+      let option = {
+        title: {
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: legendData
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        // toolbox: {
+        //   feature: {
+        //     saveAsImage: {}
+        //   }
+        // },
+        xAxis: {
+          type: 'category',
+          // boundaryGap: false,
+          data: XData
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: seriseData
+      }
+      initChart.setOption(option)
     },
     drawBarChart (id, legendData, data) {
       var initChart = this.$echarts.init(document.getElementById(id))
@@ -272,6 +351,7 @@ export default {
   font-size: 0.12rem;
   width: 100%;
   tr{
+    font-size: 0.14rem;
     height: 0.4rem;
     align-items: center;
     display: flex;
@@ -306,6 +386,16 @@ export default {
       color: #333333;
       text-align: left;
       padding: 0.2rem;
+    }
+    .chartArea{
+      padding: 0.2rem;
+      .title{
+        text-align: left;
+      }
+      .chart{
+        height: 100%;
+        width: 100%;
+      }
     }
 }
 .answerChart{

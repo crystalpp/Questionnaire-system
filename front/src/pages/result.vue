@@ -1,6 +1,6 @@
 <template>
   <div class="result-container">
-     <pc-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId"></pc-preview>
+     <pc-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId&&flag"></pc-preview>
   </div>
 </template>
 <script>
@@ -28,23 +28,65 @@ export default {
         partcipateInfo: ''
       },
       answerData: [],
-      currentParticPateId: ''
+      currentParticPateId: '',
+      answerResultData: [],
+      flag: false
     }
   },
   async mounted () {
+    debugger
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()
     await this.getSurverQuesions()
+    await this.getAnswersByParticipateId()
   },
   methods: {
+    /**
+     * 将每一个问题和自己的答案组装起来
+     */
+    randerSurverChooseData () {
+      let res = []
+      for (let item of this.survey.surverQuestions) {
+        let resultItem = {
+          ...item,
+          currChoose: [],
+          subChoose: {
+          }
+        }
+        for (let answerItem of this.answerData) {
+          if (answerItem.questionId === item.questionId) {
+            if (answerItem.optionMap === null) {
+              for (let item1 of answerItem.participateSubAnswers) {
+                if (item1.optionId !== null) {
+                  resultItem.currChoose.push(item1.optionId)
+                } else {
+                  resultItem.currChoose.push(item1.answerText)
+                }
+              }
+            } else {
+              resultItem.subChoose = answerItem.optionMap
+            }
+          }
+        }
+        res.push(resultItem)
+      }
+      debugger
+      this.survey.surverQuestions = res
+      console.log(res)
+    },
     async getAnswersByParticipateId () {
+      debugger
+      this.currentParticPateId = this.$route.query.participateId
       let params = {
-        participateId: this.$route.participateId
+        participateId: this.currentParticPateId,
+        surverId: this.$route.query.surverId
       }
       let res = await answerApi.getAnswersByParticipateId(params)
       if (res.code === 0) {
         this.answerData = res.data
+        this.randerSurverChooseData()
+        this.flag = true
       }
     },
     async getSurvers () {
@@ -97,5 +139,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.result-container {
+  // background: #000000;
+  width: 100%;
+  height: 100%;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 </style>

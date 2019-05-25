@@ -45,7 +45,7 @@ import participatenApi from '../../client/bll/apis/participate'
 import answerApi from '../../client/bll/apis/answer'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
-  props: ['survey', 'currentParticPateId'],
+  props: ['survey', 'currentParticPateId', 'answerData'],
   components: {
     'radio-choose-type': radioType,
     'multiselect-choose-type': multiselect,

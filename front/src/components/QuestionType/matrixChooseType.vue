@@ -36,7 +36,7 @@
             <td>{{item1.questionName}}</td>
             <el-radio-group  v-model="radioCheckList[index]" v-for="(item2,index1) in formData.options" :key="index1" @change="chooseAnswer(item1,item2)" style="flex:1">
               <td >
-                <el-radio :label="item2" >{{text}}</el-radio>
+                <el-radio :label="item2.optionId" >{{text}}</el-radio>
               </td>
             </el-radio-group>
              <!-- <td>
@@ -57,7 +57,7 @@
             <!-- v-for="(item2,index) in formData.options" :key="index" -->
              <el-checkbox-group v-model="checkList[index]" v-for="(item2,index1) in formData.options" :key="index1" style="flex:1" @change="chooseAnswerMulti()">
               <td>
-                <el-checkbox :label="item2" >{{text}}</el-checkbox>
+                <el-checkbox :label="item2.optionId" >{{text}}</el-checkbox>
               </td>
              </el-checkbox-group>
           </tr>
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import questionApi from '../../client/bll/apis/question'
+// import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
@@ -129,11 +129,22 @@ export default {
   },
   methods: {
     initCheckList () {
+      debugger
       this.checkList = []
       // eslint-disable-next-line
       for (let i of this.formData.questions) {
         let item = []
         let radioItem = ''
+        if (commonFunc.isDefine(this.formData.subChoose)) {
+          if (this.formData.subChoose[i.questionId].length === 1) {
+            radioItem = this.formData.subChoose[i.questionId][0]
+          } else {
+            item = radioItem = this.formData.subChoose[i.questionId]
+          }
+        } else {
+          item = []
+          radioItem = ''
+        }
         // console.log(i)
         this.radioCheckList.push(radioItem)
         this.checkList.push(item)
@@ -194,36 +205,20 @@ export default {
         realAnswers.push(JSON.parse(JSON.stringify(oneItem)))
       }
       this.$emit('getAnswerData', realAnswers)
-    },
-    edit () {
-      this.formData.display = true
-      let quesType = 'matrix'
-      this.formData.optionMethod = 'edit'
-      this.formData.quesType = quesType
-      this.$emit('editSelectForm', this.formData)
-    },
-    async deleteQues (id) {
-      let res = await questionApi.deleteByQuestionId(id)
-      if (res.code === 0) {
-        commonFunc.showMessage('删除成功', 'success')
-      }
-    },
-    getCurrentColumn (index, row, itemIndex) {
-      // for (let i = 0; i < this.formData.questions.length; i++) {
-      //   if (this.formData.questions[i].value !== row.value) {
-      //     this.formData.options[i].checked = false
-      //   }
-      //   else {
-      //     this.formData.questions[i].checked = true
-      //   }
-      // }
-      // for (let i = 0; i < row.checked.length; i++) {
-      // row.checked = false
-      // }
-      // this.radio = false
-      // this.radio = true
-      // row.checked[index] = true
     }
+    // edit () {
+    //   this.formData.display = true
+    //   let quesType = 'matrix'
+    //   this.formData.optionMethod = 'edit'
+    //   this.formData.quesType = quesType
+    //   this.$emit('editSelectForm', this.formData)
+    // },
+    // async deleteQues (id) {
+    //   let res = await questionApi.deleteByQuestionId(id)
+    //   if (res.code === 0) {
+    //     commonFunc.showMessage('删除成功', 'success')
+    //   }
+    // },
   }
 }
 </script>

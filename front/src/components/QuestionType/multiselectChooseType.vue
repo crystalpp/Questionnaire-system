@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item >
         <el-checkbox-group v-model="checkList" v-for="(item) in formData.options" :key="item.key" @change="chooseAnswer()">
-          <el-checkbox :label="item" >{{item.optionContent}}</el-checkbox>
+          <el-checkbox :label="item.optionId" >{{item.optionContent}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
     </el-form>
@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import questionApi from '../../client/bll/apis/question'
+// import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
@@ -38,8 +38,15 @@ export default {
   },
   mounted () {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+    this.initChooseOption()
   },
   methods: {
+    initChooseOption () {
+      debugger
+      if (commonFunc.isDefine(this.formData.currChoose)) {
+        this.checkList = this.formData.currChoose
+      }
+    },
     chooseAnswer () {
       // var answers = {}
       this.answerData.optionId = ''
@@ -50,20 +57,20 @@ export default {
       }
       // answers.push(this.answerData)
       this.$emit('getAnswerData', this.answerData)
-    },
-    edit () {
-      this.formData.display = true
-      let quesType = 'select'
-      this.formData.optionMethod = 'edit'
-      this.formData.quesType = quesType
-      this.$emit('editSelectForm', this.formData)
-    },
-    async deleteQues (id) {
-      let res = await questionApi.deleteByQuestionId(id)
-      if (res.code === 0) {
-        commonFunc.showMessage('删除成功', 'success')
-      }
     }
+    // edit () {
+    //   this.formData.display = true
+    //   let quesType = 'select'
+    //   this.formData.optionMethod = 'edit'
+    //   this.formData.quesType = quesType
+    //   this.$emit('editSelectForm', this.formData)
+    // },
+    // async deleteQues (id) {
+    //   let res = await questionApi.deleteByQuestionId(id)
+    //   if (res.code === 0) {
+    //     commonFunc.showMessage('删除成功', 'success')
+    //   }
+    // }
   }
 }
 </script>

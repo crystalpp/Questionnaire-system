@@ -38,8 +38,15 @@ export default {
   mounted () {
     // this.changeText()
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+    this.initChooseOption()
   },
   methods: {
+    initChooseOption () {
+      debugger
+      if (commonFunc.isDefine(this.formData.currChoose)) {
+        this.score = parseInt(this.formData.currChoose[0])
+      }
+    },
     chooseAnswer (item) {
       this.answerData.questionId = this.formData.questionId
       this.answerData.answerText = item

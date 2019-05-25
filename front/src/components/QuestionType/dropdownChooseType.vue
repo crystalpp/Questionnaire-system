@@ -7,15 +7,15 @@
       <el-form-item>
        <p class="dropdown-descri">{{formData.subdesc}}</p>
       </el-form-item>
-      <el-form-item>
-         <el-select v-model="formData.dropdownValue" placeholder="请选择" @change="chooseAnswer">
+      <el-form-item >
+         <el-select v-model="chooseValue" placeholder="请选择" @change="chooseAnswer" >
           <el-option
             v-for="item in formData.options"
-            :key="item.optionContent"
+            :key="item.optionId"
             :label="item.optionContent"
             :value="item.optionId">
           </el-option>
-         </el-select>
+        </el-select>
       </el-form-item>
     </el-form>
     <div class="optionPart" v-if="editOrPreview === 'edit'">
@@ -27,19 +27,29 @@
   </div>
 </template>
 <script>
-import questionApi from '../../client/bll/apis/question'
+// import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
   data () {
     return {
-      editOrPreview: ''
+      editOrPreview: '',
+      chooseValue: '',
+      flag: true
     }
   },
   mounted () {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+    this.initChooseOption()
   },
   methods: {
+    initChooseOption () {
+      debugger
+      if (commonFunc.isDefine(this.formData.currChoose)) {
+        this.chooseValue = this.formData.currChoose[0]
+        this.flag = false
+      }
+    },
     chooseAnswer (item) {
       let answerData = {
         questionId: '',
@@ -48,20 +58,20 @@ export default {
       answerData.questionId = this.formData.questionId
       answerData.optionId = item
       this.$emit('getAnswerData', answerData)
-    },
-    edit () {
-      this.formData.display = true
-      let quesType = 'select'
-      this.formData.optionMethod = 'edit'
-      this.formData.quesType = quesType
-      this.$emit('editSelectForm', this.formData)
-    },
-    async deleteQues (id) {
-      let res = await questionApi.deleteByQuestionId(id)
-      if (res.code === 0) {
-        commonFunc.showMessage('删除成功', 'success')
-      }
     }
+    // edit () {
+    //   this.formData.display = true
+    //   let quesType = 'select'
+    //   this.formData.optionMethod = 'edit'
+    //   this.formData.quesType = quesType
+    //   this.$emit('editSelectForm', this.formData)
+    // },
+    // async deleteQues (id) {
+    //   let res = await questionApi.deleteByQuestionId(id)
+    //   if (res.code === 0) {
+    //     commonFunc.showMessage('删除成功', 'success')
+    //   }
+    // }
   }
 }
 </script>

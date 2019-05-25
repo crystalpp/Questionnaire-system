@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import questionApi from '../../client/bll/apis/question'
+// import questionApi from '../../client/bll/apis/question'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['formData', 'index'],
@@ -29,45 +29,37 @@ export default {
       textAnswer: '',
       editOrPreview: '',
       answerData: []
-      // formData: {
-      //   title: '问题1', // 题目
-      //   subdesc: '描述', // 备注
-      //   type: '', // 题目类型
-      //   required: true, // 是否必填
-      //   selected: '',
-      //   options: [
-      //     {
-      //       value: '选项一'
-      //     },
-      //     {
-      //       value: '选项二'
-      //     }
-      //   ] // 选项
-      // }
     }
   },
   mounted () {
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
+    this.initChooseOption()
   },
   methods: {
+    initChooseOption () {
+      debugger
+      if (commonFunc.isDefine(this.formData.currChoose)) {
+        this.textAnswer = this.formData.currChoose[0]
+      }
+    },
     chooseAnswer () {
       this.answerData.questionId = this.formData.questionId
       this.answerData.answerText = this.textAnswer
       this.$emit('getAnswerData', this.answerData)
-    },
-    edit () {
-      this.formData.display = true
-      let quesType = 'select'
-      this.formData.optionMethod = 'edit'
-      this.formData.quesType = quesType
-      this.$emit('editSelectForm', this.formData)
-    },
-    async deleteQues (id) {
-      let res = await questionApi.deleteByQuestionId(id)
-      if (res.code === 0) {
-        commonFunc.showMessage('删除成功', 'success')
-      }
     }
+    // edit () {
+    //   this.formData.display = true
+    //   let quesType = 'select'
+    //   this.formData.optionMethod = 'edit'
+    //   this.formData.quesType = quesType
+    //   this.$emit('editSelectForm', this.formData)
+    // },
+    // async deleteQues (id) {
+    //   let res = await questionApi.deleteByQuestionId(id)
+    //   if (res.code === 0) {
+    //     commonFunc.showMessage('删除成功', 'success')
+    //   }
+    // }
   }
 }
 </script>
