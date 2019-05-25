@@ -248,4 +248,11 @@ public class QuestionServiceImpl implements QuestionService {
 		return Result.success();
 	}
 
+	@Override
+	public Result getOption(String optionId) {
+		// TODO Auto-generated method stub
+		QuestionOption questionOption = questionoptionMapper.selectByPrimaryKey(optionId);
+		return Result.success(questionOption);
+	}
+
 }

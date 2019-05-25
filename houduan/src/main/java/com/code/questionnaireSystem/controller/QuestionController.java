@@ -44,4 +44,9 @@ public class QuestionController {
 	public Result updateByQuestionId(@RequestBody QuestionResponse questionResponse) {
 		return questionService.updateByQuestionId(questionResponse);
 	}
+
+	@GetMapping("/getOption")
+	public Result getOption(String optionId) {
+		return questionService.getOption(optionId);
+	}
 }

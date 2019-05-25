@@ -21,4 +21,6 @@ public interface QuestionService {
 
 	Result updateByQuestionId(QuestionResponse questionResponse);
 
+	Result getOption(String optionId);
+
 }
