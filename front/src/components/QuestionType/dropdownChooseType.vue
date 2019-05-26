@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     initChooseOption () {
-      debugger
       if (commonFunc.isDefine(this.formData.currChoose)) {
         this.chooseValue = this.formData.currChoose[0]
         this.flag = false

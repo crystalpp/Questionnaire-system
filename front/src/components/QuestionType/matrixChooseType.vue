@@ -141,7 +141,6 @@ export default {
       return result
     },
     async initCheckList () {
-      debugger
       this.checkList = []
       // eslint-disable-next-line
       for (let i of this.formData.questions) {
@@ -164,7 +163,6 @@ export default {
           item = []
           radioItem = ''
         }
-        debugger
         // console.log(i)
         this.radioCheckList.push(radioItem)
         this.checkList.push(item)
@@ -173,7 +171,6 @@ export default {
       console.log(this.checkList)
     },
     chooseAnswerMulti () {
-      debugger
       var answerData = []
       var answerDataItem = {
         checkOptions: [],
@@ -205,7 +202,6 @@ export default {
       this.$emit('getAnswerDataMulti', realAnswers)
     },
     chooseAnswer (data) {
-      debugger
       var answerData = []
       var answerDataItem = {
         checkOptions: '',

@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     initChooseOption () {
-      debugger
       if (commonFunc.isDefine(this.formData.currChoose)) {
         this.selectOptionId = this.formData.currChoose[0]
       }

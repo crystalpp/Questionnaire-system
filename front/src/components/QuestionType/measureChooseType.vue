@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     initChooseOption () {
-      debugger
       if (commonFunc.isDefine(this.formData.currChoose)) {
         this.score = parseInt(this.formData.currChoose[0])
       }

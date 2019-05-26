@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     initChooseOption () {
-      debugger
       if (commonFunc.isDefine(this.formData.currChoose)) {
         this.textAnswer = this.formData.currChoose[0]
       }

@@ -34,7 +34,6 @@ export default {
     }
   },
   async mounted () {
-    debugger
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()
@@ -71,12 +70,10 @@ export default {
         }
         res.push(resultItem)
       }
-      debugger
       this.survey.surverQuestions = res
       console.log(res)
     },
     async getAnswersByParticipateId () {
-      debugger
       this.currentParticPateId = this.$route.query.participateId
       let params = {
         participateId: this.currentParticPateId,

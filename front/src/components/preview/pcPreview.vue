@@ -175,12 +175,9 @@ export default {
      * 点击提交，添加用户已经填写的数据，以及更新用户完成时间
      */
     async setAnswerData () {
-      debugger
       let res = ''
       for (let item of this.answers) {
-        debugger
         if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
-          debugger
           let optionIds = item.optionId.split(',')
           for (let item1 of optionIds) {
             if (item1 !== '') {

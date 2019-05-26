@@ -3,7 +3,6 @@ import requestService from './common/request.js'
 // import commonFunc from './common/common.js'
 const answerApi = {
   async add (params) {
-    debugger
     let url = config.APISERVER.host + '/answer/add'
     let res = await requestService.post(url, params)
     return res

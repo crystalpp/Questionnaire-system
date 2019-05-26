@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     handleClick (data) {
-      debugger
       this.$router.push(
         {
           name: 'result',

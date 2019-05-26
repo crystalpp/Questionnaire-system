@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     initChooseOption () {
-      debugger
       if (commonFunc.isDefine(this.formData.currChoose)) {
         this.checkList = this.formData.currChoose
       }
