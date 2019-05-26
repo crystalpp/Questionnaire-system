@@ -7,7 +7,7 @@
       <el-form-item>
        <p class="matrixRadio-descri">{{formData.subdesc}}</p>
       </el-form-item>
-      <el-form-item style="width:88%" >
+      <el-form-item style="width:100%" >
         <!-- <el-table
           :data="formData.questions"
           style="width: 100%">

@@ -23,6 +23,7 @@
             <div class="text">
               <div class="text1">{{item.surverTitle}}</div>
               <div class="text2" @click="previewTemplate(item)"><i class="el-icon-view"></i> 预览</div>
+              <div class="text3" @click="useTemplate(item)"><i class="el-icon-document"></i> 使用模板</div>
             </div>
           </div>
         </div>
@@ -33,6 +34,7 @@
 <script>
 import surverTypeApi from '../../client/bll/apis/surverType'
 import surverApi from '../../client/bll/apis/surver'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   data () {
     return {
@@ -43,10 +45,30 @@ export default {
     }
   },
   async mounted () {
+    commonFunc.setLocalStorage('resultOrFill', 'fill')
     await this.selectTemplateType()
     await this.selectTemplate()
   },
   methods: {
+    // 使用该模板
+    async useTemplate (data) {
+      debugger
+      let params = {
+        templateSurverId: data.surverId,
+        userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId
+      }
+      let res = await surverApi.creatByTemplate(params)
+      if (res.code === 0) {
+        commonFunc.setLocalStorage('createQuesType', 'newQues')
+        let currentType = 'newQues'
+        this.$emit('getType', currentType)
+        commonFunc.setLocalStorage('contentClass', 'ques-content')
+        commonFunc.setLocalStorage('showQuesStep', true)
+        commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+        commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+      }
+      this.$router.push({name: 'creat', query: {surverId: res.data}})
+    },
     previewTemplate (item) {
       this.$router.push({name: 'preview', query: {surverId: item.surverId}})
     },
@@ -185,6 +207,11 @@ export default {
           text-align: left;
         }
         .text2{
+          cursor: pointer;
+          text-align: center;
+          flex:1;
+        }
+        .text3{
           cursor: pointer;
           text-align: center;
           flex:1;

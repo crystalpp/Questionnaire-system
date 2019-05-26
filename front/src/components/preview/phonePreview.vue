@@ -28,6 +28,9 @@
         </div>
       </div>
     </div>
+    <div class="submit" v-if="resultOrFill === 'fill'">
+      <el-button type="primary" @click="setAnswerData">提交</el-button>
+    </div>
     </div>
   </div>
 </template>
@@ -38,6 +41,7 @@ import dropdownType from '../QuestionType/dropdownChooseType'
 import textselectType from '../QuestionType/textselectChooseType'
 import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   props: ['survey'],
   components: {
@@ -50,12 +54,16 @@ export default {
   },
   data () {
     return {
+      resultOrFill: ''
     }
   },
   mounted () {
+    this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
     document.getElementsByTagName('html')[0].style.fontSize = '50px'
   },
   methods: {
+    setAnswerData () {
+    }
   }
 }
 </script>
@@ -101,7 +109,10 @@ export default {
       margin: 0 auto;
       background: #ffffff;
     }
-    
+    .submit{
+        text-align: center;
+        padding-bottom: 0.2rem;
+      }
   }
 }
 </style>

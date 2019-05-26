@@ -32,6 +32,7 @@ export default {
     }
   },
   async mounted () {
+    commonFunc.setLocalStorage('resultOrFill', 'result')
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getIp()

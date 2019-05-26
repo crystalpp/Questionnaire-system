@@ -173,6 +173,7 @@ export default {
     }
   },
   async mounted () {
+    debugger
     commonFunc.setLocalStorage('editOrPreview', 'edit')
     await this.getSurverQuesions()
     await this.getSurvers()

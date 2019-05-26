@@ -10,12 +10,13 @@
           background-color="#0078C8"
           text-color="#EFFFFF"
           active-text-color="#FFF799">
-          <el-submenu index="1">
+          <!-- <el-submenu index="1">
             <template slot="title">创建问卷</template>
             <el-menu-item index="newQues">创建空白问卷</el-menu-item>
             <el-menu-item index="templateQues">选择现有模板</el-menu-item>
             <el-menu-item index="1-3">文本编辑问卷</el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
+          <el-menu-item index="templateQues">选择现有模板</el-menu-item>
           <el-menu-item index="show">我的问卷</el-menu-item>
           <!-- <el-menu-item index="3">问卷统计</el-menu-item> -->
         </el-menu>
@@ -183,6 +184,7 @@ export default {
       }
     },
     handleSelect (key) {
+      debugger
       if (key === 'show') {
         commonFunc.setLocalStorage('showQuesStep', false)
         this.showQuesStep = JSON.parse(commonFunc.getLocalStorage('showQuesStep'))
@@ -202,7 +204,10 @@ export default {
         this.$store.commit('set_createQuesType', 'newQues')
         key = 'creat'
       } else if (key === 'templateQues') {
-        this.$store.commit('set_createQuesType', 'templateQues')
+        commonFunc.setLocalStorage('showQuesStep', false)
+        commonFunc.setLocalStorage('contentClass', 'ques-content-noStep')
+        commonFunc.setLocalStorage('createQuesType', 'templateQues')
+        // this.$store.commit('set_createQuesType', 'templateQues')
         key = 'creat'
       }
       this.$router.push({name: key})
@@ -278,10 +283,10 @@ export default {
       text-align: left;
       margin-left: 0.8rem;
     }
-    .part2{
-      // flex: 1;
-      // text-align: center;
-    }
+    // .part2{
+    //   // flex: 1;
+    //   // text-align: center;
+    // }
     .part3{
       flex:1;
     }

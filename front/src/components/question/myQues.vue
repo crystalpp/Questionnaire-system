@@ -33,9 +33,9 @@
             </div>
             <div class="card-footer-Option" v-show="show === 'option' && indexitem === index ">
               <div class="item" @click="editSurver(item.surverId)"><i class="el-icon-edit-outline"></i><br/>编辑</div>
-              <div class="item"><i class="el-icon-upload"></i><br/>发布</div>
-              <div class="item"><i class="el-icon-view"></i><br/>预览</div>
-              <div class="item"><i class="el-icon-document"></i><br/>数据</div>
+              <div class="item"  @click="realse(item)"><i class="el-icon-upload"></i><br/>发布</div>
+              <div class="item" @click="preview(item)"><i class="el-icon-view"></i><br/>预览</div>
+              <div class="item" @click="staticData(item)"><i class="el-icon-document"></i><br/>数据</div>
               <div class="item" @click="showDeleteDialog(item.surverId)"><i class="el-icon-delete"></i><br/>删除</div>
             </div>
           </div>
@@ -84,9 +84,9 @@
           width="300">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="editSurver(scope.row.surverId)">编辑</el-button>
-            <el-button type="text" size="small">发布</el-button>
-            <el-button  type="text" size="small">预览</el-button>
-            <el-button  type="text" size="small">数据</el-button>
+            <el-button type="text" size="small" @click="realse(scope.row)">发布</el-button>
+            <el-button  type="text" size="small" @click="preview(scope.row)">预览</el-button>
+            <el-button  type="text" size="small" @click="staticData(scope.row)">数据</el-button>
             <el-button type="text" size="small" @click="showDeleteDialog(scope.row.surverId)">删除</el-button>
           </template>
         </el-table-column>
@@ -133,6 +133,28 @@
         <el-button type="primary" @click="confirmChoose" >确 定</el-button>
       </span>
   </el-dialog>
+  <el-dialog title="" :visible.sync="dialogReleaseVisible"  width="26%">
+    <el-form :model="releaseLimitForm" label-width="80px" style="text-align:left">
+      <el-form-item label="截止时间">
+          <el-date-picker
+          v-model="releaseLimitForm.endTime" 
+          type="datetime"
+          placeholder="选择日期时间"
+          :picker-options="pickerOptions">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="ip限制：" >
+        <el-switch
+          v-model="releaseLimitForm.isLimitedIP">
+        </el-switch>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="cancelRelease">取 消</el-button>
+      <el-button type="primary" @click="releaseQues">确 定</el-button>
+    </div>
+  </el-dialog>
+
   </div>
 </template>
 <script>
@@ -150,6 +172,15 @@ const delay = (function () {
 export default {
   data () {
     return {
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now()  // 这里就是设置当天前的日期不能被点击
+        }
+      },
+      releaseLimitForm: {
+        endTime: '',
+        isLimitedIP: ''
+      },
       surverTypeVisible: false,
       inputVisible: false,
       inputValue: '',
@@ -167,7 +198,9 @@ export default {
       tagIndex: '',
       currentSurverId: '', // 当选被选中的问卷id
       currentSurverTypeId: '', // 当前被选中的问卷类型的id
-      currentSurverOption: '' // 当前操作类型，是新增还是修改 （用于问卷类型的确认按钮）
+      currentSurverOption: '', // 当前操作类型，是新增还是修改 （用于问卷类型的确认按钮）
+      dialogReleaseVisible: false, //  问卷发布的dialog
+      currentSurverInfo: '' // 当前选中的问卷的信息
     }
   },
   async beforeRouteUpdate (to, from, next) {
@@ -188,6 +221,53 @@ export default {
     }
   },
   methods: {
+    // 显示统计数据
+    staticData (data) {
+      debugger
+      if (data.surverRecovernum === 0) {
+        commonFunc.showMessage('当前问卷暂无数据，请稍后查看', 'success')
+      } else {
+        commonFunc.setLocalStorage('showQuesStep', true)
+        this.$router.push({name: 'statistics', query: {surverId: data.surverId}})
+      }
+    },
+    // 预览当前问卷
+    preview (data) {
+      let surverId = data.surverId
+      this.$router.push({name: 'preview', query: {surverId: surverId}})
+    },
+    async releaseQues () {
+      debugger
+      let limitIP = 0
+      if (this.releaseLimitForm.isLimitedIP) {
+        limitIP = 1
+      } else {
+        limitIP = 0
+      }
+      let params = {
+        surverId: this.currentSurverInfo.surverId,
+        EndTime: this.releaseLimitForm.endTime,
+        limitIP: limitIP
+      }
+      let res = await surverApi.updateEndTime(params)
+      if (res.code === 0) {
+        this.dialogReleaseVisible = false
+        this.$router.push({name: 'release', query: {surverId: this.currentSurverInfo.surverId}})
+      }
+    },
+    cancelRelease () {
+      this.dialogReleaseVisible = false
+      // this.menuActiveIndex = 'creat'
+    },
+    realse (data) {
+      debugger
+      this.currentSurverInfo = data
+      if (data.surverEndtime !== null) {
+        commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
+      } else {
+        this.dialogReleaseVisible = true
+      }
+    },
     async confirmChoose () {
       if (this.currentSurverOption === 'edit') {
         let params = {
@@ -298,6 +378,7 @@ export default {
      * 根据问卷id修改问卷
      */
     editSurver (id) {
+      commonFunc.setLocalStorage('createQuesType', 'newQues')
       commonFunc.setLocalStorage('contentClass', 'ques-content')
       commonFunc.setLocalStorage('showQuesStep', true)
       commonFunc.setLocalStorage('menuActiveIndex', 'newQues')

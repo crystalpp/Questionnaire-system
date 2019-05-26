@@ -26,12 +26,12 @@
           <matrix-choose-type :formData = 'item' :index = 'index'  @getAnswerData='getMatrixAnswerData' @getAnswerDataMulti='getMatrixAnswerDataMulti'></matrix-choose-type>
         </div>
       </div>
-       <div class="submit">
+       <div class="submit" v-if="resultOrFill === 'fill'">
         <el-button type="primary" @click="setAnswerData">提交</el-button>
       </div>
     </div>
-   <div class="footer">
-   </div>
+   <!-- <div class="footer">
+   </div> -->
   </div>
 </template>
 <script>
@@ -44,6 +44,7 @@ import matrixChooseType from '../QuestionType/matrixChooseType'
 import participatenApi from '../../client/bll/apis/participate'
 import answerApi from '../../client/bll/apis/answer'
 import commonFunc from '../../client/bll/apis/common/common'
+import surverApi from '../../client/bll/apis/surver'
 export default {
   props: ['survey', 'currentParticPateId', 'answerData'],
   components: {
@@ -63,10 +64,13 @@ export default {
       textAnswer: '',
       measureAnswer: '',
       matrixRadioAnswer: '',
-      matrixMultiAnswer: ''
+      matrixMultiAnswer: '',
+      resultOrFill: '' // 如果为查看问卷结果状态则不显示提交按钮
     }
   },
   mounted () {
+    debugger
+    this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
   },
   methods: {
@@ -209,6 +213,17 @@ export default {
       }
       console.log(this.answers)
       await this.updateEndTime()
+      await this.updateRecoverNum()
+    },
+    // 更新问卷的回收数量
+    async updateRecoverNum () {
+      let params = {
+        surverId: this.$route.params.id
+      }
+      let res = surverApi.updateRecoverNum(params)
+      if (res.code === 0) {
+        console.log('success')
+      }
     },
     // 更新用户完成时间
     async updateEndTime () {

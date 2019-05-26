@@ -69,6 +69,16 @@ const surverApi = {
     let url = config.APISERVER.host + '/surver/updateSurverType'
     let res = await requestService.post(url, params)
     return res
+  },
+  async updateRecoverNum (params) {
+    let url = config.APISERVER.host + '/surver/updateRecoverNum'
+    let res = await requestService.post(url, params)
+    return res
+  },
+  async creatByTemplate (params) {
+    let url = config.APISERVER.host + '/surver/creatByTemplate'
+    let res = await requestService.post(url, params)
+    return res
   }
 }
 

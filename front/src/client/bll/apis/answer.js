@@ -21,6 +21,11 @@ const answerApi = {
     let url = config.APISERVER.host + '/answer/staticAnswerText'
     let res = await requestService.get(url, params)
     return res
+  },
+  async countAnswerNum (params) {
+    let url = config.APISERVER.host + '/answer/countAnswerNum'
+    let res = await requestService.get(url, params)
+    return res
   }
 }
 export default answerApi
