@@ -13,4 +13,6 @@ public interface AnswerService {
 
 	Result getAnswersByParticipateId(String participateId, String surverId);
 
+	Result countAnswerNum(String surverId);
+
 }

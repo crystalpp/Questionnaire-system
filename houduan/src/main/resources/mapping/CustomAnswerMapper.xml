@@ -43,4 +43,11 @@ GROUP BY a.question_id,a.subQuestion_id,a.option_id
 <select id="countSubQuestionOption" parameterType="java.util.Map" resultType="java.lang.Integer">
 select count(option_id) as num from answer where option_id=#{optionId} and subQuestion_id=#{subQuestion_id}
 </select>
+<select id="countSurverAnswerNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+select count(t.participate_id) as num from 
+(select a.surver_id,a.participate_id
+ from answer a
+GROUP BY a.surver_id,participate_id) t 
+where t.surver_id=#{surverId}
+</select>
 </mapper>

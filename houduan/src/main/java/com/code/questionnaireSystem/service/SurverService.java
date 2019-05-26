@@ -22,4 +22,8 @@ public interface SurverService {
 
 	Result updateSurverType(String surverId, String surverTypeId);
 
+	Result updateRecoverNum(String surerId);
+
+	Result creatByTemplate(String templateSurverId, String userId);
+
 }

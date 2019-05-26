@@ -15,6 +15,7 @@ import com.code.questionnaireSystem.mapper.CustomAnswerMapper;
 import com.code.questionnaireSystem.mapper.CustomParticipateAnswerMapper;
 import com.code.questionnaireSystem.mapper.QuestionMapper;
 import com.code.questionnaireSystem.mapper.QuestionOptionMapper;
+import com.code.questionnaireSystem.mapper.SurverMapper;
 import com.code.questionnaireSystem.pojo.Answer;
 import com.code.questionnaireSystem.pojo.AnswerExample;
 import com.code.questionnaireSystem.pojo.AnswerStatic;
@@ -44,6 +45,8 @@ public class AnswerServiceImpl implements AnswerService {
 	private QuestionOptionMapper questionOptionMapper;
 	@Autowired
 	private CustomParticipateAnswerMapper customParticipateAnswerMapper;
+	@Autowired
+	private SurverMapper surverMapper;
 
 	@Override
 	public Result add(String surverId, String questionId, String subQuestionId, String optionId, String answerText,
@@ -188,4 +191,19 @@ public class AnswerServiceImpl implements AnswerService {
 		return Result.success(participateAnswers);
 	}
 
+	@Override
+	public Result countAnswerNum(String surverId) {
+		// TODO Auto-generated method stub
+		Integer sum = customAnswerMapper.countSurverAnswerNum(surverId);
+		// Surver surver = new Surver();
+		// surver.setSurverId(surverId);
+		// surver.setSurverRecovernum(sum);
+		// int num = surverMapper.updateByPrimaryKeySelective(surver);
+		// if (num < 1) {
+		// return Result.failure(ResultCode.FAIL);
+		// } else {
+		// return Result.success();
+		// }
+		return Result.success(sum);
+	}
 }

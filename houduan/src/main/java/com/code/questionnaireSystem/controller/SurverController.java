@@ -135,4 +135,17 @@ public class SurverController {
 	public Result updateSurverType(String surverId, String surverTypeId) {
 		return surverService.updateSurverType(surverId, surverTypeId);
 	}
+
+	/**
+	 * 用户填写完问卷后，回收数量增加
+	 */
+	@PostMapping("/updateRecoverNum")
+	public Result updateRecoverNum(String surverId) {
+		return surverService.updateRecoverNum(surverId);
+	}
+
+	@PostMapping("/creatByTemplate")
+	public Result creatByTemplate(String templateSurverId, String userId) {
+		return surverService.creatByTemplate(templateSurverId, userId);
+	}
 }

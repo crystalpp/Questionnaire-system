@@ -52,4 +52,14 @@ public class Answer {
 		return answerService.staticAnswerText(surverId);
 	}
 
+	/**
+	 * 统计每份问卷的回收数量
+	 * 
+	 * @param surverId
+	 * @return
+	 */
+	@GetMapping("/countAnswerNum")
+	public Result countAnswerNum(String surverId) {
+		return answerService.countAnswerNum(surverId);
+	}
 }

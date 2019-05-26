@@ -81,6 +81,9 @@ public class ParticipateServiceImpl implements ParticipateService {
 		}
 	}
 
+	/**
+	 * 更新参与者表的结束时间
+	 */
 	@Override
 	public Result updateEndTime(String participateId) {
 		Participate participate = new Participate();

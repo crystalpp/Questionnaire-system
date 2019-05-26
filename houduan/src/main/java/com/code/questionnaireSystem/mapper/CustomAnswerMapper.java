@@ -14,4 +14,5 @@ public interface CustomAnswerMapper {
 
 	Integer countSubQuestionOption(Map<String, Object> map);
 
+	Integer countSurverAnswerNum(String surverId);
 }
