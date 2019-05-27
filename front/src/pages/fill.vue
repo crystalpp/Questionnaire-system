@@ -24,15 +24,16 @@ export default {
         surverQuestions: [],
         participatIp: '',
         particiAddress: '',
-        particiDevice: '',
-        ipFlag: false,
-        partcipateInfo: ''
+        particiDevice: ''
       },
+      ipFlag: false,
+      fillEndTimeFlag: false,
+      partcipateInfo: '',
       currentParticPateId: ''
     }
   },
   async mounted () {
-    commonFunc.setLocalStorage('resultOrFill', 'result')
+    commonFunc.setLocalStorage('resultOrFill', 'fill')
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getIp()
@@ -40,15 +41,19 @@ export default {
     await this.getDeviceType()
     await this.getAll()
     if (!this.ipFlag) {
-      await this.addNewParticipate()
       await this.getSurvers()
-      await this.getSurverQuesions()
+      if (this.fillEndTimeFlag) {
+        this.$router.push({name: 'error'})
+      } else {
+        await this.getSurverQuesions()
+        await this.addNewParticipate()
+      }
     } else {
       // commonFunc.showMessage('你已经填写过该问卷，请勿重新填写', 'error')
-      await this.addNewParticipate()
-      await this.getSurvers()
-      await this.getSurverQuesions()
-      // this.$router.push({name: 'error'})
+      // await this.addNewParticipate()
+      // await this.getSurvers()
+      // await this.getSurverQuesions()
+      this.$router.push({name: 'error'})
     }
   },
   methods: {
@@ -110,6 +115,9 @@ export default {
       if (res.code === 0) {
         this.survey.title = res.data[0].surverTitle
         this.survey.descr = res.data[0].surverDescription
+        if (res.data[0].surverEndtime < new Date().getTime()) {
+          this.fillEndTimeFlag = true
+        }
       }
     },
     async getSurverQuesions () {

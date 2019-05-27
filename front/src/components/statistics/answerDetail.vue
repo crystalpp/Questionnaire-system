@@ -33,7 +33,7 @@
           width="100">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button @click="deleteAnswer(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -53,6 +53,7 @@
 <script>
 import commonFunc from '../../client/bll/apis/common/common'
 import participatenApi from '../../client/bll/apis/participate'
+import answerApi from '../../client/bll/apis/answer'
 export default {
   props: ['surverStaticData'],
   data () {
@@ -68,6 +69,17 @@ export default {
     await this.getAllByPage()
   },
   methods: {
+    async deleteAnswer (data) {
+      let params = {
+        participateId: data.id,
+        surverId: data.surverId
+      }
+      let res = await answerApi.deleteAnswer(params)
+      if (res.code === 0) {
+        await this.getAllByPage()
+        commonFunc.showMessage('删除成功', 'success')
+      }
+    },
     handleClick (data) {
       this.$router.push(
         {
@@ -101,13 +113,15 @@ export default {
           startTime: '',
           endTime: '',
           time: '',
-          id: ''
+          id: '',
+          surverId: ''
         }
         part.index = i
         part.startTime = commonFunc.formateDate(item.participateStarttime)
         part.endTime = commonFunc.formateDate(item.participateEndtime)
         part.time = commonFunc.computedTime(item.participateEndtime - item.participateStarttime)
         part.id = item.participateId
+        part.surverId = item.participateSurverid
         i++
         this.answerData.push(JSON.parse(JSON.stringify(part)))
       }

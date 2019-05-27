@@ -69,7 +69,6 @@ export default {
     }
   },
   mounted () {
-    debugger
     this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
   },
@@ -211,9 +210,10 @@ export default {
           console.log(res.data)
         }
       }
-      console.log(this.answers)
       await this.updateEndTime()
       await this.updateRecoverNum()
+      this.$router.push({name: 'thank'})
+      console.log(this.answers)
     },
     // 更新问卷的回收数量
     async updateRecoverNum () {

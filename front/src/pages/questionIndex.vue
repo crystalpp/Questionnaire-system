@@ -174,6 +174,7 @@ export default {
       this.menuActiveIndex = 'creat'
     },
     handleSelectQues (key) {
+      commonFunc.setLocalStorage('submenuActiveIndex', key)
       commonFunc.setLocalStorage('showQuesStep', true)
       // this.$store.commit('set_showQuesStep', true)
       this.contentClass = 'ques-content'
@@ -184,18 +185,15 @@ export default {
       }
     },
     handleSelect (key) {
-      debugger
       if (key === 'show') {
         commonFunc.setLocalStorage('showQuesStep', false)
         this.showQuesStep = JSON.parse(commonFunc.getLocalStorage('showQuesStep'))
         commonFunc.setLocalStorage('menuActiveIndex', 'show')
-        // this.$store.commit('set_showQuesStep', false)
         this.contentClass = 'ques-content-noStep'
         commonFunc.setLocalStorage('contentClass', 'ques-content-noStep')
       } else {
         commonFunc.setLocalStorage('showQuesStep', true)
         this.showQuesStep = JSON.parse(commonFunc.getLocalStorage('showQuesStep'))
-        // this.$store.commit('set_showQuesStep', true)
         this.contentClass = 'ques-content'
         commonFunc.setLocalStorage('contentClass', 'ques-content')
       }
@@ -207,7 +205,6 @@ export default {
         commonFunc.setLocalStorage('showQuesStep', false)
         commonFunc.setLocalStorage('contentClass', 'ques-content-noStep')
         commonFunc.setLocalStorage('createQuesType', 'templateQues')
-        // this.$store.commit('set_createQuesType', 'templateQues')
         key = 'creat'
       }
       this.$router.push({name: key})

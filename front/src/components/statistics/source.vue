@@ -100,7 +100,7 @@ export default {
   props: ['surverStaticData'],
   data () {
     return {
-      anserTimeRange: '', // 查看答题人数的时间范围
+      anserTimeRange: [], // 查看答题人数的时间范围
       timeType: '', // 查看时间点的类型
       timeOption: [
         {
@@ -148,9 +148,34 @@ export default {
     this.computeData()
     this.raderAreaData()
     this.randerPieData()
+    this.initRangeData()
     this.drawChart()
   },
   methods: {
+    // 初始化用户刚进来没有选择时间时的折线图的开始时间和结束时间(初始化为当前时间往后一周)
+    async initRangeData () {
+      let nowDate = new Date().toLocaleDateString()
+      let endTime = new Date(nowDate)
+      let statDate = new Date((endTime.getTime() - (7 * 24 * 60 * 60 * 1000))).toLocaleDateString()
+      let startTime = new Date(statDate)
+      this.anserTimeRange.push(startTime)
+      this.anserTimeRange.push(endTime)
+      let params = {
+        startTime: startTime,
+        endTime: endTime,
+        surverId: this.$route.query.surverId
+      }
+      let res = await participatenApi.selectParticiByTime(params)
+      if (res.code === 0) {
+        this.lineChartData = {
+          times: [],
+          values: []
+        }
+        this.rangeData = res.data
+        this.randerLineChartData(startTime.getTime(), endTime.getTime())
+        this.drawLineChart()
+      }
+    },
     /**
      * 统计每个元素出现的次数
      */

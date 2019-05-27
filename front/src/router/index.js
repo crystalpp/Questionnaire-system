@@ -12,6 +12,7 @@ import release from '@/components/question/releaseQues'
 import statistics from '@/components/question/statisticsQues'
 import preview from '@/pages/preview'
 import fill from '@/pages/fill'
+import thank from '@/pages/thank'
 import result from '@/pages/result'
 import error from '@/pages/error'
 import source from '@/components/statistics/source'
@@ -57,6 +58,14 @@ export default new Router({
       component: fill,
       meta: {
         title: '问卷填写'
+      }
+    },
+    {
+      path: 'thank',
+      name: 'thank',
+      component: thank,
+      meta: {
+        title: '填写完成'
       }
     },
     {

@@ -20,7 +20,6 @@ export default {
     }
   },
   beforeRouteUpdate (to, from, next) {
-    debugger
     this.createQuesType = commonFunc.getLocalStorage('createQuesType')
     next()
   },
@@ -30,7 +29,6 @@ export default {
     // })
   },
   mounted () {
-    debugger
     this.createQuesType = commonFunc.getLocalStorage('createQuesType')
   },
   methods: {

@@ -52,7 +52,6 @@ export default {
   methods: {
     // 使用该模板
     async useTemplate (data) {
-      debugger
       let params = {
         templateSurverId: data.surverId,
         userId: JSON.parse(commonFunc.getLocalStorage('userInfo')).userId

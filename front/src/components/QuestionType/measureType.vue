@@ -11,9 +11,9 @@
       <el-form-item label="必填">
           <el-switch v-model="selectForm.required"></el-switch>
       </el-form-item>
-      <el-form-item label="量表类型" :rules="{
+      <!-- <el-form-item label="量表类型" :rules="{
           required: true, message: '量表类型不能为空', trigger: 'blur'
-        }">
+        }"> -->
         <!-- <el-select  v-model="selectForm.options[0].optionContent"  placeholder="请选择量表类型">
           <el-option
             v-for="item in selectForm.options"
@@ -22,7 +22,7 @@
             :value="item.value">
           </el-option>
       </el-select> -->
-      </el-form-item>
+      <!-- </el-form-item> -->
       <el-form-item>
         <div class="line"></div>
       </el-form-item>
@@ -75,18 +75,34 @@ export default {
   mounted () {
   },
   methods: {
+    async editQuestion () {
+      this.selectForm.display = false
+      let res = await questionApi.updateByQuestionId(this.selectForm)
+      if (res.code === 0) {
+        commonFunc.showMessage('修改成功', 'success')
+      } else {
+        commonFunc.showMessage('修改失败，请稍后再试', 'error')
+      }
+    },
+    async addQuestion () {
+      this.selectForm.display = false
+      this.$emit('getmeasureSelectform', this.selectForm)
+      this.selectForm.optionsValue = this.selectForm.options[0].optionContent
+      this.selectForm.surverId = this.$route.query.surverId
+      let res = await questionApi.add(this.selectForm)
+      if (res.code === 0) {
+        commonFunc.showMessage('新增成功', 'success')
+      } else {
+        commonFunc.showMessage('新增失败，请稍后再试', 'fail')
+      }
+    },
     confirm (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.selectForm.display = false
-          this.$emit('getmeasureSelectform', this.selectForm)
-          this.selectForm.optionsValue = this.selectForm.options[0].optionContent
-          this.selectForm.surverId = this.$route.query.surverId
-          let res = await questionApi.add(this.selectForm)
-          if (res.code === 0) {
-            commonFunc.showMessage('新增成功', 'success')
+          if (this.selectForm.optionMethod === 'edit') {
+            await this.editQuestion()
           } else {
-            commonFunc.showMessage('新增失败，请稍后再试', 'fail')
+            await this.addQuestion()
           }
         } else {
           console.log('error submit!!')

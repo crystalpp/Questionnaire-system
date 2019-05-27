@@ -48,7 +48,6 @@ export default {
     }
   },
   async mounted () {
-    debugger
     commonFunc.setLocalStorage('resultOrFill', 'fill')
     commonFunc.setLocalStorage('fillOrCreat', 'creat')
     document.getElementsByTagName('html')[0].style.fontSize = '100px'

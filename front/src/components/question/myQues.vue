@@ -223,10 +223,10 @@ export default {
   methods: {
     // 显示统计数据
     staticData (data) {
-      debugger
       if (data.surverRecovernum === 0) {
         commonFunc.showMessage('当前问卷暂无数据，请稍后查看', 'success')
       } else {
+        commonFunc.setLocalStorage('submenuActiveIndex', 'statistics')
         commonFunc.setLocalStorage('showQuesStep', true)
         this.$router.push({name: 'statistics', query: {surverId: data.surverId}})
       }
@@ -237,7 +237,6 @@ export default {
       this.$router.push({name: 'preview', query: {surverId: surverId}})
     },
     async releaseQues () {
-      debugger
       let limitIP = 0
       if (this.releaseLimitForm.isLimitedIP) {
         limitIP = 1
@@ -260,7 +259,6 @@ export default {
       // this.menuActiveIndex = 'creat'
     },
     realse (data) {
-      debugger
       this.currentSurverInfo = data
       if (data.surverEndtime !== null) {
         commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
@@ -598,6 +596,7 @@ export default {
         font-size:0.16rem;
         text-align: left;
         margin-top:0.2rem;
+        height: 0.45rem;
       }
       .card-time{
         color: #ADADAD;
@@ -608,7 +607,7 @@ export default {
       .card-footer{
         display: flex;
         // margin-bottom: 0.2rem;
-        margin-top:0.7rem;
+        margin-top:0.65rem;
         .card-num{
           color: #ADADAD;
           font-size:0.14rem;
@@ -630,7 +629,7 @@ export default {
       }
       .card-footer-Option{
         display: flex;
-        margin-top:0.7rem;
+        margin-top:0.55rem;
         font-size: 0.16rem;
         .item{
           cursor: pointer;

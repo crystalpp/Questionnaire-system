@@ -173,7 +173,6 @@ export default {
     }
   },
   async mounted () {
-    debugger
     commonFunc.setLocalStorage('editOrPreview', 'edit')
     await this.getSurverQuesions()
     await this.getSurvers()
@@ -237,8 +236,10 @@ export default {
       }
       this.quesType = data.quesType
     },
-    getSelectForm (data) {
+    async getSelectForm (data) {
       this.selectForm = JSON.parse(JSON.stringify(data))
+      await this.getSurverQuesions()
+      // await this.getSurvers()
       // this.survey.questions.push(JSON.parse(JSON.stringify(data)))
     },
     // createWangeditor () {

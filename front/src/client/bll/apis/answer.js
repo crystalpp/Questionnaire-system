@@ -26,6 +26,11 @@ const answerApi = {
     let url = config.APISERVER.host + '/answer/countAnswerNum'
     let res = await requestService.get(url, params)
     return res
+  },
+  async deleteAnswer (params) {
+    let url = config.APISERVER.host + '/answer/deleteAnswer'
+    let res = await requestService.post(url, params)
+    return res
   }
 }
 export default answerApi

@@ -67,27 +67,43 @@ export default {
   mounted () {
   },
   methods: {
+    async editQuestion () {
+      this.selectForm.display = false
+      let res = await questionApi.updateByQuestionId(this.selectForm)
+      if (res.code === 0) {
+        commonFunc.showMessage('修改成功', 'success')
+      } else {
+        commonFunc.showMessage('修改失败，请稍后再试', 'error')
+      }
+    },
+    async addQuestionRequest () {
+      this.selectForm.display = false
+      this.$emit('getSelectForm', this.selectForm)
+      let newOptionsArr = []
+      for (let i of this.selectForm.options) {
+        newOptionsArr.push(i.optionContent)
+      }
+      this.selectForm.optionsValue = newOptionsArr
+      let newQuestionsArr = []
+      for (let j of this.selectForm.questions) {
+        newQuestionsArr.push(j.questionName)
+      }
+      this.selectForm.questionsValue = newQuestionsArr
+      this.selectForm.surverId = this.$route.query.surverId
+      let res = await questionApi.add(this.selectForm)
+      if (res.code === 0) {
+        commonFunc.showMessage('新增成功', 'success')
+      } else {
+        commonFunc.showMessage('新增失败，请稍后再试', 'error')
+      }
+    },
     confirm (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.selectForm.display = false
-          this.$emit('getSelectForm', this.selectForm)
-          let newOptionsArr = []
-          for (let i of this.selectForm.options) {
-            newOptionsArr.push(i.optionContent)
-          }
-          this.selectForm.optionsValue = newOptionsArr
-          let newQuestionsArr = []
-          for (let j of this.selectForm.questions) {
-            newQuestionsArr.push(j.questionName)
-          }
-          this.selectForm.questionsValue = newQuestionsArr
-          this.selectForm.surverId = this.$route.query.surverId
-          let res = await questionApi.add(this.selectForm)
-          if (res.code === 0) {
-            commonFunc.showMessage('新增成功', 'success')
+          if (this.selectForm.optionMethod === 'edit') {
+            await this.editQuestion()
           } else {
-            commonFunc.showMessage('新增失败，请稍后再试', 'error')
+            await this.addQuestionRequest()
           }
         } else {
           console.log('error submit!!')

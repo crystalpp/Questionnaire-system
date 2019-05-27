@@ -29,7 +29,6 @@ export default {
     }
   },
   mounted () {
-    debugger
     // commonFunc.setLocalStorage('fillOrCreat', 'creat')
     this.fillOrCreat = commonFunc.getLocalStorage('fillOrCreat')
   }
