@@ -15,4 +15,6 @@ public interface AnswerService {
 
 	Result countAnswerNum(String surverId);
 
+	Result deleteAnswer(String participateId, String surverId);
+
 }

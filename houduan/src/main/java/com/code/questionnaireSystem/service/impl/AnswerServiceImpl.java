@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.code.questionnaireSystem.mapper.AnswerMapper;
 import com.code.questionnaireSystem.mapper.CustomAnswerMapper;
 import com.code.questionnaireSystem.mapper.CustomParticipateAnswerMapper;
+import com.code.questionnaireSystem.mapper.ParticipateMapper;
 import com.code.questionnaireSystem.mapper.QuestionMapper;
 import com.code.questionnaireSystem.mapper.QuestionOptionMapper;
 import com.code.questionnaireSystem.mapper.SurverMapper;
@@ -29,6 +30,8 @@ import com.code.questionnaireSystem.pojo.QuestionOption;
 import com.code.questionnaireSystem.pojo.QuestionOptionExample;
 import com.code.questionnaireSystem.pojo.SubQuestion;
 import com.code.questionnaireSystem.pojo.SubQuestionAnswer;
+import com.code.questionnaireSystem.pojo.Surver;
+import com.code.questionnaireSystem.pojo.SurverExample;
 import com.code.questionnaireSystem.service.AnswerService;
 import com.code.questionnaireSystem.utils.Result;
 import com.code.questionnaireSystem.utils.ResultCode;
@@ -47,6 +50,8 @@ public class AnswerServiceImpl implements AnswerService {
 	private CustomParticipateAnswerMapper customParticipateAnswerMapper;
 	@Autowired
 	private SurverMapper surverMapper;
+	@Autowired
+	private ParticipateMapper participateMapper;
 
 	@Override
 	public Result add(String surverId, String questionId, String subQuestionId, String optionId, String answerText,
@@ -205,5 +210,26 @@ public class AnswerServiceImpl implements AnswerService {
 		// return Result.success();
 		// }
 		return Result.success(sum);
+	}
+
+	@Override
+	public Result deleteAnswer(String participateId, String surverId) {
+		// TODO Auto-generated method stub
+		// 先删除participate表中的数据
+
+		int num = participateMapper.deleteByPrimaryKey(participateId);
+		// 删除answer表中的数据
+		AnswerExample answerExample = new AnswerExample();
+		AnswerExample.Criteria criteria = answerExample.createCriteria();
+		criteria.andParticipateIdEqualTo(participateId);
+		int answerNum = answerMapper.deleteByExample(answerExample);
+		// 将surver表中的回收数量减1
+		Surver surver = surverMapper.selectByPrimaryKey(surverId);
+		surver.setSurverRecovernum(surver.getSurverRecovernum() - 1);
+		SurverExample surverExample = new SurverExample();
+		SurverExample.Criteria criteria2 = surverExample.createCriteria();
+		criteria2.andSurverIdEqualTo(surver.getSurverId());
+		int surverNum = surverMapper.updateByPrimaryKey(surver);
+		return Result.success();
 	}
 }

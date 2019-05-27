@@ -19,7 +19,7 @@ import com.code.questionnaireSystem.utils.Result;
  */
 @RestController
 @RequestMapping("/participate")
-public class Participate {
+public class ParticipateController {
 	@Autowired
 	private ParticipateService participateService;
 

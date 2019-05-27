@@ -200,12 +200,13 @@ public class QuestionServiceImpl implements QuestionService {
 		// 按照surverid查询出所有的问题，判断其是否有副问题，如果有，将副问题也删除
 		List<Question> qList = questionMapper.selectByExample(questionExample);
 		Result result = deleteQuestionAndOption(qList);
-		int num = questionMapper.deleteByExample(questionExample);
-		if (num < 1) {
-			return Result.failure(ResultCode.FAIL);
-		} else {
-			return Result.success();
-		}
+		// int num = questionMapper.deleteByExample(questionExample);
+		// if (num < 1) {
+		// return Result.failure(ResultCode.FAIL);
+		// } else {
+		// return Result.success();
+		// }
+		return result;
 	}
 
 	@Override
@@ -221,6 +222,7 @@ public class QuestionServiceImpl implements QuestionService {
 		if (questionResponse.getQuestions() != null) {
 			for (Question subQuestion : questionResponse.getQuestions()) {
 				subQues += subQuestion.getQuestionId();
+				subQues += ",";
 				int subNum = questionMapper.updateByPrimaryKeySelective(subQuestion);
 				if (subNum < 1) {
 					return Result.failure(ResultCode.FAIL);

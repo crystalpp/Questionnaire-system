@@ -12,7 +12,7 @@ import com.code.questionnaireSystem.utils.Result;
 
 @RestController
 @RequestMapping("/answer")
-public class Answer {
+public class AnswerController {
 	@Autowired
 	private AnswerService answerService;
 
@@ -61,5 +61,16 @@ public class Answer {
 	@GetMapping("/countAnswerNum")
 	public Result countAnswerNum(String surverId) {
 		return answerService.countAnswerNum(surverId);
+	}
+
+	/**
+	 * 删除某个参与者的答案
+	 * 
+	 * @param participateId
+	 * @return
+	 */
+	@PostMapping("deleteAnswer")
+	public Result deleteAnswer(String participateId, String surverId) {
+		return answerService.deleteAnswer(participateId, surverId);
 	}
 }
