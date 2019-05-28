@@ -43,7 +43,7 @@ import measureChooseType from '../QuestionType/measureChooseType'
 import matrixChooseType from '../QuestionType/matrixChooseType'
 import commonFunc from '../../client/bll/apis/common/common'
 export default {
-  props: ['survey'],
+  props: ['survey' , 'currentParticPateId'],
   components: {
     'radio-choose-type': radioType,
     'multiselect-choose-type': multiselect,

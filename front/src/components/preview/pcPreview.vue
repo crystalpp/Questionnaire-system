@@ -46,7 +46,7 @@ import answerApi from '../../client/bll/apis/answer'
 import commonFunc from '../../client/bll/apis/common/common'
 import surverApi from '../../client/bll/apis/surver'
 export default {
-  props: ['survey', 'currentParticPateId', 'answerData'],
+  props: ['survey', 'currentParticPateId', 'answerData', 'pcOrPhone'],
   components: {
     'radio-choose-type': radioType,
     'multiselect-choose-type': multiselect,
@@ -70,7 +70,12 @@ export default {
   },
   mounted () {
     this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
-    document.getElementsByTagName('html')[0].style.fontSize = '100px'
+    if (this.pcOrPhone === 'phone') {
+      document.getElementsByTagName('html')[0].style.fontSize = '50px'
+    } else {
+      document.getElementsByTagName('html')[0].style.fontSize = '100px'
+    }
+    // 
   },
   methods: {
     /**

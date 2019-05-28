@@ -196,6 +196,7 @@ export default {
       }
     },
     transTypeCode (data) {
+      this.surverQuestionsData = []
       for (let item of data) {
         let oneitem = {}
         if (item.quetypeId === '1') {
@@ -295,6 +296,9 @@ export default {
         this.selectForm.measureValue = ''
       } else if (type === 'measure') {
         this.quesType = 'measure'
+        this.selectForm.options = ''
+        this.selectForm.optionsValue = []
+        this.selectForm.questions = []
         // this.selectForm.options = [
         //   {
         //     value: '满意',

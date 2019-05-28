@@ -87,7 +87,7 @@ export default {
     async addQuestion () {
       this.selectForm.display = false
       this.$emit('getmeasureSelectform', this.selectForm)
-      this.selectForm.optionsValue = this.selectForm.options[0].optionContent
+      // this.selectForm.optionsValue = this.selectForm.options[0].optionContent
       this.selectForm.surverId = this.$route.query.surverId
       let res = await questionApi.add(this.selectForm)
       if (res.code === 0) {

@@ -1,7 +1,7 @@
 <template>
   <div class="fill-container">
-     <pc-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId"></pc-preview>
-     <!-- <phone-preview :survey='survey' v-if="pcOrPhone === 'phone'"></phone-preview> -->
+     <pc-preview :survey='survey' :pcOrPhone ='pcOrPhone' :currentParticPateId='currentParticPateId' v-if="currentParticPateId" ></pc-preview>
+     <!-- <phone-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId && pcOrPhone === 'phone'"></phone-preview> -->
   </div>
 </template>
 <script>
@@ -29,7 +29,8 @@ export default {
       ipFlag: false,
       fillEndTimeFlag: false,
       partcipateInfo: '',
-      currentParticPateId: ''
+      currentParticPateId: '',
+      pcOrPhone: 'phone'
     }
   },
   async mounted () {
@@ -107,6 +108,13 @@ export default {
       let res = await participatenApi.getDeviceType()
       if (res.code === 0) {
         this.particiDevice = res.data
+        if (this.particiDevice === 'MOBILE_SAFARI') {
+          this.pcOrPhone = 'phone'
+          // document.getElementsByTagName('html')[0].style.fontSize = '50px'
+        } else {
+          // document.getElementsByTagName('html')[0].style.fontSize = '50px'
+          this.pcOrPhone = 'pc'
+        }
         alert(this.particiDevice)
       }
     },
