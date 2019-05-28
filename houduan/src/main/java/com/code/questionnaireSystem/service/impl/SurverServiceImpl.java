@@ -322,7 +322,7 @@ public class SurverServiceImpl implements SurverService {
 					subQuestions += ",";
 				}
 			}
-			if (questionsResult.getOptions() != null) {
+			if (questionsResult.getOptions().size() > 0) {
 				options = "";
 				for (QuestionOption questionOption : questionsResult.getOptions()) {
 					options += questionOption.getOptionContent();
