@@ -12,7 +12,7 @@
             <el-button class="ques-button" @click="showQuestion('Multiselect')"><i class="iconfont icon-duoxuanyixuan"></i>多选题</el-button>
             <el-button class="ques-button" @click="showQuestion('Drop-down')"><i class="iconfont icon-xialakuang"></i>下拉框</el-button>
             <el-button class="ques-button" @click="showQuestion('textselect')"><i class="iconfont icon-wenben"></i>文本题</el-button>
-            <el-button class="ques-button" @click="showQuestion('sort')"><i class="iconfont icon-paixu"></i>排序题</el-button>
+            <!-- <el-button class="ques-button" @click="showQuestion('sort')"><i class="iconfont icon-paixu"></i>排序题</el-button> -->
             <el-button class="ques-button" @click="showQuestion('matrix-radio')"><i class="iconfont icon-square-inc"></i>矩阵单选题</el-button>
             <el-button class="ques-button" @click="showQuestion('matrix-multi')"><i class="iconfont icon-danxuan"></i>矩阵多选题</el-button>
             <!-- <el-button class="ques-button" @click="showQuestion('radio')"><i class="iconfont icon-jindutiao"></i>滑动条类型题</el-button> -->

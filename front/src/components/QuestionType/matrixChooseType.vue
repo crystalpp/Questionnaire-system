@@ -1,7 +1,7 @@
 <template>
   <div class="matrixRadioChooseType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
-      <el-form-item   :label="' '" required:true>
+      <el-form-item   :label="' '" :required="required">
         <p class="matrixRadio-title" >{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
@@ -120,10 +120,12 @@ export default {
       },
       answerData: {
       },
-      optionInfo: ''
+      optionInfo: '',
+      required: false
     }
   },
   mounted () {
+    this.required = (this.formData.required === 'true')
     this.initCheckList()
     // console.log(this.formData)
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')

@@ -1,5 +1,5 @@
 <template>
-  <div class="pcPreview-container">
+  <div class="pcPreview-container" id="pdfDom">
     <div class="survey-head">
         <!-- {{survey.surveyTitle.value}} {{survey.surveyDescr.value}} -->
         <p class="survey-title">{{survey.title}}</p> 
@@ -73,6 +73,31 @@ export default {
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
   },
   methods: {
+    /**
+     * 判断是否填完了所有的必填项题目，必须所有的填完才能够提交
+     * [将该份问卷的所有必填项的问题id加入到一个数组A，再将已经填写完的答案的问题id加入到数组B
+     * 通过判断B数组是否含有A数组的任意一个元素]
+     */
+    judgeSubmit () {
+      let flag = true
+      let surverQuestions = []
+      let answerQuestions = []
+      for (let item of this.survey.surverQuestions) {
+        if (item.required === 'true') {
+          surverQuestions.push(item.questionId)
+        }
+      }
+      for (let item of this.answers) {
+        answerQuestions.push(item.questionId)
+      }
+      for (let item of surverQuestions) {
+        if (answerQuestions.indexOf(item) <= -1) {
+          flag = false
+          return
+        }
+      }
+      return flag
+    },
     // 判断当前的问题答案中是否有要被插入的问题
     isSameQuestion (currentId) {
       let flag = false
@@ -178,42 +203,47 @@ export default {
      * 点击提交，添加用户已经填写的数据，以及更新用户完成时间
      */
     async setAnswerData () {
-      let res = ''
-      for (let item of this.answers) {
-        if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
-          let optionIds = item.optionId.split(',')
-          for (let item1 of optionIds) {
-            if (item1 !== '') {
-              let params = {
-                surverId: this.$route.params.id,
-                questionId: item.questionId,
-                subQuestionId: item.subQuestionId,
-                optionId: item1,
-                answerText: item.answerText,
-                participateId: this.currentParticPateId
+      let flag = this.judgeSubmit()
+      if (!flag) {
+        commonFunc.showMessage('问卷还没填写完成，不能提交', 'success')
+      } else {
+        let res = ''
+        for (let item of this.answers) {
+          if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
+            let optionIds = item.optionId.split(',')
+            for (let item1 of optionIds) {
+              if (item1 !== '') {
+                let params = {
+                  surverId: this.$route.params.id,
+                  questionId: item.questionId,
+                  subQuestionId: item.subQuestionId,
+                  optionId: item1,
+                  answerText: item.answerText,
+                  participateId: this.currentParticPateId
+                }
+                res = await answerApi.add(params)
               }
-              res = await answerApi.add(params)
             }
+          } else {
+            let params = {
+              surverId: this.$route.params.id,
+              questionId: item.questionId,
+              subQuestionId: item.subQuestionId,
+              optionId: item.optionId,
+              answerText: item.answerText,
+              participateId: this.currentParticPateId
+            }
+            res = await answerApi.add(params)
           }
-        } else {
-          let params = {
-            surverId: this.$route.params.id,
-            questionId: item.questionId,
-            subQuestionId: item.subQuestionId,
-            optionId: item.optionId,
-            answerText: item.answerText,
-            participateId: this.currentParticPateId
+          if (res.code === 0) {
+            console.log(res.data)
           }
-          res = await answerApi.add(params)
         }
-        if (res.code === 0) {
-          console.log(res.data)
-        }
+        await this.updateEndTime()
+        await this.updateRecoverNum()
+        this.$router.push({name: 'thank'})
+        console.log(this.answers)
       }
-      await this.updateEndTime()
-      await this.updateRecoverNum()
-      this.$router.push({name: 'thank'})
-      console.log(this.answers)
     },
     // 更新问卷的回收数量
     async updateRecoverNum () {

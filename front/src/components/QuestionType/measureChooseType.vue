@@ -1,7 +1,7 @@
 <template>
   <div class="measurechooseType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
-      <el-form-item   :label="' '" required:true>
+      <el-form-item   :label="' '" :required="required">
         <p class="measure-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
@@ -32,11 +32,13 @@ export default {
       answerData: {
         questionId: '',
         answerText: ''
-      }
+      },
+      required: false
     }
   },
   mounted () {
     // this.changeText()
+    this.required = (this.formData.required === 'true')
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
     this.initChooseOption()
   },

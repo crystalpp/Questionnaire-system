@@ -1,13 +1,13 @@
 <template>
   <div class="radioType" >
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
-      <el-form-item   :label="' '" required:true>
+      <el-form-item   :label="' '" :required="required">
         <p class="radio-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
-      <el-form-item>
+      <el-form-item >
        <p class="radio-descri">{{formData.subdesc}}</p>
       </el-form-item>
-      <el-form-item v-for="(item) in formData.options" :key="item.key">
+      <el-form-item v-for="(item) in formData.options" :key="item.key" >
         <el-radio :label="item.optionId" v-model="selectOptionId" @change="chooseAnswer(item)">{{item.optionContent}}</el-radio>
       </el-form-item>
     </el-form>
@@ -31,10 +31,12 @@ export default {
         questionId: '',
         optionId: ''
       },
-      selectOptionId: ''
+      selectOptionId: '',
+      required: false
     }
   },
   mounted () {
+    this.required = (this.formData.required === 'true')
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
     this.initChooseOption()
   },

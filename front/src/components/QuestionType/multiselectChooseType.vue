@@ -1,7 +1,7 @@
 <template>
   <div class="multiselectType">
     <el-form :model='formData' label-width="0.1rem" label-position="left" class="selectPart">
-      <el-form-item   :label="' '" required:true>
+      <el-form-item   :label="' '" :required="required">
         <p class="multi-descri" style="font-size:0.18rem">{{index+1}}、{{formData.title}}</p>
       </el-form-item>
       <el-form-item>
@@ -33,10 +33,12 @@ export default {
         questionId: '',
         optionId: ''
       },
-      checkList: []
+      checkList: [],
+      required: false
     }
   },
   mounted () {
+    this.required = (this.formData.required === 'true')
     this.editOrPreview = commonFunc.getLocalStorage('editOrPreview')
     this.initChooseOption()
   },

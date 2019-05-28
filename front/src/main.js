@@ -11,6 +11,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/font/iconfont.css'
 import VueClipboard from 'vue-clipboard2'
+import htmlToPdf from '@/components/utils/htmlToPdf'
+Vue.use(htmlToPdf)
 Vue.use(VueClipboard)
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)

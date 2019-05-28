@@ -107,6 +107,7 @@ export default {
       let res = await participatenApi.getDeviceType()
       if (res.code === 0) {
         this.particiDevice = res.data
+        alert(this.particiDevice)
       }
     },
     async getSurvers () {

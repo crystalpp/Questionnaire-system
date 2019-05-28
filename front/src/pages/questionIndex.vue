@@ -77,7 +77,9 @@ import surverApi from '../client/bll/apis/surver.js'
 export default {
   data () {
     return {
+      surverRecoverNum: 0,
       surverTile: '',
+      surverEndTime: '', // 用来判断是否能够再次点击发布问卷
       releaseLimitForm: {
         endTime: '', // 问卷填写截止时间
         isLimitedIP: true // 是否限制一个ip只能填写一次
@@ -128,6 +130,8 @@ export default {
         let surverId = this.$route.query.surverId
         let res = await surverApi.search(surverId)
         if (res.code === 0) {
+          this.surverRecoverNum = res.data[0].surverRecovernum
+          this.surverEndTime = res.data[0].surverEndtime
           if (res.data[0].surverTitle === '问卷标题') {
             this.surverTile = '创建空白问卷'
           } else {
@@ -179,7 +183,20 @@ export default {
       // this.$store.commit('set_showQuesStep', true)
       this.contentClass = 'ques-content'
       if (key === 'release') {
-        this.dialogReleaseVisible = true
+        if (this.surverEndTime !== null) {
+          commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
+          commonFunc.setLocalStorage('submenuActiveIndex', 'statistics')
+          this.submenuActiveIndex = 'statistics'
+        } else {
+          this.dialogReleaseVisible = true
+          this.$router.push({name: key, query: this.$route.query})
+        }
+      } else if (key === 'statistics') {
+        if (this.surverRecoverNum === 0) {
+          commonFunc.showMessage('当前问卷暂无数据，请稍后再试', 'success')
+        } else {
+          this.$router.push({name: key, query: this.$route.query})
+        }
       } else {
         this.$router.push({name: key, query: this.$route.query})
       }

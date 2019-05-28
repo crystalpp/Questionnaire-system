@@ -13,6 +13,7 @@
         
       </div>
       <div class="closeButon" >
+         <el-button plain type="primary" size="small" @click="getPdf(survey.title)">导出pdf</el-button>
          <el-button plain type="primary" size="small" @click="creatPreview">退出</el-button>
       </div>
     </div>
@@ -37,6 +38,7 @@ export default {
   },
   data () {
     return {
+      htmlTitle: '页面导出PDF文件名',
       survey: {
         title: '',
         descr: '',
