@@ -17,7 +17,7 @@
             <el-button class="ques-button" @click="showQuestion('matrix-multi')"><i class="iconfont icon-danxuan"></i>矩阵多选题</el-button>
             <!-- <el-button class="ques-button" @click="showQuestion('radio')"><i class="iconfont icon-jindutiao"></i>滑动条类型题</el-button> -->
             <el-button class="ques-button" @click="showQuestion('measure')"><i class="iconfont icon-star"></i>量表题</el-button>
-            <el-button class="ques-button" @click="showQuestion('text')"><i class="iconfont icon-stars"></i>文本描述</el-button>
+            <!-- <el-button class="ques-button" @click="showQuestion('text')"><i class="iconfont icon-stars"></i>文本描述</el-button> -->
           </el-tab-pane>
           <el-tab-pane label="问卷大纲" class="tab2">
             <p class="sigelQues" v-for="(item,index) in surverQuestionsData" :key="item.keys">
@@ -46,22 +46,22 @@
           <!-- 设计好的问卷显示的div -->
            <div  class="survey-container"  v-for="(item,index) in surverQuestionsData" :key="item.key" >
             <div v-if="item.type === 'radioselect'">
-              <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' ></radio-choose-type>
+              <radio-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' @deleteQues = 'deleteQues'></radio-choose-type>
             </div>
             <div v-if="item.type === 'Multiselect'">
-              <multiselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></multiselect-choose-type>
+              <multiselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' @deleteQues = 'deleteQues'></multiselect-choose-type>
             </div>
             <div v-if="item.type === 'Drop-down'">
-              <dropdown-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></dropdown-choose-type>
+              <dropdown-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' @deleteQues = 'deleteQues'></dropdown-choose-type>
             </div>
             <div v-if="item.type === 'textselect'"> 
-              <textselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></textselect-choose-type>
+              <textselect-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' @deleteQues = 'deleteQues'></textselect-choose-type>
             </div>
             <div v-if="item.type === 'measure'">
-              <measure-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></measure-choose-type>
+              <measure-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' @deleteQues = 'deleteQues'></measure-choose-type>
             </div>
             <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
-              <matrix-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm'></matrix-choose-type>
+              <matrix-choose-type :formData = 'item' :index = 'index' @editSelectForm = 'editSelectForm' @deleteQues = 'deleteQues'></matrix-choose-type>
             </div>
           </div>
           <!-- 问卷设计的div -->
@@ -228,6 +228,9 @@ export default {
     handleSelect (key) {
       this.$router.push({name: key})
     },
+    async deleteQues () {
+      await this.getSurverQuesions()
+    },
     editSelectForm (data) {
       this.selectForm = JSON.parse(JSON.stringify(data))
       if (this.selectForm.required === 'true') {
@@ -238,6 +241,7 @@ export default {
       this.quesType = data.quesType
     },
     async getSelectForm (data) {
+      debugger
       this.selectForm = JSON.parse(JSON.stringify(data))
       await this.getSurverQuesions()
       // await this.getSurvers()
@@ -256,6 +260,7 @@ export default {
     // },
     // 根据题型判断应该选择哪种类型的设计样式，并传入不同的值
     showQuestion (type) {
+      this.selectForm.optionMethod = 'add'
       this.selectForm.display = true
       this.selectForm.type = type
       this.selectForm.title = ''

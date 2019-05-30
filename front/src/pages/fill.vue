@@ -115,7 +115,7 @@ export default {
           // document.getElementsByTagName('html')[0].style.fontSize = '50px'
           this.pcOrPhone = 'pc'
         }
-        alert(this.particiDevice)
+        // alert(this.particiDevice)
       }
     },
     async getSurvers () {

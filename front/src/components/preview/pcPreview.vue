@@ -75,7 +75,7 @@ export default {
     } else {
       document.getElementsByTagName('html')[0].style.fontSize = '100px'
     }
-    // 
+    //
   },
   methods: {
     /**

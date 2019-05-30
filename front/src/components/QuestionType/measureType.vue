@@ -45,38 +45,12 @@ export default {
           { required: true, message: '请输入题目', trigger: 'blur' }
         ]
       }
-      // selectForm: {
-      //   title: '', // 题目
-      //   subdesc: '', // 备注
-      //   type: 'measure', // 题目类型
-      //   required: true, // 是否必填
-      //   measureValue: '',
-      //   options: [
-      //     {
-      //       value: '满意',
-      //       label: '满意度'
-      //     },
-      //     {
-      //       value: '认同',
-      //       label: '认同度'
-      //     },
-      //     {
-      //       value: '重要',
-      //       label: '重要度'
-      //     },
-      //     {
-      //       value: '符合',
-      //       label: '符合度'
-      //     }
-      //   ] // 选项
-      // }
     }
   },
   mounted () {
   },
   methods: {
     async editQuestion () {
-      this.selectForm.display = false
       let res = await questionApi.updateByQuestionId(this.selectForm)
       if (res.code === 0) {
         commonFunc.showMessage('修改成功', 'success')
@@ -85,9 +59,6 @@ export default {
       }
     },
     async addQuestion () {
-      this.selectForm.display = false
-      this.$emit('getmeasureSelectform', this.selectForm)
-      // this.selectForm.optionsValue = this.selectForm.options[0].optionContent
       this.selectForm.surverId = this.$route.query.surverId
       let res = await questionApi.add(this.selectForm)
       if (res.code === 0) {
@@ -104,6 +75,9 @@ export default {
           } else {
             await this.addQuestion()
           }
+          debugger
+          this.selectForm.display = false
+          this.$emit('getmeasureSelectform', this.selectForm)
         } else {
           console.log('error submit!!')
           return false

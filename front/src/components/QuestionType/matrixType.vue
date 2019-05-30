@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     async editQuestion () {
-      this.selectForm.display = false
       let res = await questionApi.updateByQuestionId(this.selectForm)
       if (res.code === 0) {
         commonFunc.showMessage('修改成功', 'success')
@@ -77,8 +76,6 @@ export default {
       }
     },
     async addQuestionRequest () {
-      this.selectForm.display = false
-      this.$emit('getSelectForm', this.selectForm)
       let newOptionsArr = []
       for (let i of this.selectForm.options) {
         newOptionsArr.push(i.optionContent)
@@ -98,6 +95,7 @@ export default {
       }
     },
     confirm (formName) {
+      debugger
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           if (this.selectForm.optionMethod === 'edit') {
@@ -105,6 +103,9 @@ export default {
           } else {
             await this.addQuestionRequest()
           }
+          debugger
+          this.selectForm.display = false
+          this.$emit('getSelectForm', this.selectForm)
         } else {
           console.log('error submit!!')
           return false

@@ -65,6 +65,7 @@ html, body{
 .container{
   width: 100%;
   height: 90%;
+  background: #efefef;
   /* margin-bottom: 0.1rem; */
   /* overflow: auto; */
 }

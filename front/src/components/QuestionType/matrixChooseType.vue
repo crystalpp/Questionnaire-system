@@ -241,6 +241,7 @@ export default {
       if (res.code === 0) {
         commonFunc.showMessage('删除成功', 'success')
       }
+      this.$emit('deleteQues', '')
     }
   }
 }

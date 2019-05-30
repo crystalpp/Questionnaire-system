@@ -122,6 +122,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .preiewContainer{
+  background: #EFEFEF;
   font-size: 16px;
   width: 100%;
   height: 104%;
