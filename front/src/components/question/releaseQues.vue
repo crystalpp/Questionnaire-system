@@ -50,8 +50,8 @@ export default {
   methods: {
     async search () {
       let res = await surverApi.search(this.surverId)
-      if (res.code ===0) {
-        if(res.data[0].surverQrnum !== null) {
+      if (res.code === 0) {
+        if (res.data[0].surverQrnum !== null) {
           this.releaseFlag = true
         }
       }
@@ -74,7 +74,7 @@ export default {
         QRNum: img
       }
       let res = await surverApi.updateQRNum(params)
-      if (res.code ===0) {
+      if (res.code === 0) {
         console.log(res.data)
       }
     },
