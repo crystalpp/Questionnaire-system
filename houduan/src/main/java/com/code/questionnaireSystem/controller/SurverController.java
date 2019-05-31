@@ -90,8 +90,8 @@ public class SurverController {
 
 	@GetMapping("/getQRimage")
 	public Result productcode(String url) {
-		String imagePath = QrCodeUtils.zxingCodeCreate(url, "E:/CODE/Questionnaire-system/front/static/img/QR/", 500,
-				"E:/CODE/Questionnaire-system/material/img/logo.jpg");
+		String imagePath = QrCodeUtils.zxingCodeCreate(url, "/home/www/Questionnaire-system/material/img/QR/", 500,
+				"/home/www/Questionnaire-system/material/img/logo.jpg");
 		if (imagePath != null) {
 			return Result.success(imagePath);
 		} else {
