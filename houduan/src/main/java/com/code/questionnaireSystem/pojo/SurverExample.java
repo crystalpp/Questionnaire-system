@@ -814,6 +814,76 @@ public class SurverExample {
             addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
+
+        public Criteria andSurverQrnumIsNull() {
+            addCriterion("surver_QRNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumIsNotNull() {
+            addCriterion("surver_QRNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumEqualTo(String value) {
+            addCriterion("surver_QRNum =", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumNotEqualTo(String value) {
+            addCriterion("surver_QRNum <>", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumGreaterThan(String value) {
+            addCriterion("surver_QRNum >", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumGreaterThanOrEqualTo(String value) {
+            addCriterion("surver_QRNum >=", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumLessThan(String value) {
+            addCriterion("surver_QRNum <", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumLessThanOrEqualTo(String value) {
+            addCriterion("surver_QRNum <=", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumLike(String value) {
+            addCriterion("surver_QRNum like", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumNotLike(String value) {
+            addCriterion("surver_QRNum not like", value, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumIn(List<String> values) {
+            addCriterion("surver_QRNum in", values, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumNotIn(List<String> values) {
+            addCriterion("surver_QRNum not in", values, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumBetween(String value1, String value2) {
+            addCriterion("surver_QRNum between", value1, value2, "surverQrnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSurverQrnumNotBetween(String value1, String value2) {
+            addCriterion("surver_QRNum not between", value1, value2, "surverQrnum");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

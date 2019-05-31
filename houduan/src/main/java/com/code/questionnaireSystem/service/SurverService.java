@@ -26,4 +26,6 @@ public interface SurverService {
 
 	Result creatByTemplate(String templateSurverId, String userId);
 
+	Result updateQRNum(String surverId, String qRNum);
+
 }

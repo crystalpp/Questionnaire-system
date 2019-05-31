@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.code.questionnaireSystem.mapper.ParticipateMapper;
+import com.code.questionnaireSystem.mapper.SurverMapper;
 import com.code.questionnaireSystem.pojo.Participate;
 import com.code.questionnaireSystem.pojo.ParticipateExample;
+import com.code.questionnaireSystem.pojo.Surver;
 import com.code.questionnaireSystem.service.ParticipateService;
 import com.code.questionnaireSystem.utils.GeoUtil;
 import com.code.questionnaireSystem.utils.IpUtils;
@@ -29,6 +31,8 @@ import eu.bitwalker.useragentutils.UserAgent;
 public class ParticipateServiceImpl implements ParticipateService {
 	@Autowired
 	private ParticipateMapper participateMapper;
+	@Autowired
+	private SurverMapper surverMapper;
 
 	@Override
 	public Result getDeviceType(HttpServletRequest request) {
@@ -64,8 +68,7 @@ public class ParticipateServiceImpl implements ParticipateService {
 		return Result.success(participates);
 	}
 
-	@Override
-	public Result addNewParticipate(String ip, String address, String device, String surverId) {
+	public Result addNew(String ip, String address, String device, String surverId) {
 		String id = UUID.randomUUID().toString().substring(0, 10);
 		Participate participate = new Participate();
 		participate.setParticipateId(id);
@@ -80,6 +83,53 @@ public class ParticipateServiceImpl implements ParticipateService {
 		} else {
 			return Result.success(id);
 		}
+	}
+
+	@Override
+	public Result addNewParticipate(String ip, String address, String device, String surverId, String participateId) {
+		// 查找出该问卷的所有填写者的信息
+		ParticipateExample participateExample = new ParticipateExample();
+		ParticipateExample.Criteria criteria = participateExample.createCriteria();
+		criteria.andParticipateSurveridEqualTo(surverId);
+		List<Participate> participateList = participateMapper.selectByExample(participateExample);
+		Surver surver = surverMapper.selectByPrimaryKey(surverId);
+		boolean ipFlag = false;
+		boolean participateFlag = false;
+		for (Participate participate : participateList) {
+			if (participate.getParticipateIp().equals(ip)) {
+				ipFlag = true;
+				break;
+			}
+		}
+		for (Participate participate : participateList) {
+			if (participate.getParticipateId().equals(participateId)) {
+				participateFlag = true;
+				break;
+			}
+		}
+		if (participateFlag) {
+			Participate participate1 = participateMapper.selectByPrimaryKey(participateId);
+			if (participate1.getParticipateEndtime() != null) {
+				if (surver.getSurverLimitip() == 1) {
+					if (ipFlag) {
+						return Result.success(ResultCode.FILLED);
+					} else {
+						Result result = addNew(ip, address, device, surverId);
+						return result;
+					}
+				} else {
+					Result result = addNew(ip, address, device, surverId);
+					return result;
+				}
+			} else {
+				// Result result = addNew(ip, address, device, surverId);
+				return Result.success(participateId);
+			}
+		} else {
+			Result result = addNew(ip, address, device, surverId);
+			return result;
+		}
+		// String id = ""
 	}
 
 	/**

@@ -26,6 +26,8 @@ public class Surver implements Serializable {
 
     private String userId;
 
+    private String surverQrnum;
+
     private static final long serialVersionUID = 1L;
 
     public String getSurverId() {
@@ -114,5 +116,13 @@ public class Surver implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
+    }
+
+    public String getSurverQrnum() {
+        return surverQrnum;
+    }
+
+    public void setSurverQrnum(String surverQrnum) {
+        this.surverQrnum = surverQrnum == null ? null : surverQrnum.trim();
     }
 }

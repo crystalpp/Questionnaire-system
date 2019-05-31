@@ -18,8 +18,8 @@ public class GeoUtil {
 
 	public static CityResponse getResponse(String ip) throws Exception {
 		String devFile = "E:/CODE/Questionnaire-system/material/GeoLite2-City.mmdb";
-		String prodFile = "/home/www/GeoLite2-City.mmdb";
-		File database = new File(prodFile);
+		// String prodFile = "/home/www/GeoLite2-City.mmdb";
+		File database = new File(devFile);
 		// 读取数据库内容
 		DatabaseReader reader = new DatabaseReader.Builder(database).build();
 		InetAddress ipAddress = InetAddress.getByName(ip);

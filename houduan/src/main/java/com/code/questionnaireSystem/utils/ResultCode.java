@@ -3,7 +3,7 @@ package com.code.questionnaireSystem.utils;
 public enum ResultCode {
 	SUCCESS(0, "成功"),
 
-	FAIL(1, "失败");
+	FAIL(1, "失败"), FILLED(2, "成功");
 	private Integer code;
 
 	private String message;

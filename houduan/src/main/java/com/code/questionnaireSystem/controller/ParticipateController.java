@@ -45,8 +45,8 @@ public class ParticipateController {
 	}
 
 	@PostMapping("/addNewParticipate")
-	public Result addNewParticipate(String ip, String address, String device, String surverId) {
-		return participateService.addNewParticipate(ip, address, device, surverId);
+	public Result addNewParticipate(String ip, String address, String device, String surverId, String participateId) {
+		return participateService.addNewParticipate(ip, address, device, surverId, participateId);
 	}
 
 	@PostMapping("/updateEndTime")

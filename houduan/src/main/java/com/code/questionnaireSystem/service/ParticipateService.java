@@ -14,7 +14,7 @@ public interface ParticipateService {
 
 	Result getAll(String surverId);
 
-	Result addNewParticipate(String ip, String address, String device, String surverId);
+	Result addNewParticipate(String ip, String address, String device, String surverId, String participateId);
 
 	Result updateEndTime(String participateId);
 

@@ -90,7 +90,8 @@ public class SurverController {
 
 	@GetMapping("/getQRimage")
 	public Result productcode(String url) {
-		String imagePath = QrCodeUtils.zxingCodeCreate(url, "/home/www/Questionnaire-system/material/img/QR/", 500,
+		String imagePath = QrCodeUtils.zxingCodeCreate(url,
+				"/home/www/Questionnaire-system/houduan/src/main/resources/static/QR/", 500,
 				"/home/www/Questionnaire-system/material/img/logo.jpg");
 		if (imagePath != null) {
 			return Result.success(imagePath);
@@ -147,5 +148,10 @@ public class SurverController {
 	@PostMapping("/creatByTemplate")
 	public Result creatByTemplate(String templateSurverId, String userId) {
 		return surverService.creatByTemplate(templateSurverId, userId);
+	}
+
+	@PostMapping("/updateQRNum")
+	public Result updateQRNum(String surverId, String QRNum) {
+		return surverService.updateQRNum(surverId, QRNum);
 	}
 }

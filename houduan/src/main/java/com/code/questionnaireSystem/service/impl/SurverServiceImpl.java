@@ -87,6 +87,7 @@ public class SurverServiceImpl implements SurverService {
 		// TODO Auto-generated method stub
 		SurverExample surverExample = new SurverExample();
 		SurverExample.Criteria criteria = surverExample.createCriteria();
+		surverExample.setOrderByClause("surver_creatTime DESC");
 		criteria.andUserIdEqualTo(userId);
 		List<Surver> survers = surverMapper.selectByExample(surverExample);
 		return Result.success(survers);
@@ -336,6 +337,19 @@ public class SurverServiceImpl implements SurverService {
 			}
 		}
 		return Result.success(surverId1);
+	}
+
+	@Override
+	public Result updateQRNum(String surverId, String QRNum) {
+		// TODO Auto-generated method stub
+		Surver surver = surverMapper.selectByPrimaryKey(surverId);
+		surver.setSurverQrnum(QRNum);
+		int num = surverMapper.updateByPrimaryKeySelective(surver);
+		if (num < 1) {
+			return Result.failure(ResultCode.FAIL);
+		} else {
+			return Result.success();
+		}
 	}
 
 }
