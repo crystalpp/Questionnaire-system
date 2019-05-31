@@ -76,7 +76,6 @@ export default {
           } else {
             await this.addQuestion()
           }
-          debugger
           this.selectFormdata.display = false
           this.$emit('getSelectForm', this.selectFormdata)
         } else {

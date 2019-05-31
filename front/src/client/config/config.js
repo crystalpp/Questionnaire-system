@@ -4,8 +4,8 @@
 
 const config = {
   APISERVER: {
-    host: 'http://localhost:8080'
-    // host: 'http://101.132.106.184:8080'
+    // host: 'http://localhost:8080'
+    host: 'http://101.132.106.184:8080'
   }
 }
 

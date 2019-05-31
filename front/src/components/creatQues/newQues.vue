@@ -241,7 +241,6 @@ export default {
       this.quesType = data.quesType
     },
     async getSelectForm (data) {
-      debugger
       this.selectForm = JSON.parse(JSON.stringify(data))
       await this.getSurverQuesions()
       // await this.getSurvers()

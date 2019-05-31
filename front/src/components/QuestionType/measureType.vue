@@ -75,7 +75,6 @@ export default {
           } else {
             await this.addQuestion()
           }
-          debugger
           this.selectForm.display = false
           this.$emit('getmeasureSelectform', this.selectForm)
         } else {

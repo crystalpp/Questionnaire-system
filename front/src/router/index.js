@@ -26,7 +26,10 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: index
+      component: index,
+      meta: {
+        title: '计算机学院学生调查系统'
+      }
     },
     {
       path: '/login',

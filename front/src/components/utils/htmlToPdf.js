@@ -7,7 +7,6 @@ export default{
       html2Canvas(document.querySelector('#pdfDom'), {
         allowTaint: true
       }).then(function (canvas) {
-        debugger
         let contentWidth = canvas.width
         let contentHeight = canvas.height
         let pageHeight = contentWidth / 592.28 * 841.89

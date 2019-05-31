@@ -4,7 +4,7 @@
       <div class="header">
         <!-- 下面三个为学院的介绍 -->
           <div> <a href="http://cs.cqut.edu.cn/xygk/xyjj.htm" target="_blank" class="aStyle">学院简介</a> </div>
-          <div><a href="https://github.com/crystalpp" target="_blank" class="aStyle">反馈意见</a></div>
+          <div><a href="https://github.com/crystalpp/Questionnaire-system/issues/new" target="_blank" class="aStyle">反馈意见</a></div>
           <div><a href="https://crystalpp.github.io/" target="_blank" class="aStyle">关于我</a> </div>
       </div>
       <div class="main-container">
@@ -20,7 +20,7 @@ export default {
   name: 'index',
   data () {
     return {
-      title: '计算机学院学生问卷调查系统'
+      title: '计算机学院学生调查系统'
     }
   },
   mounted () {
