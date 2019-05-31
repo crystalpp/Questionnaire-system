@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+
+import org.springframework.util.ResourceUtils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Binarizer;
@@ -41,6 +44,13 @@ public class QrCodeUtils {
 		IMAGE_TYPE.add("jpg");
 		IMAGE_TYPE.add("png");
 	}
+	/** 绝对路径 **/
+	private static String absolutePath = "";
+	/** 静态目录 **/
+	private static String staticDir = "static";
+
+	/** 文件存放的目录 **/
+	private static String fileDir = "/QR/";
 
 	/**
 	 * zxing方式生成二维码 注意： 1,文本生成二维码的方法独立出来,返回image流的形式,可以输出到页面
@@ -57,6 +67,10 @@ public class QrCodeUtils {
 	 *            logo的存放位置
 	 */
 	public static String zxingCodeCreate(String content, String path, Integer size, String logoPath) {
+		createDirIfNotExists();
+
+		String resultPath = absolutePath + staticDir + fileDir;
+
 		try {
 			// 图片类型
 			String imageType = "jpg";
@@ -65,9 +79,10 @@ public class QrCodeUtils {
 			// 获得随机数
 			Random random = new Random();
 			int imgId = random.nextInt(1000);
-			String imagePath = path + imgId + ".jpg";
+			String imagePath = fileDir + imgId + ".jpg";
 			// 生成二维码存放文件
-			File file = new File(imagePath);
+			// File file = new File(imagePath);
+			File file = new File(absolutePath, staticDir + imagePath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
@@ -76,6 +91,33 @@ public class QrCodeUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	/**
+	 * 创建文件夹路径
+	 */
+	private static void createDirIfNotExists() {
+		if (!absolutePath.isEmpty()) {
+			return;
+		}
+
+		// 获取跟目录
+		File file = null;
+		try {
+			file = new File(ResourceUtils.getURL("classpath:").getPath());
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("获取根目录失败，无法创建上传目录！");
+		}
+		if (!file.exists()) {
+			file = new File("");
+		}
+
+		absolutePath = file.getAbsolutePath();
+
+		File upload = new File(absolutePath, staticDir + fileDir);
+		if (!upload.exists()) {
+			upload.mkdirs();
 		}
 	}
 
