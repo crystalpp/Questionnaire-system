@@ -29,21 +29,33 @@ export default {
     return {
       linkUrl: 'http://101.132.106.184/#/fill/',
       surverId: '123',
-      imageUrl: ''
+      imageUrl: '',
+      releaseFlag: false
     }
   },
   async mounted () {
     this.surverId = this.$route.query.surverId
-    await this.getQRcode()
+    await this.search()
+    if (!this.releaseFlag) {
+      await this.getQRcode()
+    }
   },
-  async beforeRouteUpdate (to, from, next) {
-    await this.getQRcode()
-    next()
-    // next(async vm => {
-    //   await vm.getQRcode()
-    // })
-  },
+  // async beforeRouteUpdate (to, from, next) {
+  //   await this.getQRcode()
+  //   next()
+  //   // next(async vm => {
+  //   //   await vm.getQRcode()
+  //   // })
+  // },
   methods: {
+    async search () {
+      let res = await surverApi.search(this.surverId)
+      if (res.code ===0) {
+        if(res.data[0].surverQrnum !== null) {
+          this.releaseFlag = true
+        }
+      }
+    },
     async getQRcode () {
       // this.surverId = this.$route.query.surverId
       let params = {
@@ -51,8 +63,19 @@ export default {
       }
       let res = await surverApi.getQRcodeImage(params)
       if (res.code === 0) {
-        let url = '/static/img/QR/' + res.data
+        let url = 'http://101.132.106.184:8080/QR' + res.data
         this.imageUrl = url
+        await this.updateQR(res.data)
+      }
+    },
+    async updateQR (img) {
+      let params = {
+        surverId: this.surverId,
+        QRNum: img
+      }
+      let res = await surverApi.updateQRNum(params)
+      if (res.code ===0) {
+        console.log(res.data)
       }
     },
     // copyUrl () {

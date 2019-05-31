@@ -60,7 +60,8 @@ export default new Router({
       name: 'fill',
       component: fill,
       meta: {
-        title: '问卷填写'
+        title: '问卷填写',
+        keepAlive: true
       }
     },
     {

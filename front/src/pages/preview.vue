@@ -50,8 +50,9 @@ export default {
     }
   },
   async mounted () {
-    commonFunc.setLocalStorage('resultOrFill', 'fill')
-    commonFunc.setLocalStorage('fillOrCreat', 'creat')
+    commonFunc.setLocalStorage('fillOrPreview', 'preview') // 判断是填写界面还是预览界面，预览界面提交无效
+    commonFunc.setLocalStorage('resultOrFill', 'fill') // 判断是看结果还是填写界面看某个用户填的结果不需要提交两个字
+    commonFunc.setLocalStorage('fillOrCreat', 'creat') // 控制是否是填写界面或者是创建空白问卷 前者不需要footer
     document.getElementsByTagName('html')[0].style.fontSize = '100px'
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getSurvers()

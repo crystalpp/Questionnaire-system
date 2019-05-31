@@ -62,7 +62,7 @@
     <!-- 回到者所使用的操作系统，设备类型（使用柱状图） -->
     <div class="part2">
       <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="12">
           <div class="grid-content-part2 bg-purple">
             <!-- 浏览器类型 -->
             <div class="chart">
@@ -70,15 +70,14 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           <div class="grid-content-part2 bg-purple">
-            <!-- 操作系统类型 -->
             <div class="chart">
               <div id="operatingTypeChart" style="width:100%;height:3.5rem;"></div>
             </div>
           </div>
-        </el-col>
-         <el-col :span="8">
+        </el-col> -->
+         <el-col :span="12">
           <div class="grid-content-part2 bg-purple">
             <!-- 设备类型 -->
             <div class="chart">
@@ -128,9 +127,9 @@ export default {
         {value: 0, name: '其他'}
       ],
       deviceData: [
-        {value: 5, name: '计算机'},
-        {value: 5, name: '移动设备'},
-        {value: 0, name: '其他'}
+        // {value: 5, name: '计算机'},
+        // {value: 5, name: '移动设备'},
+        // {value: 0, name: '其他'}
       ],
       chinaData: chinaDataJSON.data,
       effectiveDataNum: 0, // 有效回收数据数量
@@ -148,6 +147,7 @@ export default {
     this.computeData()
     this.raderAreaData()
     this.randerPieData()
+    this.randerPieDataOther()
     this.initRangeData()
     this.drawChart()
   },
@@ -188,12 +188,43 @@ export default {
       return obj
     },
     /**
-     * 组装饼图所需要的数据
+     * 组装第二个饼图需要的数据
+     */
+    randerPieDataOther () {
+      let browers = []
+      for (let item of this.surverStaticData) {
+        if (item.participateEndtime !== null) {
+          browers.push(item.participateDevice)
+        }
+      }
+      let value = [0, 0]
+      for (let i of browers) {
+        if (i === 'CHROME_MOBILE') {
+          value[1] ++
+        } else {
+          value[0] ++
+        }
+      }
+      let part1 = {
+        name: '计算机',
+        value: value[0]
+      }
+      let part2 = {
+        name: '移动设备',
+        value: value[1]
+      }
+      this.deviceData.push(part1)
+      this.deviceData.push(part2)
+    },
+    /**
+     * 组装第一个饼图所需要的数据
      */
     randerPieData () {
       let browers = []
       for (let item of this.surverStaticData) {
-        browers.push(item.participateDevice)
+        if (item.participateEndtime !== null) {
+          browers.push(item.participateDevice)
+        }
       }
       let browersCount = this.countItemAndValue(browers)
       console.log(browersCount)
@@ -217,7 +248,9 @@ export default {
     raderAreaData () {
       let citys = []
       for (let item of this.surverStaticData) {
-        citys.push(item.participateArea)
+        if (item.participateEndtime !== null) {
+          citys.push(item.participateArea)
+        }
       }
       let citysCount = this.countItemAndValue(citys)
       console.log(citysCount)
@@ -314,7 +347,7 @@ export default {
       this.drawLineChart()
       this.drawMapChart(this.chinaData)
       this.drawPieChart('浏览器类型', 'browerSourceChart', this.browerLegendData, this.browerData)
-      this.drawPieChart('操作系统类型', 'operatingTypeChart', this.operateLegendData, this.operateData)
+      // this.drawPieChart('操作系统类型', 'operatingTypeChart', this.operateLegendData, this.operateData)
       this.drawPieChart('设备类型', 'deviceTypeChart', this.deviceLegendData, this.deviceData)
     },
     drawLineChart () {
@@ -349,7 +382,7 @@ export default {
         },
         visualMap: {
           min: 0,
-          max: this.surverStaticData.length,
+          max: this.effectiveDataNum,
           text: ['高', '低'],
           realtime: false,
           calculable: true,

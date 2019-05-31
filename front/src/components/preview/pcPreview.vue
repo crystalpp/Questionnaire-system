@@ -65,10 +65,12 @@ export default {
       measureAnswer: '',
       matrixRadioAnswer: '',
       matrixMultiAnswer: '',
-      resultOrFill: '' // 如果为查看问卷结果状态则不显示提交按钮
+      resultOrFill: '', // 如果为查看问卷结果状态则不显示提交按钮
+      fillOrPreview: '' // 判断是否为填写还是预览界面，如果是预览界面则不能提交数据到后台
     }
   },
   mounted () {
+    this.fillOrPreview = commonFunc.getLocalStorage('fillOrPreview')
     this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
     if (this.pcOrPhone === 'phone') {
       document.getElementsByTagName('html')[0].style.fontSize = '50px'
@@ -208,46 +210,51 @@ export default {
      * 点击提交，添加用户已经填写的数据，以及更新用户完成时间
      */
     async setAnswerData () {
-      let flag = this.judgeSubmit()
-      if (!flag) {
-        commonFunc.showMessage('问卷还没填写完成，不能提交', 'success')
-      } else {
-        let res = ''
-        for (let item of this.answers) {
-          if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
-            let optionIds = item.optionId.split(',')
-            for (let item1 of optionIds) {
-              if (item1 !== '') {
-                let params = {
-                  surverId: this.$route.params.id,
-                  questionId: item.questionId,
-                  subQuestionId: item.subQuestionId,
-                  optionId: item1,
-                  answerText: item.answerText,
-                  participateId: this.currentParticPateId
+      if (this.fillOrPreview === 'preview') {
+        commonFunc.showMessage('当前为预览状态，无法提交数据', 'success')
+      } else if (this.fillOrPreview === 'fill') {
+        let flag = this.judgeSubmit()
+        if (!flag) {
+          commonFunc.showMessage('问卷还没填写完成，不能提交', 'success')
+        } else {
+          // 先提交participate中的数据，再提交answer中的数据，防止
+          let res = ''
+          for (let item of this.answers) {
+            if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
+              let optionIds = item.optionId.split(',')
+              for (let item1 of optionIds) {
+                if (item1 !== '') {
+                  let params = {
+                    surverId: this.$route.params.id,
+                    questionId: item.questionId,
+                    subQuestionId: item.subQuestionId,
+                    optionId: item1,
+                    answerText: item.answerText,
+                    participateId: this.currentParticPateId
+                  }
+                  res = await answerApi.add(params)
                 }
-                res = await answerApi.add(params)
               }
+            } else {
+              let params = {
+                surverId: this.$route.params.id,
+                questionId: item.questionId,
+                subQuestionId: item.subQuestionId,
+                optionId: item.optionId,
+                answerText: item.answerText,
+                participateId: this.currentParticPateId
+              }
+              res = await answerApi.add(params)
             }
-          } else {
-            let params = {
-              surverId: this.$route.params.id,
-              questionId: item.questionId,
-              subQuestionId: item.subQuestionId,
-              optionId: item.optionId,
-              answerText: item.answerText,
-              participateId: this.currentParticPateId
+            if (res.code === 0) {
+              console.log(res.data)
             }
-            res = await answerApi.add(params)
           }
-          if (res.code === 0) {
-            console.log(res.data)
-          }
+          await this.updateEndTime()
+          await this.updateRecoverNum()
+          this.$router.push({name: 'thank'})
+          console.log(this.answers)
         }
-        await this.updateEndTime()
-        await this.updateRecoverNum()
-        this.$router.push({name: 'thank'})
-        console.log(this.answers)
       }
     },
     // 更新问卷的回收数量

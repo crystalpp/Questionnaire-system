@@ -79,6 +79,11 @@ const surverApi = {
     let url = config.APISERVER.host + '/surver/creatByTemplate'
     let res = await requestService.post(url, params)
     return res
+  },
+  async updateQRNum (params) {
+    let url = config.APISERVER.host + '/surver/updateQRNum'
+    let res = await requestService.post(url, params)
+    return res
   }
 }
 

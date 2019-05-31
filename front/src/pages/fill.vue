@@ -34,60 +34,59 @@ export default {
     }
   },
   async mounted () {
+    commonFunc.setLocalStorage('fillOrPreview', 'fill') // 判断是填写界面还是预览界面，预览界面提交无效
     commonFunc.setLocalStorage('resultOrFill', 'fill')
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
     commonFunc.setLocalStorage('editOrPreview', 'preview')
     await this.getIp()
     await this.getAddress()
     await this.getDeviceType()
-    await this.getAll()
-    if (!this.ipFlag) {
-      await this.getSurvers()
-      if (this.fillEndTimeFlag) {
-        this.$router.push({name: 'error'})
-      } else {
-        await this.getSurverQuesions()
-        await this.addNewParticipate()
-      }
-    } else {
-      // commonFunc.showMessage('你已经填写过该问卷，请勿重新填写', 'error')
-      // await this.addNewParticipate()
-      // await this.getSurvers()
-      // await this.getSurverQuesions()
+    // await this.getAll()
+    await this.getSurvers()
+    if (this.fillEndTimeFlag) {
       this.$router.push({name: 'error'})
+    } else {
+      await this.getSurverQuesions()
+      await this.addNewParticipate()
     }
+    // this.$router.push({name: 'error'})
   },
   methods: {
-    isLimitIp (data) {
-      if (data.length !== 0) {
-        for (let item of data) {
-          if (item.participateIp === this.participatIp) {
-            this.ipFlag = true
-            return
-          }
-        }
-      }
-    },
-    async getAll () {
-      let params = {
-        surverId: this.$route.params.id
-      }
-      let res = await participatenApi.getAll(params)
-      if (res.code === 0) {
-        console.log(res.data)
-        this.isLimitIp(res.data)
-      }
-    },
+    // isLimitIp (data) {
+    //   if (data.length !== 0) {
+    //     for (let item of data) {
+    //       if (item.participateIp === this.participatIp) {
+    //         this.ipFlag = true
+    //         return
+    //       }
+    //     }
+    //   }
+    // },
+    // async getAll () {
+    //   let params = {
+    //     surverId: this.$route.params.id
+    //   }
+    //   let res = await participatenApi.getAll(params)
+    //   if (res.code === 0) {
+    //     console.log(res.data)
+    //     this.isLimitIp(res.data)
+    //   }
+    // },
     async addNewParticipate () {
       let params = {
         ip: this.participatIp,
         address: this.particiAddress,
         device: this.particiDevice,
-        surverId: this.$route.params.id
+        surverId: this.$route.params.id,
+        participateId: commonFunc.getLocalStorage('particpateId')
       }
       let res = await participatenApi.addNewParticipate(params)
       if (res.code === 0) {
         this.currentParticPateId = res.data
+        commonFunc.setLocalStorage('particpateId', this.currentParticPateId)
+        if (res.data === 'FILLED') {
+          this.$router.push({name: 'error'})
+        }
       }
     },
     async getAddress () {

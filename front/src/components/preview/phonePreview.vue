@@ -63,6 +63,7 @@ export default {
   },
   methods: {
     setAnswerData () {
+      commonFunc.showMessage('当前为预览状态，无法提交数据', 'success')
     }
   }
 }
