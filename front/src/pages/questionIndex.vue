@@ -131,7 +131,11 @@ export default {
         let surverId = this.$route.query.surverId
         let res = await surverApi.search(surverId)
         if (res.code === 0) {
-          this.releaseLimitForm.endTime = new Date(res.data[0].surverEndtime)
+          if (res.data[0].surverEndtime !== null) {
+            this.releaseLimitForm.endTime = new Date(res.data[0].surverEndtime)
+          } else {
+            this.releaseLimitForm.endTime = ''
+          }
           this.surverRecoverNum = res.data[0].surverRecovernum
           this.surverEndTime = res.data[0].surverEndtime
           if (res.data[0].surverTitle === '问卷标题') {

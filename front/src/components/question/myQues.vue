@@ -270,10 +270,8 @@ export default {
       } else {
         this.releaseLimitForm.endTime = ''
       }
-      // if (data.surverEndtime !== null) {
-      //   commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
-      // } else {
       this.dialogReleaseVisible = true
+      commonFunc.setLocalStorage('submenuActiveIndex', 'release')
       // }
     },
     async confirmChoose () {

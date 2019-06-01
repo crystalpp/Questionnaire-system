@@ -34,19 +34,13 @@ export default {
     }
   },
   async mounted () {
+    this.imageUrl = commonFunc.getLocalStorage('currentQR')
     this.surverId = this.$route.query.surverId
     await this.search()
     if (!this.releaseFlag) {
       await this.getQRcode()
     }
   },
-  // async beforeRouteUpdate (to, from, next) {
-  //   await this.getQRcode()
-  //   next()
-  //   // next(async vm => {
-  //   //   await vm.getQRcode()
-  //   // })
-  // },
   methods: {
     async search () {
       let res = await surverApi.search(this.surverId)
@@ -65,6 +59,7 @@ export default {
       if (res.code === 0) {
         let url = 'http://101.132.106.184:8080/QR/' + res.data
         this.imageUrl = url
+        commonFunc.setLocalStorage('currentQR', url)
         await this.updateQR(res.data)
       }
     },
