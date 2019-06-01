@@ -27,7 +27,7 @@
         </div>
       </div>
        <div class="submit" v-if="resultOrFill === 'fill'">
-        <el-button type="primary" @click="setAnswerData">提交</el-button>
+        <el-button type="primary" @click="setAnswerData" style="width:1.5rem;">提交</el-button>
       </div>
     </div>
    <!-- <div class="footer">

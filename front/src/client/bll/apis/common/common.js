@@ -94,11 +94,11 @@ const commonFunc = {
     return window.localStorage.removeItem(key)
   },
   computedTime (timeDiff) {
-    var hour = Math.floor(timeDiff / 3600000)
+    var hour = (Math.floor(timeDiff / 3600000))
     timeDiff = timeDiff % 3600000
-    var minute = Math.floor(timeDiff / 60000)
+    var minute = (Math.floor(timeDiff / 60000)).toFixed(0)
     timeDiff = timeDiff % 60000
-    var second = timeDiff / 1000
+    var second = (timeDiff / 1000).toFixed(1)
     if (hour === 0) {
       return minute + '分' + second + '秒'
     } else if (minute === 0) {

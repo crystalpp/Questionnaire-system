@@ -254,7 +254,7 @@ export default {
         commonFunc.setLocalStorage('contentClass', 'ques-content')
         commonFunc.setLocalStorage('showQuesStep', true)
         commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
-        commonFunc.setLocalStorage('submenuActiveIndex', 'realse')
+        commonFunc.setLocalStorage('submenuActiveIndex', 'release')
         this.dialogReleaseVisible = false
         this.$router.push({name: 'release', query: {surverId: this.currentSurverInfo.surverId}})
       }
@@ -271,7 +271,7 @@ export default {
         this.releaseLimitForm.endTime = ''
       }
       this.dialogReleaseVisible = true
-      commonFunc.setLocalStorage('submenuActiveIndex', 'release')
+      // commonFunc.setLocalStorage('submenuActiveIndex', 'release')
       // }
     },
     async confirmChoose () {

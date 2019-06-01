@@ -14,11 +14,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .thank-contanier{
- width: 100%;
- height: 100%;
+  background: #ffffff;
+  width: 100%;
+  height: 100%;
  .page-end-content {
    margin: 0 auto;
-    width: 5rem;
+    width: 3rem;
     height: 4rem;
     display: flex;
     justify-content: center;
