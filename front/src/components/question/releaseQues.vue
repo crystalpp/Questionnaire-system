@@ -63,7 +63,7 @@ export default {
       }
       let res = await surverApi.getQRcodeImage(params)
       if (res.code === 0) {
-        let url = 'http://101.132.106.184:8080/QR' + res.data
+        let url = 'http://101.132.106.184:8080/QR/' + res.data
         this.imageUrl = url
         await this.updateQR(res.data)
       }

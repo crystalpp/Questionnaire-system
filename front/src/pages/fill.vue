@@ -44,7 +44,7 @@ export default {
     // await this.getAll()
     await this.getSurvers()
     if (this.fillEndTimeFlag) {
-      this.$router.push({name: 'error'})
+      this.$router.push({name: 'error', params: {type: 'timeout'}})
     } else {
       await this.getSurverQuesions()
       await this.addNewParticipate()
@@ -85,7 +85,7 @@ export default {
         this.currentParticPateId = res.data
         commonFunc.setLocalStorage('particpateId', this.currentParticPateId)
         if (res.data === 'FILLED') {
-          this.$router.push({name: 'error'})
+          this.$router.push({name: 'error', params: {type: 'filled'}})
         }
       }
     },

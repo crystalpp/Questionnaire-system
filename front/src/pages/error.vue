@@ -5,11 +5,20 @@
       <img src="../assets/img/error.jpg" alt="" srcset="">
     </div>
      <!-- <p>问卷到此结束，感谢你的参与 !</p> -->
-     <p>您已经填写过该问卷，不能重复填写!</p>
+     <p v-if="type === 'filled'">您已经填写过该问卷，不能重复填写!</p>
+     <p v-if="type === 'timeout'">该问卷已经失效，不能再填写！</p>
   </div>
 </template>
 <script>
 export default {
+  data () {
+    return {
+      type: ''
+    }
+  },
+  mounted () {
+    this.type = this.$route.params.type
+  }
 }
 </script>
 <style lang="scss" scoped>

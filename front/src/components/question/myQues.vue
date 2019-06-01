@@ -32,7 +32,7 @@
               <div :class="(item.surverPulishstarttime)==='已发布'?'card-status':'card-status-notPublish'">{{item.surverPulishstarttime}}</div>
             </div>
             <div class="card-footer-Option" v-show="show === 'option' && indexitem === index ">
-              <div class="item" @click="editSurver(item.surverId)"><i class="el-icon-edit-outline"></i><br/>编辑</div>
+              <div class="item" @click="editSurver(item)"><i class="el-icon-edit-outline"></i><br/>编辑</div>
               <div class="item"  @click="realse(item)"><i class="el-icon-upload"></i><br/>发布</div>
               <div class="item" @click="preview(item)"><i class="el-icon-view"></i><br/>预览</div>
               <div class="item" @click="staticData(item)"><i class="el-icon-document"></i><br/>数据</div>
@@ -83,7 +83,7 @@
           label="操作"
           width="300">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="editSurver(scope.row.surverId)">编辑</el-button>
+            <el-button type="text" size="small" @click="editSurver(scope.row)">编辑</el-button>
             <el-button type="text" size="small" @click="realse(scope.row)">发布</el-button>
             <el-button  type="text" size="small" @click="preview(scope.row)">预览</el-button>
             <el-button  type="text" size="small" @click="staticData(scope.row)">数据</el-button>
@@ -250,6 +250,11 @@ export default {
       }
       let res = await surverApi.updateEndTime(params)
       if (res.code === 0) {
+        commonFunc.setLocalStorage('createQuesType', 'newQues')
+        commonFunc.setLocalStorage('contentClass', 'ques-content')
+        commonFunc.setLocalStorage('showQuesStep', true)
+        commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+        commonFunc.setLocalStorage('submenuActiveIndex', 'realse')
         this.dialogReleaseVisible = false
         this.$router.push({name: 'release', query: {surverId: this.currentSurverInfo.surverId}})
       }
@@ -261,10 +266,15 @@ export default {
     realse (data) {
       this.currentSurverInfo = data
       if (data.surverEndtime !== null) {
-        commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
+        this.releaseLimitForm.endTime = new Date(data.surverEndtime)
       } else {
-        this.dialogReleaseVisible = true
+        this.releaseLimitForm.endTime = ''
       }
+      // if (data.surverEndtime !== null) {
+      //   commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
+      // } else {
+      this.dialogReleaseVisible = true
+      // }
     },
     async confirmChoose () {
       if (this.currentSurverOption === 'edit') {
@@ -375,13 +385,17 @@ export default {
     /**
      * 根据问卷id修改问卷
      */
-    editSurver (id) {
-      commonFunc.setLocalStorage('createQuesType', 'newQues')
-      commonFunc.setLocalStorage('contentClass', 'ques-content')
-      commonFunc.setLocalStorage('showQuesStep', true)
-      commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
-      commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
-      this.$router.push({name: 'edit', query: {surverId: id}})
+    editSurver (item) {
+      if (item.surverEndtime === null) {
+        commonFunc.setLocalStorage('createQuesType', 'newQues')
+        commonFunc.setLocalStorage('contentClass', 'ques-content')
+        commonFunc.setLocalStorage('showQuesStep', true)
+        commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+        commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+        this.$router.push({name: 'edit', query: {surverId: item.surverId}})
+      } else {
+        commonFunc.showMessage('该问卷已经发布，现在进行题目删改可能会影响已收集的数据', 'error')
+      }
     },
     async getSurvers () {
       let userId = JSON.parse(commonFunc.getLocalStorage('userInfo')).userId

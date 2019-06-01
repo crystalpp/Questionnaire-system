@@ -94,7 +94,8 @@ export default {
         disabledDate (time) {
           return time.getTime() < Date.now()  // 这里就是设置当天前的日期不能被点击
         }
-      }
+      },
+      lastSubIndex: '' // 上一次点击的二级标题的下标
     }
   },
   computed: {
@@ -130,6 +131,7 @@ export default {
         let surverId = this.$route.query.surverId
         let res = await surverApi.search(surverId)
         if (res.code === 0) {
+          this.releaseLimitForm.endTime = new Date(res.data[0].surverEndtime)
           this.surverRecoverNum = res.data[0].surverRecovernum
           this.surverEndTime = res.data[0].surverEndtime
           if (res.data[0].surverTitle === '问卷标题') {
@@ -178,28 +180,39 @@ export default {
       this.menuActiveIndex = 'creat'
     },
     handleSelectQues (key) {
-      commonFunc.setLocalStorage('submenuActiveIndex', key)
+      // commonFunc.setLocalStorage('submenuActiveIndex', key)
       commonFunc.setLocalStorage('showQuesStep', true)
       // this.$store.commit('set_showQuesStep', true)
       this.contentClass = 'ques-content'
       if (key === 'release') {
-        if (this.surverEndTime !== null) {
-          commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
-          commonFunc.setLocalStorage('submenuActiveIndex', 'statistics')
-          this.submenuActiveIndex = 'statistics'
-        } else {
-          this.dialogReleaseVisible = true
-          this.$router.push({name: key, query: this.$route.query})
-        }
+        // if (this.surverEndTime !== null) {
+        //   commonFunc.showMessage('此问卷已经发布过，不能进行二次发布', 'error')
+        //   commonFunc.setLocalStorage('submenuActiveIndex', 'statistics')
+        //   this.submenuActiveIndex = 'statistics'
+        // } else {
+        commonFunc.setLocalStorage('submenuActiveIndex', key)
+        this.dialogReleaseVisible = true
+        this.$router.push({name: key, query: this.$route.query})
+        // }
       } else if (key === 'statistics') {
         if (this.surverRecoverNum === 0) {
           commonFunc.showMessage('当前问卷暂无数据，请稍后再试', 'success')
+          commonFunc.setLocalStorage('submenuActiveIndex', this.lastSubIndex)
         } else {
+          commonFunc.setLocalStorage('submenuActiveIndex', key)
           this.$router.push({name: key, query: this.$route.query})
         }
-      } else {
-        this.$router.push({name: key, query: this.$route.query})
+      } else if (key === 'creat') {
+        if (this.surverEndTime !== null) {
+          commonFunc.showMessage('该问卷已经发布，现在进行题目删改可能会影响已收集的数据', 'error')
+          commonFunc.setLocalStorage('submenuActiveIndex', this.lastSubIndex)
+          this.submenuActiveIndex = this.lastSubIndex
+        } else {
+          commonFunc.setLocalStorage('submenuActiveIndex', key)
+          this.$router.push({name: key, query: this.$route.query})
+        }
       }
+      this.lastSubIndex = key
     },
     handleSelect (key) {
       if (key === 'show') {
