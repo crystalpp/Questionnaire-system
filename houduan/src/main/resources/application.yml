@@ -5,7 +5,8 @@ spring:
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
-    resources: static-locations: classpath:static/,file:static/
+   resources:
+    static-locations: classpath:static/,file:static/
     
 
 mybatis:
