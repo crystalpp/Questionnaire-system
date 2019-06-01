@@ -86,8 +86,9 @@ public class ParticipateServiceImpl implements ParticipateService {
 	}
 
 	@Override
-	public Result addNewParticipate(String ip, String address, String device, String surverId, String participateId) {
+	public Result addNewParticipate(String ip1, String address, String device, String surverId, String participateId) {
 		// 查找出该问卷的所有填写者的信息
+		String ip = "117.136.30.118";
 		ParticipateExample participateExample = new ParticipateExample();
 		ParticipateExample.Criteria criteria = participateExample.createCriteria();
 		criteria.andParticipateSurveridEqualTo(surverId);
@@ -187,5 +188,73 @@ public class ParticipateServiceImpl implements ParticipateService {
 		// 得到分页中的person条目对象
 		// List<Participate> pageList = participatePageInfo.getList();
 		return Result.success(participatePageInfo);
+	}
+
+	@Override
+	public Result add(String ip, String device, String area, String surverId, String startTime, String endTime)
+			throws ParseException {
+		ParticipateExample participateExample = new ParticipateExample();
+		ParticipateExample.Criteria criteria = participateExample.createCriteria();
+		criteria.andParticipateSurveridEqualTo(surverId);
+		List<Participate> participateList = participateMapper.selectByExample(participateExample);
+		Surver surver = surverMapper.selectByPrimaryKey(surverId);
+		boolean ipFlag = false;
+		for (Participate participate : participateList) {
+			if (participate.getParticipateIp().equals(ip)) {
+				ipFlag = true;
+				break;
+			}
+		}
+		if (surver.getSurverLimitip() == 1) {
+			if (ipFlag) {
+				return Result.success(ResultCode.FILLED);
+			} else {
+				Participate participate = new Participate();
+				String id = UUID.randomUUID().toString().substring(0, 10);
+				participate.setParticipateId(id);
+				participate.setParticipateIp(ip);
+				participate.setParticipateDevice(device);
+				participate.setParticipateArea(area);
+				participate.setParticipateSurverid(surverId);
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Long StartTime = new Long(startTime);
+				String startD = format.format(StartTime);
+				Date StartDate = format.parse(startD);
+				Long endTimes = new Long(endTime);
+				String endD = format.format(endTimes);
+				Date endDate = format.parse(endD);
+				participate.setParticipateStarttime(StartDate);
+				participate.setParticipateEndtime(endDate);
+				int num = participateMapper.insertSelective(participate);
+				if (num < 1) {
+					return Result.failure(ResultCode.FAIL);
+				} else {
+					return Result.success(id);
+				}
+			}
+		} else {
+			Participate participate = new Participate();
+			String id = UUID.randomUUID().toString().substring(0, 10);
+			participate.setParticipateId(id);
+			participate.setParticipateIp(ip);
+			participate.setParticipateDevice(device);
+			participate.setParticipateArea(area);
+			participate.setParticipateSurverid(surverId);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Long StartTime = new Long(startTime);
+			String startD = format.format(StartTime);
+			Date StartDate = format.parse(startD);
+			Long endTimes = new Long(endTime);
+			String endD = format.format(endTimes);
+			Date endDate = format.parse(endD);
+			participate.setParticipateStarttime(StartDate);
+			participate.setParticipateEndtime(endDate);
+			int num = participateMapper.insertSelective(participate);
+			if (num < 1) {
+				return Result.failure(ResultCode.FAIL);
+			} else {
+				return Result.success(id);
+			}
+		}
 	}
 }

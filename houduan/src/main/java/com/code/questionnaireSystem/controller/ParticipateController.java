@@ -1,5 +1,7 @@
 package com.code.questionnaireSystem.controller;
 
+import java.text.ParseException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,12 @@ public class ParticipateController {
 	@GetMapping("getAllByPage")
 	public Result getAllByPage(String surverId, Integer pageNum, Integer pageSize) {
 		return participateService.getAllByPage(surverId, pageNum, pageSize);
+	}
+
+	@PostMapping("add")
+	public Result add(String ip, String device, String area, String surverId, String startTime, String endTime)
+			throws ParseException {
+		return participateService.add(ip, device, area, surverId, startTime, endTime);
 	}
 
 }
