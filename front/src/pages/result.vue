@@ -1,6 +1,9 @@
 <template>
   <div class="result-container">
-     <pc-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId&&flag"></pc-preview>
+    <div @click="back()" class="back"><el-button plain type="primary" size="small" >退出</el-button></div>
+    <div class="result-body">
+      <pc-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId&&flag"></pc-preview>
+     </div>
   </div>
 </template>
 <script>
@@ -42,6 +45,10 @@ export default {
     await this.getAnswersByParticipateId()
   },
   methods: {
+    back () {
+      commonFunc.setLocalStorage('staticMenuIndex', 'answerDetail')
+      this.$router.go(-1)
+    },
     /**
      * 将每一个问题和自己的答案组装起来
      */
@@ -140,8 +147,22 @@ export default {
 .result-container {
   // background: #000000;
   width: 100%;
-  height: 100%;
-  cursor: not-allowed;
-  pointer-events: none;
+  // height: 100%;
+  
+  .result-body{
+    cursor: not-allowed;
+    pointer-events: none;
+    width: 100%;
+    // height: 86%;
+    // overflow: auto
+        padding-bottom: 0.2rem;
+    background: #efefef;
+  }
+  .back{
+    height: 7%;
+    width: 90%;
+    padding-top: 0.2rem;
+    text-align: right;
+  }
 }
 </style>

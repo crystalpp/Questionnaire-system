@@ -1,6 +1,6 @@
 <template>
   <div class="fill-container">
-     <pc-preview :survey='survey' :pcOrPhone ='pcOrPhone' :currentParticPateId='currentParticPateId' v-if="currentParticPateId" ></pc-preview>
+     <pc-preview :survey='survey' :pcOrPhone ='pcOrPhone' :participatInfo='participatInfo'></pc-preview>
      <!-- <phone-preview :survey='survey' :currentParticPateId='currentParticPateId' v-if="currentParticPateId && pcOrPhone === 'phone'"></phone-preview> -->
   </div>
 </template>
@@ -30,10 +30,20 @@ export default {
       fillEndTimeFlag: false,
       partcipateInfo: '',
       currentParticPateId: '',
-      pcOrPhone: 'phone'
+      pcOrPhone: 'phone',
+      participatInfo: {
+        ip: '',
+        device: '',
+        area: '',
+        startTime: '',
+        endTime: '',
+        surverId: ''
+      }
     }
   },
   async mounted () {
+    this.participatInfo.surverId = this.$route.params.id
+    this.participatInfo.startTime = new Date().getTime()
     commonFunc.setLocalStorage('fillOrPreview', 'fill') // 判断是填写界面还是预览界面，预览界面提交无效
     commonFunc.setLocalStorage('resultOrFill', 'fill')
     commonFunc.setLocalStorage('fillOrCreat', 'fill')
@@ -47,7 +57,7 @@ export default {
       this.$router.push({name: 'error', params: {type: 'timeout'}})
     } else {
       await this.getSurverQuesions()
-      await this.addNewParticipate()
+      // await this.addNewParticipate()
     }
     // this.$router.push({name: 'error'})
   },
@@ -92,6 +102,7 @@ export default {
     async getAddress () {
       let res = await participatenApi.getAddress()
       if (res.code === 0) {
+        this.participatInfo.area = res.data
         this.particiAddress = res.data
         console.log(this.particiAddress)
       }
@@ -99,6 +110,7 @@ export default {
     async getIp () {
       let res = await participatenApi.getIp()
       if (res.code === 0) {
+        this.participatInfo.ip = res.data
         this.participatIp = res.data
         console.log(this.participatIp)
       }
@@ -106,6 +118,7 @@ export default {
     async getDeviceType () {
       let res = await participatenApi.getDeviceType()
       if (res.code === 0) {
+        this.participatInfo.device = res.data
         this.particiDevice = res.data
         if (this.particiDevice === 'MOBILE_SAFARI') {
           this.pcOrPhone = 'phone'

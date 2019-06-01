@@ -1,6 +1,7 @@
 // 用方法和变量封装
 // import Vue from 'vue's
-// import { Toast, Indicator } from 'mint-ui'
+// import { Toast, Indicator } from 'mint-ui''
+// import { Loading } from 'element-ui';
 import { Message } from 'element-ui'
 const commonFunc = {
   // 全局统一控制打印log日志--部署版本前请务必注释打印代码
@@ -44,6 +45,7 @@ const commonFunc = {
   },
   // 显示 loading
   showLoading () {
+    // let loadingInstance1 = Loading.service({ fullscreen: true })
     // Loading.open()
   },
   // 显示提示

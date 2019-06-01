@@ -41,6 +41,11 @@ const participatenApi = {
     let url = config.APISERVER.host + '/participate/getAllByPage'
     let res = await requestService.get(url, params)
     return res
+  },
+  async add (params) {
+    let url = config.APISERVER.host + '/participate/add'
+    let res = await requestService.post(url, params)
+    return res
   }
 }
 export default participatenApi

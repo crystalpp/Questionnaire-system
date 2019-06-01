@@ -4,7 +4,7 @@
       <el-aside width="1.5rem">
         <el-menu
           @select="handleSelect"
-          default-active="source"
+          :default-active="staticMenuIndex"
           class="el-menu-vertical-demo">
           <el-menu-item index="source" class="aside-item">
             <i class="el-icon-service"></i>
@@ -33,11 +33,13 @@ import chart from '../statistics/chart'
 import answerDetail from '../statistics/answerDetail'
 import source from '../statistics/source'
 import participatenApi from '../../client/bll/apis/participate'
+import commonFunc from '../../client/bll/apis/common/common'
 export default {
   data () {
     return {
       currentPage: 'source',
-      surverStaticData: ''
+      surverStaticData: '',
+      staticMenuIndex: 'source'
     }
   },
   components: {
@@ -46,6 +48,8 @@ export default {
     'source-data': source
   },
   async mounted () {
+    this.currentPage = commonFunc.getLocalStorage('staticMenuIndex')
+    this.staticMenuIndex = commonFunc.getLocalStorage('staticMenuIndex')
     await this.getAll()
   },
   methods: {
@@ -61,6 +65,7 @@ export default {
     },
     handleSelect (key) {
       this.currentPage = key
+      commonFunc.setLocalStorage('staticMenuIndex', key)
       // this.$router.push({name: key})
     }
   }

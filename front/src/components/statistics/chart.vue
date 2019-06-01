@@ -1,5 +1,5 @@
 <template>
-  <div class="answerChart">
+  <div class="answerChart" id="answerChartId">
     <div class="oneQues-answerText" v-for="(item) in answerData.type1" :key="item.questionId">
        <div class="titleArea">
         {{item.questionName}}
@@ -110,57 +110,64 @@ import answerApi from '../../client/bll/apis/answer'
 export default {
   data () {
     return {
-      answerTextData: [
-        {
-          id: 1,
-          text: '非常满意'
-        },
-        {
-          id: 2,
-          text: '不满意'
-        }
-      ],
-      answerMeasureData: [
-        {
-          id: 1,
-          score: 5,
-          num: 2
-        },
-        {
-          id: 2,
-          score: 2,
-          num: 1
-        }
-      ],
-      answers: [
-        {
-          title: '你对所学的专业是否满意',
-          quesionData: [
-            {
-              name: '非常满意',
-              value: 8
-            },
-            {
-              name: '一般',
-              value: 2
-            },
-            {
-              name: '非常不满意',
-              value: 0
-            }
-          ]
-        }
-      ],
+      // answerTextData: [
+      //   {
+      //     id: 1,
+      //     text: '非常满意'
+      //   },
+      //   {
+      //     id: 2,
+      //     text: '不满意'
+      //   }
+      // ],
+      // answerMeasureData: [
+      //   {
+      //     id: 1,
+      //     score: 5,
+      //     num: 2
+      //   },
+      //   {
+      //     id: 2,
+      //     score: 2,
+      //     num: 1
+      //   }
+      // ],
+      // answers: [
+      //   {
+      //     title: '你对所学的专业是否满意',
+      //     quesionData: [
+      //       {
+      //         name: '非常满意',
+      //         value: 8
+      //       },
+      //       {
+      //         name: '一般',
+      //         value: 2
+      //       },
+      //       {
+      //         name: '非常不满意',
+      //         value: 0
+      //       }
+      //     ]
+      //   }
+      // ],
       currentChart: 'bar',
       survey: {
         title: '',
         descr: ''
       },
-      surverQuestionsData: [],
-      answerData: []
+      // surverQuestionsData: [],
+      answerData: [],
+      loadingInstance: ''
     }
   },
   async mounted () {
+    this.loadingInstance = this.$loading({
+      fullscreen: false,
+      text: '拼命加载中',
+      background: 'rgba(0, 0, 0, 0.8)',
+      spinner: 'el-icon-loading'
+    })
     await this.staticAnswerText()
     this.drawChart()
   },
@@ -181,6 +188,9 @@ export default {
       let res = await answerApi.staticAnswerText(params)
       if (res.code === 0) {
         this.answerData = res.data
+        this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+          this.loadingInstance.close()
+        })
         console.log(this.answerData)
       }
     },

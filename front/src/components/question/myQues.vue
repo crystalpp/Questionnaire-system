@@ -179,7 +179,7 @@ export default {
       },
       releaseLimitForm: {
         endTime: '',
-        isLimitedIP: ''
+        isLimitedIP: true
       },
       surverTypeVisible: false,
       inputVisible: false,

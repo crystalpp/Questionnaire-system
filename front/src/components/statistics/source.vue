@@ -3,21 +3,21 @@
     <!-- 数据总览 -->
     <div class="dataScreening">
       <div class="item">
-        <p class="title">有效回收量</p>
+        <p class="title">回收量</p>
         <p class="num">{{effectiveDataNum}}</p>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <p class="title">浏览量</p>
         <p class="num">{{browseDataNum}}</p>
-      </div>
+      </div> -->
       <div class="item">
         <p class="title">平均答题时间</p>
         <p class="num">{{averageAnswerTime}}</p>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <p class="title">回收率</p>
         <p class="num">{{(effectiveDataNum/browseDataNum*100).toFixed(1)}}%</p>
-      </div>
+      </div> -->
     </div>
     <!-- 每日回答情况（散点图）和回答者地域（中国地图）分布 -->
     <div class="part1">
@@ -354,6 +354,10 @@ export default {
       var answerLineChart = this.$echarts.init(document.getElementById('answerLineChart'))
       var option = {
         color: ['#0078C8'],
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b} : {c} '
+        },
         xAxis: {
           type: 'category',
           data: this.lineChartData.times
@@ -365,6 +369,9 @@ export default {
         series: [{
           data: this.lineChartData.values,
           type: 'line'
+          // label: {
+          //   show: true
+          // }
         }]
       }
       answerLineChart.setOption(option)

@@ -46,7 +46,7 @@ import answerApi from '../../client/bll/apis/answer'
 import commonFunc from '../../client/bll/apis/common/common'
 import surverApi from '../../client/bll/apis/surver'
 export default {
-  props: ['survey', 'currentParticPateId', 'answerData', 'pcOrPhone'],
+  props: ['survey', 'participatInfo', 'answerData', 'pcOrPhone'],
   components: {
     'radio-choose-type': radioType,
     'multiselect-choose-type': multiselect,
@@ -57,6 +57,7 @@ export default {
   },
   data () {
     return {
+      currentParticPateId: '',
       answers: [],
       radioAnswer: '',
       multiAnswer: '',
@@ -206,6 +207,18 @@ export default {
         }
       }
     },
+    async addParticipate (time) {
+      this.participatInfo.endTime = time
+      let res = await participatenApi.add(this.participatInfo)
+      if (res.code === 0) {
+        this.currentParticPateId = res.data
+        if (this.currentParticPateId === 'FILLED') {
+          this.$router.push({name: 'error', params: {type: 'filled'}})
+        } else {
+          await this.addAnswer()
+        }
+      }
+    },
     /**
      * 点击提交，添加用户已经填写的数据，以及更新用户完成时间
      */
@@ -218,44 +231,48 @@ export default {
           commonFunc.showMessage('问卷还没填写完成，不能提交', 'success')
         } else {
           // 先提交participate中的数据，再提交answer中的数据，防止
-          let res = ''
-          for (let item of this.answers) {
-            if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
-              let optionIds = item.optionId.split(',')
-              for (let item1 of optionIds) {
-                if (item1 !== '') {
-                  let params = {
-                    surverId: this.$route.params.id,
-                    questionId: item.questionId,
-                    subQuestionId: item.subQuestionId,
-                    optionId: item1,
-                    answerText: item.answerText,
-                    participateId: this.currentParticPateId
-                  }
-                  res = await answerApi.add(params)
-                }
-              }
-            } else {
+          // 提交参与者信息表
+          await this.addParticipate(new Date().getTime())
+        }
+      }
+    },
+    async addAnswer () {
+      let res = ''
+      for (let item of this.answers) {
+        if (commonFunc.isDefine(item.optionId) && item.optionId.indexOf(',') > 0) {
+          let optionIds = item.optionId.split(',')
+          for (let item1 of optionIds) {
+            if (item1 !== '') {
               let params = {
                 surverId: this.$route.params.id,
                 questionId: item.questionId,
                 subQuestionId: item.subQuestionId,
-                optionId: item.optionId,
+                optionId: item1,
                 answerText: item.answerText,
                 participateId: this.currentParticPateId
               }
               res = await answerApi.add(params)
             }
-            if (res.code === 0) {
-              console.log(res.data)
-            }
           }
-          await this.updateEndTime()
-          await this.updateRecoverNum()
-          this.$router.push({name: 'thank'})
-          console.log(this.answers)
+        } else {
+          let params = {
+            surverId: this.$route.params.id,
+            questionId: item.questionId,
+            subQuestionId: item.subQuestionId,
+            optionId: item.optionId,
+            answerText: item.answerText,
+            participateId: this.currentParticPateId
+          }
+          res = await answerApi.add(params)
+        }
+        if (res.code === 0) {
+          console.log(res.data)
         }
       }
+      // await this.updateEndTime()
+      await this.updateRecoverNum()
+      this.$router.push({name: 'thank'})
+      console.log(this.answers)
     },
     // 更新问卷的回收数量
     async updateRecoverNum () {
