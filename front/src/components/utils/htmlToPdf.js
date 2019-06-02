@@ -5,6 +5,8 @@ export default{
     Vue.prototype.getPdf = function (data) {
       var title = data + '-' + (new Date().getTime())
       html2Canvas(document.querySelector('#pdfDom'), {
+        scale: 2,
+        background: 'red',
         allowTaint: true
       }).then(function (canvas) {
         let contentWidth = canvas.width

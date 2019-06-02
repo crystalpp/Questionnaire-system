@@ -58,15 +58,15 @@ export default {
       }
       let res = await surverApi.creatByTemplate(params)
       if (res.code === 0) {
-        commonFunc.setLocalStorage('createQuesType', 'newQues')
-        let currentType = 'newQues'
-        this.$emit('getType', currentType)
-        commonFunc.setLocalStorage('contentClass', 'ques-content')
-        commonFunc.setLocalStorage('showQuesStep', true)
-        commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
+        // commonFunc.setLocalStorage('createQuesType', 'newQues')
+        // let currentType = 'newQues'
+        // this.$emit('getType', currentType)
+        commonFunc.setLocalStorage('contentClass', 'ques-content-noStep')
+        commonFunc.setLocalStorage('showQuesStep', false)
+        commonFunc.setLocalStorage('menuActiveIndex', 'show')
         commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+        this.$router.push({name: 'show'})
       }
-      this.$router.push({name: 'creat', query: {surverId: res.data}})
     },
     previewTemplate (item) {
       this.$router.push({name: 'preview', query: {surverId: item.surverId}})

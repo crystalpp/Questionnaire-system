@@ -1,11 +1,10 @@
 <template>
   <div class="pcPreview-container" id="pdfDom">
     <div class="survey-head">
-        <!-- {{survey.surveyTitle.value}} {{survey.surveyDescr.value}} -->
         <p class="survey-title">{{survey.title}}</p> 
         <p class="survey-descr">{{survey.descr}}</p>
     </div>
-    <div class="survey-container">
+    <div class="survey-container" >
       <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
         <div v-if="item.type === 'radioselect'">
           <radio-choose-type :formData = 'item' :index = 'index' @getAnswerData='getRadioAnswerData'></radio-choose-type>
@@ -30,6 +29,35 @@
         <el-button type="primary" @click="setAnswerData" style="width:1.5rem;">提交</el-button>
       </div>
     </div>
+    <!-- <div class="pdfDom" id="pdfDom" style="background: #ffffff;" >
+      <div class="survey-head" style="background: #ffffff;">
+        <p class="survey-title">{{survey.title}}</p> 
+        <p class="survey-descr">{{survey.descr}}</p>
+      </div>
+      <div class="survey-container" >
+        <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
+          <div v-if="item.type === 'radioselect'">
+            <radio-choose-type :formData = 'item' :index = 'index' @getAnswerData='getRadioAnswerData'></radio-choose-type>
+          </div>
+          <div v-if="item.type === 'Multiselect'">
+            <multiselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMultiAnswerData'></multiselect-choose-type>
+          </div>
+          <div v-if="item.type === 'Drop-down'">
+            <dropdown-choose-type :formData = 'item' :index = 'index' @getAnswerData='getDropAnswerData'></dropdown-choose-type>
+          </div>
+          <div v-if="item.type === 'textselect'"> 
+            <textselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getTextAnswerData'></textselect-choose-type>
+          </div>
+          <div v-if="item.type === 'measure'">
+            <measure-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMeasureAnswerData'></measure-choose-type>
+          </div>
+          <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
+            <matrix-choose-type :formData = 'item' :index = 'index'  @getAnswerData='getMatrixAnswerData' @getAnswerDataMulti='getMatrixAnswerDataMulti'></matrix-choose-type>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
    <!-- <div class="footer">
    </div> -->
   </div>

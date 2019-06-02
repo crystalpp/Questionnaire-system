@@ -3,7 +3,7 @@
    <!-- 控制内层的宽度和高度 -->
    <div class="releaseQues-container">
      <div class="QRcode">
-        <img :src="imageUrl" alt="" style="width:100%">
+        <img :src="imageUrl" alt="" style="width:100%" id="QRimg">
       </div>
       <div class="option">
         <div class="link">
@@ -15,7 +15,7 @@
           <el-button plain size="smalll" @click="openNewTab">打开</el-button>
         </div>
         <div class="downloadQR">
-          <el-button plain size="smalll">下载二维码</el-button>
+          <!-- <el-button plain size="smalll" @click="downloadQR">下载二维码</el-button> -->
         </div>
       </div>
    </div>
@@ -42,6 +42,29 @@ export default {
     }
   },
   methods: {
+    downloadQR () {
+      // this.downloadIamge(this.imageUrl, 'pic')
+      // let clipboard = new Clipboard('#QRimg')
+    },
+    downloadIamge (imgsrc, name) {
+      var image = new Image()
+      // 解决跨域 Canvas 污染问题
+      image.setAttribute('crossOrigin', 'anonymous')
+      image.onload = function () {
+        var canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        var context = canvas.getContext('2d')
+        context.drawImage(image, 0, 0, image.width, image.height)
+        var url = canvas.toDataURL('image/png') // 得到图片的base64编码数据
+        var a = document.createElement('a') // 生成一个a元素
+        var event = new MouseEvent('click') // 创建一个单击事件
+        a.download = name || 'photo' // 设置图片名称
+        a.href = url // 将生成的URL设置为a.href属性
+        a.dispatchEvent(event) // 触发a的单击事件
+      }
+      image.src = imgsrc
+    },
     async search () {
       let res = await surverApi.search(this.surverId)
       if (res.code === 0) {
