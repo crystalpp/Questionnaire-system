@@ -216,37 +216,91 @@ public class QuestionServiceImpl implements QuestionService {
 		/**
 		 * 还有问题稍后更改
 		 */
-		String subQues = "";
-		System.out.println(questionResponse.getQuestions());
-		if (questionResponse.getQuestions() != null) {
-			for (Question subQuestion : questionResponse.getQuestions()) {
-				subQues += subQuestion.getQuestionId();
-				subQues += ",";
-				int subNum = questionMapper.updateByPrimaryKeySelective(subQuestion);
-				if (subNum < 1) {
-					return Result.failure(ResultCode.FAIL);
-				}
+		// 1、首先根据主问题id查询该问题下的副问题和选项如果有副问题则查询副问题所对应的选项
+		Question question = questionMapper.selectByPrimaryKey(questionResponse.getQuestionId());
+		// 2、然后判断是不是有副问题 如果有将副问题全部删除
+		if (!question.getSubquestionId().equals("")) {
+			String[] subQues = question.getSubquestionId().split(",");
+			for (String subQue : subQues) {
+				// 再删除问题表中的副问题
+				int num1 = questionMapper.deleteByPrimaryKey(subQue);
 			}
 		}
-		// 更新主问题
-		Question question = new Question();
-		question.setQuestionId(questionResponse.getQuestionId());
-		question.setQuestionName(questionResponse.getTitle());
-		question.setQuestionNeed(questionResponse.getRequired());
-		question.setQuestionDirection(questionResponse.getSubdesc());
-		question.setSubquestionId(subQues);
-		int num = questionMapper.updateByPrimaryKeySelective(question);
-		if (num < 1) {
-			return Result.failure(ResultCode.FAIL);
+		// 3、 删除主问题所有的选项
+		QuestionOptionExample questionOptionExample = new QuestionOptionExample();
+		QuestionOptionExample.Criteria criteria = questionOptionExample.createCriteria();
+		criteria.andQuestionIdEqualTo(questionResponse.getQuestionId());
+		int num = questionoptionMapper.deleteByExample(questionOptionExample);
+		// 4、将新的副问题以及更新主问题的副问题的id值
+		String newSubQuestions = "";
+		if (questionResponse.getQuestions() != null) {
+			for (Question question2 : questionResponse.getQuestions()) {
+				String id = UUID.randomUUID().toString().substring(0, 10);
+				Question newSubquestion = new Question();
+				newSubquestion.setQuestionId(id);
+				newSubquestion.setQuestionName(question2.getQuestionName());
+				newSubquestion.setQuestionNeed(question2.getQuestionNeed());
+				newSubquestion.setQuetypeId(question2.getQuetypeId());
+				newSubQuestions += id;
+				newSubQuestions += ",";
+				int insertNum = questionMapper.insertSelective(newSubquestion);
+			}
 		}
-		// 更新选项
-		for (QuestionOption qOption : questionResponse.getOptions()) {
-			int num1 = questionoptionMapper.updateByPrimaryKeySelective(qOption);
-			if (num1 < 1) {
-				return Result.failure(ResultCode.FAIL);
+		// 5、更新主问题的副标题
+		Question questionUpdate = questionMapper.selectByPrimaryKey(questionResponse.getQuestionId());
+		questionUpdate.setSubquestionId(newSubQuestions);
+		questionUpdate.setQuestionId(questionResponse.getQuestionId());
+		questionUpdate.setQuestionName(questionResponse.getTitle());
+		questionUpdate.setQuestionNeed(questionResponse.getRequired());
+		questionUpdate.setQuestionDirection(questionResponse.getSubdesc());
+		// questionUpdate.setSubquestionId(subQues);
+		int updateNum = questionMapper.updateByPrimaryKey(questionUpdate);
+		// 在判断是不是有选项 如果有选项则将现在的所有选项插入到数据库
+		if (questionResponse.getOptions() != null) {
+			for (QuestionOption questionOption : questionResponse.getOptions()) {
+				QuestionOption newQuestionOption = new QuestionOption();
+				String id = UUID.randomUUID().toString().substring(0, 10);
+				newQuestionOption.setOptionId(id);
+				newQuestionOption.setOptionContent(questionOption.getOptionContent());
+				newQuestionOption.setOptionScore("0");
+				newQuestionOption.setQuestionId(questionResponse.getQuestionId());
+				newQuestionOption.setSubquestionId(newSubQuestions);
+				int num2 = questionoptionMapper.insertSelective(newQuestionOption);
 			}
 		}
 		return Result.success();
+
+		// String subQues = "";
+		// System.out.println(questionResponse.getQuestions());
+		// if (questionResponse.getQuestions() != null) {
+		// for (Question subQuestion : questionResponse.getQuestions()) {
+		// subQues += subQuestion.getQuestionId();
+		// subQues += ",";
+		// int subNum = questionMapper.updateByPrimaryKeySelective(subQuestion);
+		// if (subNum < 1) {
+		// return Result.failure(ResultCode.FAIL);
+		// }
+		// }
+		// }
+		// // 更新主问题
+		// Question question = new Question();
+		// question.setQuestionId(questionResponse.getQuestionId());
+		// question.setQuestionName(questionResponse.getTitle());
+		// question.setQuestionNeed(questionResponse.getRequired());
+		// question.setQuestionDirection(questionResponse.getSubdesc());
+		// question.setSubquestionId(subQues);
+		// int num = questionMapper.updateByPrimaryKeySelective(question);
+		// if (num < 1) {
+		// return Result.failure(ResultCode.FAIL);
+		// }
+		// // 更新选项
+		// for (QuestionOption qOption : questionResponse.getOptions()) {
+		// int num1 = questionoptionMapper.updateByPrimaryKeySelective(qOption);
+		// if (num1 < 1) {
+		// return Result.failure(ResultCode.FAIL);
+		// }
+		// }
+		// return Result.success();
 	}
 
 	@Override
