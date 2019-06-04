@@ -146,7 +146,11 @@ public class SurverServiceImpl implements SurverService {
 		if (!surverTypeId.equals("")) {
 			criteria.andSurvertypeIdEqualTo(surverTypeId);
 		}
+
 		criteria.andSurverTitleLike("%" + surverTitle + "%");
+
+		// criteria.andSurverIstemplateNotEqualTo(1);
+		criteria.andSurverIstemplateIsNull();
 		List<Surver> survers = surverMapper.selectByExample(surverExample);
 		return Result.success(survers);
 	}
