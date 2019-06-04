@@ -59,6 +59,7 @@ export default {
       }
     },
     async addQuestion () {
+      this.selectForm.questionsValue = []
       this.selectForm.surverId = this.$route.query.surverId
       let res = await questionApi.add(this.selectForm)
       if (res.code === 0) {

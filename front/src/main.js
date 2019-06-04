@@ -23,7 +23,17 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
-  next()
+  const whiteList = ['index', 'login', 'register'] // 免登陆白名单
+  let userInfo = localStorage.getItem('userInfo')
+  if (userInfo !== null) {
+    next()
+  } else {
+    if (whiteList.indexOf(to.name) !== -1) {
+      next()
+    } else {
+      next({name: 'index'})
+    }
+  }
 })
 var echarts = require('echarts')
 Vue.prototype.$echarts = echarts

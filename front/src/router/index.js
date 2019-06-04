@@ -36,6 +36,7 @@ export default new Router({
       name: 'login',
       component: login,
       meta: {
+        requireAuth: true,
         title: '登录'
       }
     },
@@ -60,8 +61,7 @@ export default new Router({
       name: 'fill',
       component: fill,
       meta: {
-        title: '问卷填写',
-        keepAlive: true
+        title: '问卷填写'
       }
     },
     {

@@ -145,6 +145,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .result-container {
+    height: 100%;
+    overflow: auto;
   // background: #000000;
   width: 100%;
   // height: 100%;

@@ -298,6 +298,7 @@ export default {
           commonFunc.setLocalStorage('showQuesStep', true)
           commonFunc.setLocalStorage('menuActiveIndex', 'newQues')
           commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+          commonFunc.setLocalStorage('createQuesType', 'newQues')
           this.$router.push({name: 'creat', query: {surverId: res.data.surverId}})
         }
       }

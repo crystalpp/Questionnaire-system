@@ -38,7 +38,8 @@ export default {
         startTime: '',
         endTime: '',
         surverId: ''
-      }
+      },
+      surverIpFlag: '' // 该问卷是否限制ip
     }
   },
   async mounted () {
@@ -51,10 +52,12 @@ export default {
     await this.getIp()
     await this.getAddress()
     await this.getDeviceType()
-    // await this.getAll()
+    await this.getAll()
     await this.getSurvers()
     if (this.fillEndTimeFlag) {
       this.$router.push({name: 'error', params: {type: 'timeout'}})
+    } if (this.surverIpFlag === 1 && this.ipFlag) {
+      this.$router.push({name: 'error', params: {type: 'filled'}})
     } else {
       await this.getSurverQuesions()
       // await this.addNewParticipate()
@@ -62,26 +65,27 @@ export default {
     // this.$router.push({name: 'error'})
   },
   methods: {
-    // isLimitIp (data) {
-    //   if (data.length !== 0) {
-    //     for (let item of data) {
-    //       if (item.participateIp === this.participatIp) {
-    //         this.ipFlag = true
-    //         return
-    //       }
-    //     }
-    //   }
-    // },
-    // async getAll () {
-    //   let params = {
-    //     surverId: this.$route.params.id
-    //   }
-    //   let res = await participatenApi.getAll(params)
-    //   if (res.code === 0) {
-    //     console.log(res.data)
-    //     this.isLimitIp(res.data)
-    //   }
-    // },
+
+    isLimitIp (data) {
+      if (data.length !== 0) {
+        for (let item of data) {
+          if (item.participateIp === this.participatIp) {
+            this.ipFlag = true
+            return
+          }
+        }
+      }
+    },
+    async getAll () {
+      let params = {
+        surverId: this.$route.params.id
+      }
+      let res = await participatenApi.getAll(params)
+      if (res.code === 0) {
+        console.log(res.data)
+        this.isLimitIp(res.data)
+      }
+    },
     async addNewParticipate () {
       let params = {
         ip: this.participatIp,
@@ -134,6 +138,7 @@ export default {
       let surverId = this.$route.params.id
       let res = await surverApi.search(surverId)
       if (res.code === 0) {
+        this.surverIpFlag = res.data[0].surverLimitip
         this.survey.title = res.data[0].surverTitle
         this.survey.descr = res.data[0].surverDescription
         if (res.data[0].surverEndtime < new Date().getTime()) {

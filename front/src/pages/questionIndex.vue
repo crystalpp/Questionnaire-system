@@ -159,6 +159,7 @@ export default {
       this.userInfo = JSON.parse(commonFunc.getLocalStorage('userInfo'))
     },
     quit () {
+      commonFunc.removeLocalStorage('userInfo')
       this.$router.push({name: 'index'})
     },
     async releaseQues () {
