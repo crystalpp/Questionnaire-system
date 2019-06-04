@@ -13,13 +13,13 @@
         
       </div>
       <div class="closeButon" >
-         <el-button plain type="primary" size="small" @click="getPdf(survey.title)">导出pdf</el-button>
+         <el-button plain type="primary" size="small" @click="getPdf(survey.title)" v-if="showPdfButton">导出pdf</el-button>
          <el-button plain type="primary" size="small" @click="creatPreview">退出</el-button>
       </div>
     </div>
     <div class="pre-body">
-      <pc-preview :survey='survey' v-if="pcOrPhone === 'PC'"></pc-preview>
-      <phone-preview :survey='survey' v-if="pcOrPhone === 'phone'"></phone-preview>
+      <pc-preview :survey='survey' v-if="pcOrPhone === 'PC'" @showPdfButtonevent = 'showPdfButtonevent'></pc-preview>
+      <phone-preview :survey='survey' v-if="pcOrPhone === 'phone'" @showPdfButtonevent = 'showPdfButtonevent'></phone-preview>
       <!-- 设计好的问卷显示的div -->
       
     </div>
@@ -46,7 +46,8 @@ export default {
       },
       phoneClass: 'phone',
       PCClass: 'PCCheck',
-      pcOrPhone: 'PC'
+      pcOrPhone: 'PC',
+      showPdfButton: true
     }
   },
   async mounted () {
@@ -59,6 +60,9 @@ export default {
     await this.getSurverQuesions()
   },
   methods: {
+    showPdfButtonevent (data) {
+      this.showPdfButton = data
+    },
     creatPreview () {
       this.$router.go(-1)
     },

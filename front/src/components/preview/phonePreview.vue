@@ -58,6 +58,7 @@ export default {
     }
   },
   mounted () {
+    this.$emit('showPdfButtonevent', false)
     this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
     document.getElementsByTagName('html')[0].style.fontSize = '50px'
   },

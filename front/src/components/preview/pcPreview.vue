@@ -1,33 +1,35 @@
 <template>
-  <div class="pcPreview-container" id="pdfDom">
-    <div class="survey-head">
-        <p class="survey-title">{{survey.title}}</p> 
-        <p class="survey-descr">{{survey.descr}}</p>
+  <div class="pcPreview-container" >
+    <div class="main-container" id="pdfDom">
+      <div class="survey-head">
+          <p class="survey-title">{{survey.title}}</p> 
+          <p class="survey-descr">{{survey.descr}}</p>
+      </div>
+      <div class="survey-container" >
+        <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
+          <div v-if="item.type === 'radioselect'">
+            <radio-choose-type :formData = 'item' :index = 'index' @getAnswerData='getRadioAnswerData'></radio-choose-type>
+          </div>
+          <div v-if="item.type === 'Multiselect'">
+            <multiselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMultiAnswerData'></multiselect-choose-type>
+          </div>
+          <div v-if="item.type === 'Drop-down'">
+            <dropdown-choose-type :formData = 'item' :index = 'index' @getAnswerData='getDropAnswerData'></dropdown-choose-type>
+          </div>
+          <div v-if="item.type === 'textselect'"> 
+            <textselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getTextAnswerData'></textselect-choose-type>
+          </div>
+          <div v-if="item.type === 'measure'">
+            <measure-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMeasureAnswerData'></measure-choose-type>
+          </div>
+          <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
+            <matrix-choose-type :formData = 'item' :index = 'index'  @getAnswerData='getMatrixAnswerData' @getAnswerDataMulti='getMatrixAnswerDataMulti'></matrix-choose-type>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="survey-container" >
-      <div v-for="(item,index) in survey.surverQuestions" :key="item.key" >
-        <div v-if="item.type === 'radioselect'">
-          <radio-choose-type :formData = 'item' :index = 'index' @getAnswerData='getRadioAnswerData'></radio-choose-type>
-        </div>
-        <div v-if="item.type === 'Multiselect'">
-          <multiselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMultiAnswerData'></multiselect-choose-type>
-        </div>
-        <div v-if="item.type === 'Drop-down'">
-          <dropdown-choose-type :formData = 'item' :index = 'index' @getAnswerData='getDropAnswerData'></dropdown-choose-type>
-        </div>
-        <div v-if="item.type === 'textselect'"> 
-          <textselect-choose-type :formData = 'item' :index = 'index' @getAnswerData='getTextAnswerData'></textselect-choose-type>
-        </div>
-        <div v-if="item.type === 'measure'">
-          <measure-choose-type :formData = 'item' :index = 'index' @getAnswerData='getMeasureAnswerData'></measure-choose-type>
-        </div>
-        <div v-if="item.type === 'matrix-radio' || item.type === 'matrix-multi'">
-          <matrix-choose-type :formData = 'item' :index = 'index'  @getAnswerData='getMatrixAnswerData' @getAnswerDataMulti='getMatrixAnswerDataMulti'></matrix-choose-type>
-        </div>
-      </div>
-       <div class="submit" v-if="resultOrFill === 'fill'">
+    <div class="submit" v-if="resultOrFill === 'fill'">
         <el-button type="primary" @click="setAnswerData" style="width:1.5rem;">提交</el-button>
-      </div>
     </div>
     <!-- <div class="pdfDom" id="pdfDom" style="background: #ffffff;" >
       <div class="survey-head" style="background: #ffffff;">
@@ -99,6 +101,7 @@ export default {
     }
   },
   mounted () {
+    this.$emit('showPdfButtonevent', true)
     this.fillOrPreview = commonFunc.getLocalStorage('fillOrPreview')
     this.resultOrFill = commonFunc.getLocalStorage('resultOrFill')
     if (this.pcOrPhone === 'phone') {
@@ -330,12 +333,13 @@ export default {
   width: 20%;
 }
 .pcPreview-container{
-    background: #EFEFEF;
+    background: #FFFFFF;
+    margin-top: 0.2rem;
     // margin-bottom: 1rem;
     .survey-head{
       width: 75%;
       margin: 0 auto;
-      background: #EFEFEF;
+      background: #FFFFFF;
       padding-top: 0.2rem;
       .survey-title{
         font-size: 0.3rem;
@@ -352,14 +356,16 @@ export default {
       width: 75%;
       margin: 0 auto;
       background: #ffffff;
-      .submit{
-        text-align: center;
-        padding-bottom: 0.2rem;
-      }
+      
     }
     .footer{
       height: 0.2rem;
       background: #EFEFEF;
     }
+    .submit{
+        text-align: center;
+        padding-bottom: 0.2rem;
+        margin-bottom: 0.2rem;
+      }
   }
 </style>
