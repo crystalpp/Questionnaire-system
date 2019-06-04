@@ -183,6 +183,8 @@ export default {
     cancelRelease () {
       this.dialogReleaseVisible = false
       this.menuActiveIndex = 'creat'
+      commonFunc.setLocalStorage('submenuActiveIndex', 'creat')
+      this.$router.push({name: 'creat', query: {surverId: this.$route.query.surverId}})
     },
     handleSelectQues (key) {
       // commonFunc.setLocalStorage('submenuActiveIndex', key)
