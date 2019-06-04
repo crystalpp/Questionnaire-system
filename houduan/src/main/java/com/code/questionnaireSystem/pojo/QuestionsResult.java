@@ -1,5 +1,6 @@
 package com.code.questionnaireSystem.pojo;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -21,6 +22,8 @@ public class QuestionsResult {
 	private String questionNeed;
 
 	private String quetypeId;
+
+	private Date questionCreatTime;
 
 	private String surverId;
 

@@ -208,6 +208,7 @@ public class SurverServiceImpl implements SurverService {
 			questionResult.setQuestionNeed(q.getQuestionNeed());
 			questionResult.setQuetypeId(q.getQuetypeId());
 			questionResult.setSurverId(q.getSurverId());
+			questionResult.setQuestionCreatTime(q.getQuestionCreattime());
 			QuestionOptionExample qOExample = new QuestionOptionExample();
 			QuestionOptionExample.Criteria qoCriteria = qOExample.createCriteria();
 			qoCriteria.andQuestionIdEqualTo(q.getQuestionId());
@@ -236,7 +237,7 @@ public class SurverServiceImpl implements SurverService {
 	}
 
 	public Integer add(String title, String subdesc, String type, String required, String options, String surverId,
-			String questions) {
+			String questions, Date questionCreatTime) {
 		// TODO Auto-generated method stub
 		Question question = new Question();
 		String subQuesionIds = "";
@@ -266,7 +267,7 @@ public class SurverServiceImpl implements SurverService {
 		question.setQuetypeId(type);
 		question.setSurverId(surverId);
 		question.setSubquestionId(subQuesionIds);
-		question.setQuestionCreattime(new Date());
+		question.setQuestionCreattime(questionCreatTime);
 		int num = questionMapper.insertSelective(question);
 		if (options != null) {
 			String[] optionsList = options.split(",");
@@ -314,8 +315,10 @@ public class SurverServiceImpl implements SurverService {
 			String questionName = questionsResult.getQuestionName();
 			String questionDirection = questionsResult.getQuestionDirection();
 			String questionType = questionsResult.getQuetypeId();
+			Date questionCreatTime = questionsResult.getQuestionCreatTime();
 			String subQuestions = null;
 			String options = null;
+			// String questionCreatTime = questionsResult.get
 			if (questionsResult.getSubQuestions() != null) {
 				subQuestions = "";
 				for (Question question : questionsResult.getSubQuestions()) {
@@ -331,7 +334,7 @@ public class SurverServiceImpl implements SurverService {
 				}
 			}
 			Integer num1 = add(questionName, questionDirection, questionType, questionNeed, options, surverId1,
-					subQuestions);
+					subQuestions, questionCreatTime);
 			if (num1 < 1) {
 				return Result.failure(ResultCode.FAIL);
 			}
