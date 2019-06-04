@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
-  const whiteList = ['index', 'login', 'register'] // 免登陆白名单
+  const whiteList = ['index', 'login', 'register', 'fill', 'error', 'thank'] // 免登陆白名单
   let userInfo = localStorage.getItem('userInfo')
   if (userInfo !== null) {
     next()
